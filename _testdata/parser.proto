@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package parserpb;
+option go_package = "github.com/yoheimuta/apis/v1/parser/parserpb";
+
+import "google/protobuf/empty.proto";
+import "github.com/mwitkow/go-proto-validators/validator.proto";
+import "google/protobuf/timestamp.proto";
+
+import "github.com/yoheimuta/apis/v1/entities/entities.proto";
+import "github.com/yoheimuta/apis/v1/entities/aggregates.proto";
+import "github.com/yoheimuta/apis/v1/values/itemContentCondition.proto";
+import "github.com/yoheimuta/apis/v1/values/itemNoContentCondition.proto";
+
+// ItemService is a service to manage items.
+service ItemService {
+    // CreateUserItem is a method to create a user's item.
+    rpc CreateUserItem(CreateUserItemRequest) returns (aggregatespb.UserItemAggregate) {}
+
+    // UpdateUserItem is a method to update a user's item.
+    rpc UpdateUserItem(UpdateUserItemRequest) returns (entitiespb.UserItem) {}
+}
+
+// CreateUserItemRequest is a request message for CreateUserItem.
+message CreateUserItemRequest {
+    // Image is an item's image information for create
+    message Image {
+        // display_order is an order of position. Starts 1 at left and increment by one. Required.
+        int64 display_order = 1 [(validator.field) = {int_gt: 0}];
+        // binary is an image binary. Required.
+        bytes binary = 2 [(validator.field) = {length_gt: 0}];
+    }
+    // Mapping is
+    // an information of an item mapping.
+    message Mapping {
+        // product is an item master information.
+        entitiespb.UserItemMappingProduct product = 1;
+    }
+
+    // item is an item entity. Required.
+    entitiespb.UserItem item = 1 [(validator.field) = {msg_exists : true}];
+    // images are item's images. Max count is 10. Optional.
+    repeated Image images = 2 [(validator.field) = {repeated_count_max: 10}];
+    // mapping is a item's mapping information. Required.
+    Mapping mapping = 3 [(validator.field) = {msg_exists : true}];
+    // condition_oneof is an item's condition. Required.
+    oneof condition_oneof {
+        // content_type_id is a condition ID of an item with content.
+        itemContentConditionpb.Type content_type_id = 4;
+        // no_content_type_id is a condition ID of an item without content.
+        itemNoContentConditionpb.Type no_content_type_id = 5;
+    }
+}
+
