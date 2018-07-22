@@ -1,7 +1,7 @@
 package protoparser
 
 import (
-	"strings"
+	"io"
 	"text/scanner"
 )
 
@@ -71,9 +71,9 @@ type ProtocolBuffer struct {
 }
 
 // Parse は Protocol Bufffers ファイルをパースする。
-func Parse(input string) (*ProtocolBuffer, error) {
+func Parse(input io.Reader) (*ProtocolBuffer, error) {
 	lex := new(lexer)
-	lex.scan.Init(strings.NewReader(input))
+	lex.scan.Init(input)
 	lex.scan.Mode = scanner.ScanIdents | scanner.ScanInts | scanner.ScanFloats | scanner.ScanComments
 	lex.next()
 	return parse(lex)

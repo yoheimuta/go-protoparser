@@ -1,9 +1,8 @@
 package protoparser_test
 
 import (
+	"os"
 	"testing"
-
-	"io/ioutil"
 
 	"reflect"
 
@@ -185,97 +184,100 @@ func TestParse(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		proto, err := ioutil.ReadFile(test.inputFilename)
-		if err != nil {
-			t.Errorf(err.Error())
-			return
-		}
-		got, err := protoparser.Parse(string(proto))
-		if err != nil {
-			t.Errorf("failed to parse, err=%v", err)
-			continue
-		}
-
-		want := test.wantProtocolBuffer
-		if got.Package != want.Package {
-			t.Errorf("got %s, but want %s", got.Package, want.Package)
-		}
-
-		if len(got.Service.Comments) != len(want.Service.Comments) {
-			t.Errorf("got %d, but want %d", len(got.Service.Comments), len(want.Service.Comments))
-		}
-		if !reflect.DeepEqual(got.Service.Comments, want.Service.Comments) {
-			t.Errorf("got %v, but want %v", got.Service.Comments, want.Service.Comments)
-		}
-
-		if got.Service.Name != want.Service.Name {
-			t.Errorf("got %s, but want %s", got.Service.Name, want.Service.Name)
-		}
-
-		if len(got.Service.RPCs) != len(want.Service.RPCs) {
-			t.Errorf("got %d, but want %d", len(got.Service.RPCs), len(want.Service.RPCs))
-		}
-		for j, rpc := range want.Service.RPCs {
-			if !reflect.DeepEqual(got.Service.RPCs[j], rpc) {
-				t.Errorf("got %v, but want %v", got.Service.RPCs[j], rpc)
+		func() {
+			proto, err := os.Open(test.inputFilename)
+			if err != nil {
+				t.Errorf(err.Error())
+				return
 			}
-		}
-
-		if len(got.Messages) != len(want.Messages) {
-			t.Errorf("got %d, but want %d", len(got.Messages), len(want.Messages))
-		}
-		for j, message := range want.Messages {
-			gotMessage := got.Messages[j]
-			if len(gotMessage.Comments) != len(message.Comments) {
-				t.Errorf("got %d, but want %d", len(gotMessage.Comments), len(message.Comments))
-			}
-			if !reflect.DeepEqual(gotMessage.Comments, message.Comments) {
-				t.Errorf("got %v, but want %v", gotMessage.Comments, message.Comments)
+			defer proto.Close()
+			got, err := protoparser.Parse(proto)
+			if err != nil {
+				t.Errorf("failed to parse, err=%v", err)
+				return
 			}
 
-			if gotMessage.Name != message.Name {
-				t.Errorf("got %s, but want %s", gotMessage.Name, message.Name)
+			want := test.wantProtocolBuffer
+			if got.Package != want.Package {
+				t.Errorf("got %s, but want %s", got.Package, want.Package)
 			}
 
-			if len(gotMessage.Fields) != len(message.Fields) {
-				t.Errorf("got %d, but want %d", len(gotMessage.Fields), len(message.Fields))
+			if len(got.Service.Comments) != len(want.Service.Comments) {
+				t.Errorf("got %d, but want %d", len(got.Service.Comments), len(want.Service.Comments))
 			}
-			for k, field := range message.Fields {
-				gotField := gotMessage.Fields[k]
-				if !reflect.DeepEqual(gotField, field) {
-					t.Errorf("got %v, but want %v", gotField, field)
+			if !reflect.DeepEqual(got.Service.Comments, want.Service.Comments) {
+				t.Errorf("got %v, but want %v", got.Service.Comments, want.Service.Comments)
+			}
+
+			if got.Service.Name != want.Service.Name {
+				t.Errorf("got %s, but want %s", got.Service.Name, want.Service.Name)
+			}
+
+			if len(got.Service.RPCs) != len(want.Service.RPCs) {
+				t.Errorf("got %d, but want %d", len(got.Service.RPCs), len(want.Service.RPCs))
+			}
+			for j, rpc := range want.Service.RPCs {
+				if !reflect.DeepEqual(got.Service.RPCs[j], rpc) {
+					t.Errorf("got %v, but want %v", got.Service.RPCs[j], rpc)
 				}
 			}
 
-			if len(gotMessage.Nests) != len(message.Nests) {
-				t.Errorf("got %d, but want %d", len(gotMessage.Nests), len(message.Nests))
+			if len(got.Messages) != len(want.Messages) {
+				t.Errorf("got %d, but want %d", len(got.Messages), len(want.Messages))
 			}
-			for k, nest := range message.Nests {
-				gotNest := gotMessage.Nests[k]
-				if !reflect.DeepEqual(gotNest, nest) {
-					t.Errorf("got %v, but want %v", gotNest, nest)
+			for j, message := range want.Messages {
+				gotMessage := got.Messages[j]
+				if len(gotMessage.Comments) != len(message.Comments) {
+					t.Errorf("got %d, but want %d", len(gotMessage.Comments), len(message.Comments))
 				}
-			}
+				if !reflect.DeepEqual(gotMessage.Comments, message.Comments) {
+					t.Errorf("got %v, but want %v", gotMessage.Comments, message.Comments)
+				}
 
-			if len(gotMessage.Enums) != len(message.Enums) {
-				t.Errorf("got %d, but want %d", len(gotMessage.Enums), len(message.Enums))
-			}
-			for k, enum := range message.Enums {
-				gotEnum := gotMessage.Enums[k]
-				if !reflect.DeepEqual(gotEnum, enum) {
-					t.Errorf("got %v, but want %v", gotEnum, enum)
+				if gotMessage.Name != message.Name {
+					t.Errorf("got %s, but want %s", gotMessage.Name, message.Name)
 				}
-			}
 
-			if len(gotMessage.Oneofs) != len(message.Oneofs) {
-				t.Errorf("got %d, but want %d", len(gotMessage.Oneofs), len(message.Oneofs))
-			}
-			for k, oneof := range message.Oneofs {
-				gotOneof := gotMessage.Oneofs[k]
-				if !reflect.DeepEqual(gotOneof, oneof) {
-					t.Errorf("got %v, but want %v", gotOneof, oneof)
+				if len(gotMessage.Fields) != len(message.Fields) {
+					t.Errorf("got %d, but want %d", len(gotMessage.Fields), len(message.Fields))
+				}
+				for k, field := range message.Fields {
+					gotField := gotMessage.Fields[k]
+					if !reflect.DeepEqual(gotField, field) {
+						t.Errorf("got %v, but want %v", gotField, field)
+					}
+				}
+
+				if len(gotMessage.Nests) != len(message.Nests) {
+					t.Errorf("got %d, but want %d", len(gotMessage.Nests), len(message.Nests))
+				}
+				for k, nest := range message.Nests {
+					gotNest := gotMessage.Nests[k]
+					if !reflect.DeepEqual(gotNest, nest) {
+						t.Errorf("got %v, but want %v", gotNest, nest)
+					}
+				}
+
+				if len(gotMessage.Enums) != len(message.Enums) {
+					t.Errorf("got %d, but want %d", len(gotMessage.Enums), len(message.Enums))
+				}
+				for k, enum := range message.Enums {
+					gotEnum := gotMessage.Enums[k]
+					if !reflect.DeepEqual(gotEnum, enum) {
+						t.Errorf("got %v, but want %v", gotEnum, enum)
+					}
+				}
+
+				if len(gotMessage.Oneofs) != len(message.Oneofs) {
+					t.Errorf("got %d, but want %d", len(gotMessage.Oneofs), len(message.Oneofs))
+				}
+				for k, oneof := range message.Oneofs {
+					gotOneof := gotMessage.Oneofs[k]
+					if !reflect.DeepEqual(gotOneof, oneof) {
+						t.Errorf("got %v, but want %v", gotOneof, oneof)
+					}
 				}
 			}
-		}
+		}()
 	}
 }
