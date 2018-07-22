@@ -7,9 +7,10 @@ import (
 
 func TestParseComments(t *testing.T) {
 	tests := []struct {
-		name         string
-		input        string
-		wantComments []string
+		name              string
+		input             string
+		wantComments      []string
+		wantRecentScanned string
 	}{
 		{
 			name: "parsing empty creates no comments",
@@ -25,11 +26,13 @@ func TestParseComments(t *testing.T) {
 			name: "parsing lines creates comments",
 			input: `// binary is an image binary. Required.
             // hogehoge
+            bytes binary = 2 [(validator.field) = {length_gt: 0}];
             `,
 			wantComments: []string{
 				"// binary is an image binary. Required.",
 				"// hogehoge",
 			},
+			wantRecentScanned: "bytes",
 		},
 	}
 
@@ -38,6 +41,9 @@ func TestParseComments(t *testing.T) {
 		got := parseComments(lex)
 		if !reflect.DeepEqual(got, test.wantComments) {
 			t.Errorf("[%s] got %v, but want %v", test.name, got, test.wantComments)
+		}
+		if lex.text() != test.wantRecentScanned {
+			t.Errorf("[%s] got %v, but want %v", test.name, lex.text(), test.wantRecentScanned)
 		}
 	}
 }

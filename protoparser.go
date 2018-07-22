@@ -5,12 +5,6 @@ import (
 	"text/scanner"
 )
 
-// Type はフィールドの型を表す。
-type Type struct {
-	Name       string
-	IsRepeated bool
-}
-
 // Field は型のフィールドを表す。
 type Field struct {
 	Comments []string

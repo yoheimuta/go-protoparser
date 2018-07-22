@@ -382,25 +382,3 @@ func parseField(lex *lexer) (*Field, error) {
 
 	return field, nil
 }
-
-func parseType(lex *lexer) *Type {
-	s := lex.text()
-	lex.next()
-	if s == "repeated" {
-		t := parseType(lex)
-		return &Type{
-			Name:       t.Name,
-			IsRepeated: true,
-		}
-	}
-	for lex.text() == "." {
-		s += lex.text()
-		lex.next()
-		s += lex.text()
-		lex.next()
-	}
-	return &Type{
-		Name:       s,
-		IsRepeated: false,
-	}
-}
