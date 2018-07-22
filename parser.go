@@ -404,12 +404,3 @@ func parseType(lex *lexer) *Type {
 		IsRepeated: false,
 	}
 }
-
-func parseComments(lex *lexer) []string {
-	var s []string
-	for lex.token == scanner.Comment {
-		s = append(s, lex.text())
-		lex.next()
-	}
-	return s
-}
