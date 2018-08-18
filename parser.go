@@ -173,25 +173,3 @@ func parseEnumContent(lex *lexer) ([]*EnumField, error) {
 
 	return fields, nil
 }
-
-// comment var '=' tag';'
-func parseEnumField(lex *lexer) (*EnumField, error) {
-	field := &EnumField{}
-
-	// コメントを取得する {
-	if lex.token != scanner.Comment {
-		return nil, fmt.Errorf("not found comment, text=%s", lex.text())
-	}
-	field.Comments = parseComments(lex)
-	// }
-
-	field.Name = lex.text()
-
-	// 残りを消費する {
-	for lex.text() != ";" {
-		lex.next()
-	}
-	lex.next()
-	// }
-	return field, nil
-}

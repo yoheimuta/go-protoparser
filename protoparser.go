@@ -4,12 +4,6 @@ import (
 	"io"
 )
 
-// EnumField は Enum の値を表す。
-type EnumField struct {
-	Comments []string
-	Name     string
-}
-
 // Enum は Enum 型を表す。
 type Enum struct {
 	Comments   []string
