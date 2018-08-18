@@ -12,10 +12,12 @@ import (
 
 func TestParse(t *testing.T) {
 	tests := []struct {
+		name               string
 		inputFilename      string
 		wantProtocolBuffer *protoparser.ProtocolBuffer
 	}{
 		{
+			name:          "parse a whole proto file",
 			inputFilename: config_test.TestDataPath("parser.proto"),
 			wantProtocolBuffer: &protoparser.ProtocolBuffer{
 				Package: "parserpb",
@@ -184,13 +186,20 @@ func TestParse(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		func() {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
 			proto, err := os.Open(test.inputFilename)
 			if err != nil {
 				t.Errorf(err.Error())
 				return
 			}
-			defer proto.Close()
+			defer func() {
+				err = proto.Close()
+				if err != nil {
+					t.Errorf("failed to close a proto, err=%v", err)
+					return
+				}
+			}()
 			got, err := protoparser.Parse(proto)
 			if err != nil {
 				t.Errorf("failed to parse, err=%v", err)
@@ -278,6 +287,6 @@ func TestParse(t *testing.T) {
 					}
 				}
 			}
-		}()
+		})
 	}
 }
