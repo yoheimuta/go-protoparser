@@ -2,7 +2,6 @@ package protoparser
 
 import (
 	"io"
-	"text/scanner"
 )
 
 // EnumField は Enum の値を表す。
@@ -28,13 +27,6 @@ type Message struct {
 	Oneofs   []*Oneof
 }
 
-// Service は複数の RPC を定義するサービスを表す。
-type Service struct {
-	Comments []string
-	Name     string
-	RPCs     []*RPC
-}
-
 // ProtocolBuffer は Protocol Buffers ファイルをパースした結果を表す。
 type ProtocolBuffer struct {
 	Package  string
@@ -44,9 +36,6 @@ type ProtocolBuffer struct {
 
 // Parse は Protocol Bufffers ファイルをパースする。
 func Parse(input io.Reader) (*ProtocolBuffer, error) {
-	lex := new(lexer)
-	lex.scan.Init(input)
-	lex.scan.Mode = scanner.ScanIdents | scanner.ScanInts | scanner.ScanFloats | scanner.ScanComments
-	lex.next()
+	lex := newlexer(input)
 	return parse(lex)
 }

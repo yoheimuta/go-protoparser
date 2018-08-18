@@ -2,6 +2,7 @@ package protoparser
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -48,7 +49,7 @@ func TestParseRPC(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			lex := lex(test.input)
+			lex := newlexer(strings.NewReader(test.input))
 			got, err := parseRPC(lex)
 			switch {
 			case test.wantErr:

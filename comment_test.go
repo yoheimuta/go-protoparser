@@ -2,6 +2,7 @@ package protoparser
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -37,7 +38,7 @@ func TestParseComments(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		lex := lex(test.input)
+		lex := newlexer(strings.NewReader(test.input))
 		got := parseComments(lex)
 		if !reflect.DeepEqual(got, test.wantComments) {
 			t.Errorf("[%s] got %v, but want %v", test.name, got, test.wantComments)

@@ -2,6 +2,7 @@ package protoparser
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -57,7 +58,7 @@ oneof foo {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			lex := lex(test.input)
+			lex := newlexer(strings.NewReader(test.input))
 			got, err := parseOneof(lex)
 			switch {
 			case test.wantErr:
