@@ -92,10 +92,6 @@ func parseServiceContent(lex *lexer) ([]*RPC, error) {
 
 		switch lex.text() {
 		case "rpc":
-			// rpc を消費する {
-			lex.next()
-			// }
-
 			var rpc *RPC
 			rpc, err := parseRPC(lex)
 			if err != nil {
@@ -108,57 +104,6 @@ func parseServiceContent(lex *lexer) ([]*RPC, error) {
 		}
 	}
 	return rpcs, nil
-}
-
-// Name'('Argument')' 'returns' '('Return')' '{''}'
-func parseRPC(lex *lexer) (*RPC, error) {
-	rpc := &RPC{}
-
-	for lex.text() != "}" {
-		token := lex.text()
-		if rpc.Name == "" {
-			rpc.Name = token
-			lex.next()
-			continue
-		}
-		if rpc.Argument == nil {
-			// '(' を消費する {
-			lex.next()
-			// }
-
-			rpc.Argument = parseType(lex)
-
-			// ')' を消費する {
-			lex.next()
-			// }
-			continue
-		}
-		if rpc.Return == nil {
-			// 'returns' を消費する {
-			lex.next()
-			// }
-			// '(' を消費する {
-			lex.next()
-			// }
-
-			rpc.Return = parseType(lex)
-			lex.next()
-
-			// ')' を消費する {
-			lex.next()
-			// }
-			continue
-		}
-		// 消費する {
-		lex.next()
-		// }
-	}
-
-	// '}' を消費する {
-	lex.next()
-	// }
-
-	return rpc, nil
 }
 
 // "message" var '{' messageContent '}'

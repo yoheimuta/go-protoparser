@@ -28,14 +28,6 @@ type Message struct {
 	Oneofs   []*Oneof
 }
 
-// RPC は関数を表す。
-type RPC struct {
-	Comments []string
-	Name     string
-	Argument *Type
-	Return   *Type
-}
-
 // Service は複数の RPC を定義するサービスを表す。
 type Service struct {
 	Comments []string
