@@ -5,13 +5,6 @@ import (
 	"text/scanner"
 )
 
-// Field は型のフィールドを表す。
-type Field struct {
-	Comments []string
-	Type     *Type
-	Name     string
-}
-
 // Oneof は oneof 型を表す。
 type Oneof struct {
 	Comments []string

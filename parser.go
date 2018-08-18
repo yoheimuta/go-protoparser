@@ -240,10 +240,7 @@ func parseMessageContent(lex *lexer) (fields []*Field, messages []*Message, enum
 			oneof.Comments = append(oneof.Comments, comments...)
 			oneofs = append(oneofs, oneof)
 		default:
-			field, parseErr := parseField(lex)
-			if parseErr != nil {
-				return nil, nil, nil, nil, parseErr
-			}
+			field := parseField(lex)
 			field.Comments = append(field.Comments, comments...)
 			fields = append(fields, field)
 		}
@@ -353,32 +350,4 @@ func parseOneof(lex *lexer) (*Oneof, error) {
 		Name:   name,
 		Fields: fields,
 	}, nil
-}
-
-// type name = number validator';'
-func parseField(lex *lexer) (*Field, error) {
-	field := &Field{}
-
-	for lex.text() != ";" {
-		token := lex.text()
-		if field.Type == nil {
-			field.Type = parseType(lex)
-			continue
-		}
-		if field.Name == "" {
-			field.Name = token
-
-			lex.next()
-			continue
-		}
-		// 消費する {
-		lex.next()
-		// }
-	}
-
-	// ';' を消費する {
-	lex.next()
-	// }
-
-	return field, nil
 }
