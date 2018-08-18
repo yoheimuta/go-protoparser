@@ -25,6 +25,15 @@ func TestParseType(t *testing.T) {
 			wantRecentScanned: "binary",
 		},
 		{
+			name:  "parsing a repeated normal type creates a type",
+			input: `repeated bytes binary = 2 [(validator.field) = {length_gt: 0}];`,
+			wantType: &Type{
+				Name:       "bytes",
+				IsRepeated: true,
+			},
+			wantRecentScanned: "binary",
+		},
+		{
 			name:  "parsing a normal type from other package creates a type",
 			input: `entitiespb.UserItem item = 1 [(validator.field) = {msg_exists : true}];`,
 			wantType: &Type{
