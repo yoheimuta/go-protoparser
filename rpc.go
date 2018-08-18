@@ -53,7 +53,6 @@ func parseRPC(lex *lexer) (*RPC, error) {
 			// }
 
 			rpc.Return = parseType(lex)
-			lex.next()
 
 			// consume ')' {
 			lex.next()

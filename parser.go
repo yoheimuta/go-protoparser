@@ -48,64 +48,6 @@ func parse(lex *lexer) (*ProtocolBuffer, error) {
 	}, nil
 }
 
-// "service var '{' serviceContent '}'
-func parseService(lex *lexer) (*Service, error) {
-	text := lex.text()
-	if text != "service" {
-		return nil, fmt.Errorf("[BUG] not found service, text=%s", text)
-	}
-
-	// メッセージ名を取得する {
-	lex.next()
-	name := lex.text()
-	lex.next()
-	// }
-
-	// メッセージの中身を取得する {
-	/// '{' を消費する {
-	lex.next()
-	/// }
-	rpcs, err := parseServiceContent(lex)
-	if err != nil {
-		return nil, err
-	}
-	// }
-
-	// '}' を消費する {
-	lex.next()
-	// }
-
-	return &Service{
-		Name: name,
-		RPCs: rpcs,
-	}, nil
-}
-
-// rpc
-func parseServiceContent(lex *lexer) ([]*RPC, error) {
-	var rpcs []*RPC
-	for lex.text() != "}" {
-		if lex.token != scanner.Comment {
-			return nil, fmt.Errorf("not found comment, text=%s", lex.text())
-		}
-		comments := parseComments(lex)
-
-		switch lex.text() {
-		case "rpc":
-			var rpc *RPC
-			rpc, err := parseRPC(lex)
-			if err != nil {
-				return nil, err
-			}
-			rpc.Comments = append(rpc.Comments, comments...)
-			rpcs = append(rpcs, rpc)
-		default:
-			return nil, fmt.Errorf("not found rpc, text=%s", lex.text())
-		}
-	}
-	return rpcs, nil
-}
-
 // "message" var '{' messageContent '}'
 func parseMessage(lex *lexer) (*Message, error) {
 	text := lex.text()
