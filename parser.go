@@ -318,36 +318,3 @@ func parseEnumField(lex *lexer) (*EnumField, error) {
 	// }
 	return field, nil
 }
-
-// "oneof" var '{' OneofContent '}'
-func parseOneof(lex *lexer) (*Oneof, error) {
-	text := lex.text()
-	if text != "oneof" {
-		return nil, fmt.Errorf("not found oneof, text=%s", text)
-	}
-
-	// 名前を取得する {
-	lex.next()
-	name := lex.text()
-	lex.next()
-	// }
-
-	// 中身を取得する {
-	/// '{' を消費する {
-	lex.next()
-	/// }
-	fields, _, _, _, err := parseMessageContent(lex)
-	if err != nil {
-		return nil, err
-	}
-	// }
-
-	// '}' を消費する {
-	lex.next()
-	// }
-
-	return &Oneof{
-		Name:   name,
-		Fields: fields,
-	}, nil
-}

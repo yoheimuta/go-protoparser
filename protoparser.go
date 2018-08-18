@@ -5,13 +5,6 @@ import (
 	"text/scanner"
 )
 
-// Oneof は oneof 型を表す。
-type Oneof struct {
-	Comments []string
-	Name     string
-	Fields   []*Field
-}
-
 // EnumField は Enum の値を表す。
 type EnumField struct {
 	Comments []string
