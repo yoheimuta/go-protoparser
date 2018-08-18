@@ -14,9 +14,8 @@ func TestParseOneof(t *testing.T) {
 		wantErr           bool
 	}{
 		{
-			name:      "parsing an empty",
-			wantOneof: &Oneof{},
-			wantErr:   true,
+			name:    "parsing an empty",
+			wantErr: true,
 		},
 		{
 			name: "parsing a normal oneof",
