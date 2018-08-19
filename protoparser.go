@@ -4,24 +4,14 @@ import (
 	"io"
 )
 
-// Message は独自に定義した型情報を表す。
-type Message struct {
-	Comments []string
-	Name     string
-	Fields   []*Field
-	Nests    []*Message
-	Enums    []*Enum
-	Oneofs   []*Oneof
-}
-
-// ProtocolBuffer は Protocol Buffers ファイルをパースした結果を表す。
+// ProtocolBuffer is the parsed result from a Protocol Buffer file.
 type ProtocolBuffer struct {
 	Package  string
 	Service  *Service
 	Messages []*Message
 }
 
-// Parse は Protocol Bufffers ファイルをパースする。
+// Parse parses a Protocol Buffer file.
 func Parse(input io.Reader) (*ProtocolBuffer, error) {
 	lex := newlexer(input)
 	return parse(lex)
