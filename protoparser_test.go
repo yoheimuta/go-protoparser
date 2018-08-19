@@ -33,12 +33,10 @@ func TestParse(t *testing.T) {
 							},
 							Name: "CreateUserItem",
 							Argument: &protoparser.Type{
-								Name:       "CreateUserItemRequest",
-								IsRepeated: false,
+								Name: "CreateUserItemRequest",
 							},
 							Return: &protoparser.Type{
-								Name:       "aggregatespb.UserItemAggregate",
-								IsRepeated: false,
+								Name: "aggregatespb.UserItemAggregate",
 							},
 						},
 						{
@@ -47,12 +45,10 @@ func TestParse(t *testing.T) {
 							},
 							Name: "UpdateUserItem",
 							Argument: &protoparser.Type{
-								Name:       "UpdateUserItemRequest",
-								IsRepeated: false,
+								Name: "UpdateUserItemRequest",
 							},
 							Return: &protoparser.Type{
-								Name:       "entitiespb.UserItem",
-								IsRepeated: false,
+								Name: "entitiespb.UserItem",
 							},
 						},
 					},
@@ -69,8 +65,7 @@ func TestParse(t *testing.T) {
 									"// item is an item entity. Required.",
 								},
 								Type: &protoparser.Type{
-									Name:       "entitiespb.UserItem",
-									IsRepeated: false,
+									Name: "entitiespb.UserItem",
 								},
 								Name: "item",
 							},
@@ -79,18 +74,17 @@ func TestParse(t *testing.T) {
 									"// images are item's images. Max count is 10. Optional.",
 								},
 								Type: &protoparser.Type{
-									Name:       "Image",
-									IsRepeated: true,
+									Name: "Image",
 								},
-								Name: "images",
+								HasRepeated: true,
+								Name:       "images",
 							},
 							{
 								Comments: []string{
 									"// mapping is a item's mapping information. Required.",
 								},
 								Type: &protoparser.Type{
-									Name:       "Mapping",
-									IsRepeated: false,
+									Name: "Mapping",
 								},
 								Name: "mapping",
 							},
@@ -107,8 +101,7 @@ func TestParse(t *testing.T) {
 											"// display_order is an order of position. Starts 1 at left and increment by one. Required.",
 										},
 										Type: &protoparser.Type{
-											Name:       "int64",
-											IsRepeated: false,
+											Name: "int64",
 										},
 										Name: "display_order",
 									},
@@ -117,8 +110,7 @@ func TestParse(t *testing.T) {
 											"// binary is an image binary. Required.",
 										},
 										Type: &protoparser.Type{
-											Name:       "bytes",
-											IsRepeated: false,
+											Name: "bytes",
 										},
 										Name: "binary",
 									},
@@ -138,8 +130,7 @@ func TestParse(t *testing.T) {
 											"// product is an item master information.",
 										},
 										Type: &protoparser.Type{
-											Name:       "entitiespb.UserItemMappingProduct",
-											IsRepeated: false,
+											Name: "entitiespb.UserItemMappingProduct",
 										},
 										Name: "product",
 									},
@@ -161,8 +152,7 @@ func TestParse(t *testing.T) {
 											"// content_type_id is a condition ID of an item with content.",
 										},
 										Type: &protoparser.Type{
-											Name:       "itemContentConditionpb.Type",
-											IsRepeated: false,
+											Name: "itemContentConditionpb.Type",
 										},
 										Name: "content_type_id",
 									},
@@ -171,8 +161,7 @@ func TestParse(t *testing.T) {
 											"// no_content_type_id is a condition ID of an item without content.",
 										},
 										Type: &protoparser.Type{
-											Name:       "itemNoContentConditionpb.Type",
-											IsRepeated: false,
+											Name: "itemNoContentConditionpb.Type",
 										},
 										Name: "no_content_type_id",
 									},

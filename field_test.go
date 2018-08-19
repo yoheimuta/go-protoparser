@@ -32,10 +32,10 @@ func TestParseField(t *testing.T) {
 			input: "repeated int32 samples = 4 [packed=true];",
 			wantField: &Field{
 				Type: &Type{
-					Name:       "int32",
-					IsRepeated: true,
+					Name: "int32",
 				},
-				Name: "samples",
+				Name:       "samples",
+				HasRepeated: true,
 			},
 		},
 	}

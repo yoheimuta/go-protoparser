@@ -43,12 +43,12 @@ oneof foo {
 					&Field{
 						Name: "sub_messages",
 						Type: &Type{
-							Name:       "SubMessage",
-							IsRepeated: true,
+							Name: "SubMessage",
 						},
 						Comments: []string{
 							`// sub_messages are the optional messages.`,
 						},
+						HasRepeated: true,
 					},
 				},
 			},

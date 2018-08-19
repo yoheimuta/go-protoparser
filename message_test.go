@@ -4,6 +4,8 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/yoheimuta/go-protoparser/internal/util_test"
 )
 
 func TestParseMessage(t *testing.T) {
@@ -40,9 +42,9 @@ message Outer {
 							"// inner_message is an inner.",
 						},
 						Type: &Type{
-							Name:       "inner",
-							IsRepeated: true,
+							Name: "inner",
 						},
+						HasRepeated: true,
 					},
 				},
 				Messages: []*Message{
@@ -85,7 +87,7 @@ message Outer {
 			}
 
 			if !reflect.DeepEqual(got, test.wantMessage) {
-				t.Errorf("got %v, but want %v", got, test.wantMessage)
+				t.Errorf("got %v, but want %v", util_test.PrettyFormat(got), util_test.PrettyFormat(test.wantMessage))
 			}
 			if lex.text() != test.wantRecentScanned {
 				t.Errorf("got %v, but want %v", lex.text(), test.wantRecentScanned)
