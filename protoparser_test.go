@@ -95,7 +95,7 @@ func TestParse(t *testing.T) {
 								Name: "mapping",
 							},
 						},
-						Nests: []*protoparser.Message{
+						Messages: []*protoparser.Message{
 							{
 								Comments: []string{
 									"// Image is an item's image information for create",
@@ -123,8 +123,8 @@ func TestParse(t *testing.T) {
 										Name: "binary",
 									},
 								},
-								Nests: nil,
-								Enums: nil,
+								Messages: nil,
+								Enums:    nil,
 							},
 							{
 								Comments: []string{
@@ -144,8 +144,8 @@ func TestParse(t *testing.T) {
 										Name: "product",
 									},
 								},
-								Nests: nil,
-								Enums: nil,
+								Messages: nil,
+								Enums:    nil,
 							},
 						},
 						Enums: []*protoparser.Enum{},
@@ -257,11 +257,11 @@ func TestParse(t *testing.T) {
 					}
 				}
 
-				if len(gotMessage.Nests) != len(message.Nests) {
-					t.Errorf("got %d, but want %d", len(gotMessage.Nests), len(message.Nests))
+				if len(gotMessage.Messages) != len(message.Messages) {
+					t.Errorf("got %d, but want %d", len(gotMessage.Messages), len(message.Messages))
 				}
-				for k, nest := range message.Nests {
-					gotNest := gotMessage.Nests[k]
+				for k, nest := range message.Messages {
+					gotNest := gotMessage.Messages[k]
 					if !reflect.DeepEqual(gotNest, nest) {
 						t.Errorf("got %v, but want %v", gotNest, nest)
 					}

@@ -10,12 +10,13 @@ type Message struct {
 	Comments []string
 	Name     string
 	Fields   []*Field
-	Nests    []*Message
+	Messages []*Message
 	Enums    []*Enum
 	Oneofs   []*Oneof
 }
 
 // "message" var '{' messageContent '}'
+// See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#message_definition
 func parseMessage(lex *lexer) (*Message, error) {
 	text := lex.text()
 	if text != "message" {
@@ -43,16 +44,17 @@ func parseMessage(lex *lexer) (*Message, error) {
 	// }
 
 	return &Message{
-		Name:   name,
-		Fields: fields,
-		Nests:  nests,
-		Enums:  enums,
-		Oneofs: oneofs,
+		Name:     name,
+		Fields:   fields,
+		Messages: nests,
+		Enums:    enums,
+		Oneofs:   oneofs,
 	}, nil
 }
 
-// "message"
-// "enum"
+// "message" ...
+// "enum" ...
+// "oneof" ...
 // field
 func parseMessageContent(lex *lexer) (fields []*Field, messages []*Message, enums []*Enum, oneofs []*Oneof, err error) {
 	for lex.text() != "}" {

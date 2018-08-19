@@ -45,7 +45,7 @@ message Outer {
 						},
 					},
 				},
-				Nests: []*Message{
+				Messages: []*Message{
 					{
 						Name: "Inner",
 						Fields: []*Field{
