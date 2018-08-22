@@ -77,7 +77,7 @@ func TestParse(t *testing.T) {
 									Name: "Image",
 								},
 								HasRepeated: true,
-								Name:       "images",
+								Name:        "images",
 							},
 							{
 								Comments: []string{

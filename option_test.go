@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
 )
 

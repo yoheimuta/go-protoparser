@@ -3,6 +3,7 @@ package protoparser
 import (
 	"fmt"
 	"text/scanner"
+
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
 )
 

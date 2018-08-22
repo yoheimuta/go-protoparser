@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
 )
 
@@ -35,7 +36,7 @@ func TestParseField(t *testing.T) {
 				Type: &Type{
 					Name: "int32",
 				},
-				Name:       "samples",
+				Name:        "samples",
 				HasRepeated: true,
 			},
 		},
