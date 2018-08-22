@@ -1,6 +1,9 @@
 package protoparser
 
-import "text/scanner"
+import (
+	"text/scanner"
+	"github.com/yoheimuta/go-protoparser/internal/lexer"
+)
 
 // Field is the basic element of a protocol buffer message.
 type Field struct {
@@ -12,7 +15,7 @@ type Field struct {
 
 // type name = number validator';'
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#normal_field
-func parseField(lex *Lexer) *Field {
+func parseField(lex *lexer.Lexer) *Field {
 	field := &Field{}
 
 	// check HasRepeated {
@@ -23,7 +26,7 @@ func parseField(lex *Lexer) *Field {
 	}
 	// }
 
-	for lex.Text() != ";" && lex.token != scanner.EOF {
+	for lex.Text() != ";" && lex.Token != scanner.EOF {
 		// get the type {
 		if field.Type == nil {
 			field.Type = parseType(lex)

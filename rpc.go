@@ -3,6 +3,7 @@ package protoparser
 import (
 	"fmt"
 	"text/scanner"
+	"github.com/yoheimuta/go-protoparser/internal/lexer"
 )
 
 // RPC is the basic element of a protocol buffer service.
@@ -14,7 +15,7 @@ type RPC struct {
 }
 
 // Name'('Argument')' 'returns' '('Return')' ('{''}'|';')
-func parseRPC(lex *Lexer) (*RPC, error) {
+func parseRPC(lex *lexer.Lexer) (*RPC, error) {
 	text := lex.Text()
 	if text != "rpc" {
 		return nil, fmt.Errorf("not found rpc, Text=%s", text)
@@ -25,7 +26,7 @@ func parseRPC(lex *Lexer) (*RPC, error) {
 
 	rpc := &RPC{}
 
-	for lex.Text() != "}" && lex.Text() != ";" && lex.token != scanner.EOF {
+	for lex.Text() != "}" && lex.Text() != ";" && lex.Token != scanner.EOF {
 		token := lex.Text()
 		if rpc.Name == "" {
 			rpc.Name = token

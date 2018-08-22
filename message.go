@@ -3,6 +3,7 @@ package protoparser
 import (
 	"fmt"
 	"text/scanner"
+	"github.com/yoheimuta/go-protoparser/internal/lexer"
 )
 
 // Message consists of a message name and a message body.
@@ -17,7 +18,7 @@ type Message struct {
 
 // "message" var '{' messageContent '}'
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#message_definition
-func parseMessage(lex *Lexer) (*Message, error) {
+func parseMessage(lex *lexer.Lexer) (*Message, error) {
 	text := lex.Text()
 	if text != "message" {
 		return nil, fmt.Errorf("not found message, Text=%s", text)
@@ -56,9 +57,9 @@ func parseMessage(lex *Lexer) (*Message, error) {
 // "enum" ...
 // "oneof" ...
 // field
-func parseMessageContent(lex *Lexer) (fields []*Field, messages []*Message, enums []*Enum, oneofs []*Oneof, err error) {
+func parseMessageContent(lex *lexer.Lexer) (fields []*Field, messages []*Message, enums []*Enum, oneofs []*Oneof, err error) {
 	for lex.Text() != "}" {
-		if lex.token != scanner.Comment {
+		if lex.Token != scanner.Comment {
 			return nil, nil, nil, nil, fmt.Errorf("not found comment, Text=%s", lex.Text())
 		}
 		comments := parseComments(lex)

@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"github.com/yoheimuta/go-protoparser/internal/lexer"
 )
 
 func TestParsePackage(t *testing.T) {
@@ -28,7 +29,7 @@ func TestParsePackage(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			lex := NewLexer(strings.NewReader(test.input))
+			lex := lexer.NewLexer(strings.NewReader(test.input))
 			got, err := parsePackage(lex)
 			switch {
 			case test.wantErr:

@@ -3,6 +3,7 @@ package protoparser
 import (
 	"fmt"
 	"text/scanner"
+	"github.com/yoheimuta/go-protoparser/internal/lexer"
 )
 
 // Service is one of top level definition in a protocol buffer.
@@ -13,7 +14,7 @@ type Service struct {
 }
 
 // "service var '{' serviceContent '}'
-func parseService(lex *Lexer) (*Service, error) {
+func parseService(lex *lexer.Lexer) (*Service, error) {
 	text := lex.Text()
 	if text != "service" {
 		return nil, fmt.Errorf("[BUG] not found service, Text=%s", text)
@@ -47,10 +48,10 @@ func parseService(lex *Lexer) (*Service, error) {
 }
 
 // rpc
-func parseServiceContent(lex *Lexer) ([]*RPC, error) {
+func parseServiceContent(lex *lexer.Lexer) ([]*RPC, error) {
 	var rpcs []*RPC
-	for lex.Text() != "}" && lex.token != scanner.EOF {
-		if lex.token != scanner.Comment {
+	for lex.Text() != "}" && lex.Token != scanner.EOF {
+		if lex.Token != scanner.Comment {
 			return nil, fmt.Errorf("not found comment, Text=%s", lex.Text())
 		}
 		comments := parseComments(lex)

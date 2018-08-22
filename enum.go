@@ -1,6 +1,9 @@
 package protoparser
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/yoheimuta/go-protoparser/internal/lexer"
+)
 
 // Enum consists of a name and an enum body.
 type Enum struct {
@@ -10,7 +13,7 @@ type Enum struct {
 }
 
 // "enum" var '{' EnumContent '}'
-func parseEnum(lex *Lexer) (*Enum, error) {
+func parseEnum(lex *lexer.Lexer) (*Enum, error) {
 	text := lex.Text()
 	if text != "enum" {
 		return nil, fmt.Errorf("not found enum, Text=%s", text)
@@ -43,7 +46,7 @@ func parseEnum(lex *Lexer) (*Enum, error) {
 }
 
 // EnumField...}
-func parseEnumContent(lex *Lexer) ([]*EnumField, error) {
+func parseEnumContent(lex *lexer.Lexer) ([]*EnumField, error) {
 	var fields []*EnumField
 
 	for lex.Text() != "}" {

@@ -1,6 +1,9 @@
 package protoparser
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/yoheimuta/go-protoparser/internal/lexer"
+)
 
 // Oneof consists of oneof fields and a oneof name.
 type Oneof struct {
@@ -10,7 +13,7 @@ type Oneof struct {
 }
 
 // "oneof" var '{' OneofContent '}'
-func parseOneof(lex *Lexer) (*Oneof, error) {
+func parseOneof(lex *lexer.Lexer) (*Oneof, error) {
 	text := lex.Text()
 	if text != "oneof" {
 		return nil, fmt.Errorf("not found oneof, Text=%s", text)

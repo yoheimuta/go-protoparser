@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"github.com/yoheimuta/go-protoparser/internal/lexer"
 )
 
 func TestParseComments(t *testing.T) {
@@ -38,7 +39,7 @@ func TestParseComments(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		lex := NewLexer(strings.NewReader(test.input))
+		lex := lexer.NewLexer(strings.NewReader(test.input))
 		got := parseComments(lex)
 		if !reflect.DeepEqual(got, test.wantComments) {
 			t.Errorf("[%s] got %v, but want %v", test.name, got, test.wantComments)

@@ -3,6 +3,7 @@ package protoparser
 import (
 	"io"
 	"text/scanner"
+	"github.com/yoheimuta/go-protoparser/internal/lexer"
 )
 
 // ProtocolBuffer is the parsed result from a Protocol Buffer file.
@@ -15,7 +16,7 @@ type ProtocolBuffer struct {
 
 // Parse parses a Protocol Buffer file.
 func Parse(input io.Reader) (*ProtocolBuffer, error) {
-	lex := NewLexer(input)
+	lex := lexer.NewLexer(input)
 	return parse(lex)
 }
 
@@ -24,12 +25,12 @@ func Parse(input io.Reader) (*ProtocolBuffer, error) {
 // comment\nmessage...
 // comment\nenum...
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file
-func parse(lex *Lexer) (*ProtocolBuffer, error) {
+func parse(lex *lexer.Lexer) (*ProtocolBuffer, error) {
 	var pkg string
 	service := &Service{}
 	var messages []*Message
 	var enums []*Enum
-	for lex.token != scanner.EOF {
+	for lex.Token != scanner.EOF {
 		comments := parseComments(lex)
 
 		switch lex.Text() {

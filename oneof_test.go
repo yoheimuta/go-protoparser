@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"github.com/yoheimuta/go-protoparser/internal/lexer"
 )
 
 func TestParseOneof(t *testing.T) {
@@ -58,7 +59,7 @@ oneof foo {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			lex := NewLexer(strings.NewReader(test.input))
+			lex := lexer.NewLexer(strings.NewReader(test.input))
 			got, err := parseOneof(lex)
 			switch {
 			case test.wantErr:

@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"github.com/yoheimuta/go-protoparser/internal/lexer"
 )
 
 func TestParseType(t *testing.T) {
@@ -36,7 +37,7 @@ func TestParseType(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		lex := NewLexer(strings.NewReader(test.input))
+		lex := lexer.NewLexer(strings.NewReader(test.input))
 		got := parseType(lex)
 		if !reflect.DeepEqual(got, test.wantType) {
 			t.Errorf("[%s] got %v, but want %v", test.name, got, test.wantType)

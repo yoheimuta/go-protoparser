@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"github.com/yoheimuta/go-protoparser/internal/lexer"
 )
 
 func TestParseEnum(t *testing.T) {
@@ -59,7 +60,7 @@ enum EnumAllowingAlias {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			lex := NewLexer(strings.NewReader(test.input))
+			lex := lexer.NewLexer(strings.NewReader(test.input))
 			got, err := parseEnum(lex)
 			switch {
 			case test.wantErr:

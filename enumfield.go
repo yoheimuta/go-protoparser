@@ -3,6 +3,7 @@ package protoparser
 import (
 	"fmt"
 	"text/scanner"
+	"github.com/yoheimuta/go-protoparser/internal/lexer"
 )
 
 // EnumField is the basic element of a protocol buffer enum..
@@ -12,11 +13,11 @@ type EnumField struct {
 }
 
 // comment var '=' tag';'
-func parseEnumField(lex *Lexer) (*EnumField, error) {
+func parseEnumField(lex *lexer.Lexer) (*EnumField, error) {
 	field := &EnumField{}
 
 	// get comments {
-	if lex.token != scanner.Comment {
+	if lex.Token != scanner.Comment {
 		return nil, fmt.Errorf("not found comment, Text=%s", lex.Text())
 	}
 	field.Comments = parseComments(lex)
@@ -25,7 +26,7 @@ func parseEnumField(lex *Lexer) (*EnumField, error) {
 	field.Name = lex.Text()
 
 	// consume the rest {
-	for lex.Text() != ";" && lex.token != scanner.EOF {
+	for lex.Text() != ";" && lex.Token != scanner.EOF {
 		lex.Next()
 	}
 	lex.Next()

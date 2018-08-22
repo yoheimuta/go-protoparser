@@ -1,12 +1,14 @@
 package protoparser
 
+import "github.com/yoheimuta/go-protoparser/internal/lexer"
+
 // Type is a field type.
 type Type struct {
 	// Name is a type name.
 	Name string
 }
 
-func parseType(lex *Lexer) *Type {
+func parseType(lex *lexer.Lexer) *Type {
 	s := lex.Text()
 	lex.Next()
 

@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"github.com/yoheimuta/go-protoparser/internal/lexer"
 )
 
 func TestParseEnumField(t *testing.T) {
@@ -49,7 +50,7 @@ RUNNING = 2 [(custom_option) = "hello world"];
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			lex := NewLexer(strings.NewReader(test.input))
+			lex := lexer.NewLexer(strings.NewReader(test.input))
 			got, err := parseEnumField(lex)
 			switch {
 			case test.wantErr:

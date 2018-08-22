@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/yoheimuta/go-protoparser/internal/util_test"
+	"github.com/yoheimuta/go-protoparser/internal/lexer"
 )
 
 func TestParseMessage(t *testing.T) {
@@ -73,7 +74,7 @@ message Outer {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			lex := NewLexer(strings.NewReader(test.input))
+			lex := lexer.NewLexer(strings.NewReader(test.input))
 			got, err := parseMessage(lex)
 			switch {
 			case test.wantErr:

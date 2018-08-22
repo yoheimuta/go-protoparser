@@ -1,4 +1,4 @@
-package protoparser
+package lexer
 
 import (
 	"io"
@@ -10,24 +10,25 @@ import (
 
 // Lexer is a lexer.
 type Lexer struct {
-	scan  scanner.Scanner
-	token rune
+	// Token is the lexical element.
+	Token rune
 
+	scan  scanner.Scanner
 	debug bool
 }
 
-// AOption is an option for NewLexer.
-type AOption func(*Lexer)
+// Option is an option for lexer.NewLexer.
+type Option func(*Lexer)
 
 // WithDebug is an option to enable the debug mode.
-func WithDebug(debug bool) AOption {
+func WithDebug(debug bool) Option {
 	return func(l *Lexer) {
 		l.debug = debug
 	}
 }
 
 // NewLexer creates a new lexer.
-func NewLexer(input io.Reader, opts ...AOption) *Lexer {
+func NewLexer(input io.Reader, opts ...Option) *Lexer {
 	lex := new(Lexer)
 	for _, opt := range opts {
 		opt(lex)
@@ -41,7 +42,7 @@ func NewLexer(input io.Reader, opts ...AOption) *Lexer {
 
 // Next scans the internal buffer.
 func (lex *Lexer) Next() {
-	lex.token = lex.scan.Scan()
+	lex.Token = lex.scan.Scan()
 
 	if lex.debug {
 		_, file, line, ok := runtime.Caller(1)
@@ -57,7 +58,7 @@ func (lex *Lexer) Next() {
 	}
 }
 
-// Text returns the current token text.
+// Text returns the current Token text.
 func (lex *Lexer) Text() string {
 	return lex.scan.TokenText()
 }
