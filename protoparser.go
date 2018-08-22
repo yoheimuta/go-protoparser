@@ -15,7 +15,7 @@ type ProtocolBuffer struct {
 
 // Parse parses a Protocol Buffer file.
 func Parse(input io.Reader) (*ProtocolBuffer, error) {
-	lex := newlexer(input)
+	lex := NewLexer(input)
 	return parse(lex)
 }
 
@@ -24,7 +24,7 @@ func Parse(input io.Reader) (*ProtocolBuffer, error) {
 // comment\nmessage...
 // comment\nenum...
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file
-func parse(lex *lexer) (*ProtocolBuffer, error) {
+func parse(lex *Lexer) (*ProtocolBuffer, error) {
 	var pkg string
 	service := &Service{}
 	var messages []*Message
@@ -32,7 +32,7 @@ func parse(lex *lexer) (*ProtocolBuffer, error) {
 	for lex.token != scanner.EOF {
 		comments := parseComments(lex)
 
-		switch lex.text() {
+		switch lex.Text() {
 		case "package":
 			p, err := parsePackage(lex)
 			if err != nil {
@@ -61,7 +61,7 @@ func parse(lex *lexer) (*ProtocolBuffer, error) {
 			enum.Comments = append(enum.Comments, comments...)
 			enums = append(enums, enum)
 		default:
-			lex.next()
+			lex.Next()
 			continue
 		}
 	}

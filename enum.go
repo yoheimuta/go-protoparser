@@ -10,21 +10,21 @@ type Enum struct {
 }
 
 // "enum" var '{' EnumContent '}'
-func parseEnum(lex *lexer) (*Enum, error) {
-	text := lex.text()
+func parseEnum(lex *Lexer) (*Enum, error) {
+	text := lex.Text()
 	if text != "enum" {
-		return nil, fmt.Errorf("not found enum, text=%s", text)
+		return nil, fmt.Errorf("not found enum, Text=%s", text)
 	}
 
 	// get the name {
-	lex.next()
-	name := lex.text()
-	lex.next()
+	lex.Next()
+	name := lex.Text()
+	lex.Next()
 	// }
 
 	// get the content {
 	/// consume '{' {
-	lex.next()
+	lex.Next()
 	/// }
 	fields, err := parseEnumContent(lex)
 	if err != nil {
@@ -33,7 +33,7 @@ func parseEnum(lex *lexer) (*Enum, error) {
 	// }
 
 	// consume '}' {
-	lex.next()
+	lex.Next()
 	// }
 
 	return &Enum{
@@ -43,10 +43,10 @@ func parseEnum(lex *lexer) (*Enum, error) {
 }
 
 // EnumField...}
-func parseEnumContent(lex *lexer) ([]*EnumField, error) {
+func parseEnumContent(lex *Lexer) ([]*EnumField, error) {
 	var fields []*EnumField
 
-	for lex.text() != "}" {
+	for lex.Text() != "}" {
 		field, err := parseEnumField(lex)
 		if err != nil {
 			return nil, err

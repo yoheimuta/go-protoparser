@@ -14,59 +14,59 @@ type RPC struct {
 }
 
 // Name'('Argument')' 'returns' '('Return')' ('{''}'|';')
-func parseRPC(lex *lexer) (*RPC, error) {
-	text := lex.text()
+func parseRPC(lex *Lexer) (*RPC, error) {
+	text := lex.Text()
 	if text != "rpc" {
-		return nil, fmt.Errorf("not found rpc, text=%s", text)
+		return nil, fmt.Errorf("not found rpc, Text=%s", text)
 	}
 	// consume 'rpc' {
-	lex.next()
+	lex.Next()
 	// }
 
 	rpc := &RPC{}
 
-	for lex.text() != "}" && lex.text() != ";" && lex.token != scanner.EOF {
-		token := lex.text()
+	for lex.Text() != "}" && lex.Text() != ";" && lex.token != scanner.EOF {
+		token := lex.Text()
 		if rpc.Name == "" {
 			rpc.Name = token
-			lex.next()
+			lex.Next()
 			continue
 		}
 		if rpc.Argument == nil {
 			// consume '(' {
-			lex.next()
+			lex.Next()
 			// }
 
 			rpc.Argument = parseType(lex)
 
 			// consume ')' {
-			lex.next()
+			lex.Next()
 			// }
 			continue
 		}
 		if rpc.Return == nil {
 			// consume 'returns' {
-			lex.next()
+			lex.Next()
 			// }
 			// consume '(' {
-			lex.next()
+			lex.Next()
 			// }
 
 			rpc.Return = parseType(lex)
 
 			// consume ')' {
-			lex.next()
+			lex.Next()
 			// }
 			continue
 		}
 
 		if token == "{" {
-			lex.next()
+			lex.Next()
 		}
 	}
 
 	// consume '}' or ';' {
-	lex.next()
+	lex.Next()
 	// }
 
 	return rpc, nil

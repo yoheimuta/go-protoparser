@@ -17,21 +17,21 @@ type Message struct {
 
 // "message" var '{' messageContent '}'
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#message_definition
-func parseMessage(lex *lexer) (*Message, error) {
-	text := lex.text()
+func parseMessage(lex *Lexer) (*Message, error) {
+	text := lex.Text()
 	if text != "message" {
-		return nil, fmt.Errorf("not found message, text=%s", text)
+		return nil, fmt.Errorf("not found message, Text=%s", text)
 	}
 
 	// get name {
-	lex.next()
-	name := lex.text()
-	lex.next()
+	lex.Next()
+	name := lex.Text()
+	lex.Next()
 	// }
 
 	// get content {
 	/// consume '{' {
-	lex.next()
+	lex.Next()
 	/// }
 	fields, nests, enums, oneofs, err := parseMessageContent(lex)
 	if err != nil {
@@ -40,7 +40,7 @@ func parseMessage(lex *lexer) (*Message, error) {
 	// }
 
 	// consume '}' {
-	lex.next()
+	lex.Next()
 	// }
 
 	return &Message{
@@ -56,14 +56,14 @@ func parseMessage(lex *lexer) (*Message, error) {
 // "enum" ...
 // "oneof" ...
 // field
-func parseMessageContent(lex *lexer) (fields []*Field, messages []*Message, enums []*Enum, oneofs []*Oneof, err error) {
-	for lex.text() != "}" {
+func parseMessageContent(lex *Lexer) (fields []*Field, messages []*Message, enums []*Enum, oneofs []*Oneof, err error) {
+	for lex.Text() != "}" {
 		if lex.token != scanner.Comment {
-			return nil, nil, nil, nil, fmt.Errorf("not found comment, text=%s", lex.text())
+			return nil, nil, nil, nil, fmt.Errorf("not found comment, Text=%s", lex.Text())
 		}
 		comments := parseComments(lex)
 
-		switch lex.text() {
+		switch lex.Text() {
 		case "message":
 			message, parseErr := parseMessage(lex)
 			if parseErr != nil {

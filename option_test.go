@@ -21,9 +21,9 @@ func TestParseOption(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "parsing a normal option",
+			name: "parsing a normal Option",
 			input: `
-option java_package = "com.example.foo";
+Option java_package = "com.example.foo";
             `,
 			wantOption: &Option{
 				Name:     "java_package",
@@ -35,7 +35,7 @@ option java_package = "com.example.foo";
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			lex := newlexer(strings.NewReader(test.input))
+			lex := NewLexer(strings.NewReader(test.input))
 			got, err := parseOption(lex)
 			switch {
 			case test.wantErr:
@@ -51,8 +51,8 @@ option java_package = "com.example.foo";
 			if !reflect.DeepEqual(got, test.wantOption) {
 				t.Errorf("got %v, but want %v", got, test.wantOption)
 			}
-			if lex.text() != test.wantRecentScanned {
-				t.Errorf("got %v, but want %v", lex.text(), test.wantRecentScanned)
+			if lex.Text() != test.wantRecentScanned {
+				t.Errorf("got %v, but want %v", lex.Text(), test.wantRecentScanned)
 			}
 		})
 	}

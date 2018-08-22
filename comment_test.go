@@ -38,13 +38,13 @@ func TestParseComments(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		lex := newlexer(strings.NewReader(test.input))
+		lex := NewLexer(strings.NewReader(test.input))
 		got := parseComments(lex)
 		if !reflect.DeepEqual(got, test.wantComments) {
 			t.Errorf("[%s] got %v, but want %v", test.name, got, test.wantComments)
 		}
-		if lex.text() != test.wantRecentScanned {
-			t.Errorf("[%s] got %v, but want %v", test.name, lex.text(), test.wantRecentScanned)
+		if lex.Text() != test.wantRecentScanned {
+			t.Errorf("[%s] got %v, but want %v", test.name, lex.Text(), test.wantRecentScanned)
 		}
 	}
 }

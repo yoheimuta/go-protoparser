@@ -12,18 +12,18 @@ type Field struct {
 
 // type name = number validator';'
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#normal_field
-func parseField(lex *lexer) *Field {
+func parseField(lex *Lexer) *Field {
 	field := &Field{}
 
 	// check HasRepeated {
-	text := lex.text()
+	text := lex.Text()
 	if text == "repeated" {
 		field.HasRepeated = true
-		lex.next()
+		lex.Next()
 	}
 	// }
 
-	for lex.text() != ";" && lex.token != scanner.EOF {
+	for lex.Text() != ";" && lex.token != scanner.EOF {
 		// get the type {
 		if field.Type == nil {
 			field.Type = parseType(lex)
@@ -32,22 +32,22 @@ func parseField(lex *lexer) *Field {
 		// }
 
 		// get the name {
-		token := lex.text()
+		token := lex.Text()
 		if field.Name == "" {
 			field.Name = token
 
-			lex.next()
+			lex.Next()
 			continue
 		}
 		// }
 
 		// consume {
-		lex.next()
+		lex.Next()
 		// }
 	}
 
 	// consume ';' {
-	lex.next()
+	lex.Next()
 	// }
 
 	return field

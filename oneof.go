@@ -10,21 +10,21 @@ type Oneof struct {
 }
 
 // "oneof" var '{' OneofContent '}'
-func parseOneof(lex *lexer) (*Oneof, error) {
-	text := lex.text()
+func parseOneof(lex *Lexer) (*Oneof, error) {
+	text := lex.Text()
 	if text != "oneof" {
-		return nil, fmt.Errorf("not found oneof, text=%s", text)
+		return nil, fmt.Errorf("not found oneof, Text=%s", text)
 	}
 
 	// get the name {
-	lex.next()
-	name := lex.text()
-	lex.next()
+	lex.Next()
+	name := lex.Text()
+	lex.Next()
 	// }
 
 	// get the content {
 	/// consume '{' {
-	lex.next()
+	lex.Next()
 	/// }
 	fields, _, _, _, err := parseMessageContent(lex)
 	if err != nil {
@@ -32,7 +32,7 @@ func parseOneof(lex *lexer) (*Oneof, error) {
 	}
 
 	/// consume '}' {
-	lex.next()
+	lex.Next()
 	/// }
 	// }
 

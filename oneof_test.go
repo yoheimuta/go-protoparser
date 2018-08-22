@@ -58,7 +58,7 @@ oneof foo {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			lex := newlexer(strings.NewReader(test.input))
+			lex := NewLexer(strings.NewReader(test.input))
 			got, err := parseOneof(lex)
 			switch {
 			case test.wantErr:
@@ -74,8 +74,8 @@ oneof foo {
 			if !reflect.DeepEqual(got, test.wantOneof) {
 				t.Errorf("got %v, but want %v", got, test.wantOneof)
 			}
-			if lex.text() != test.wantRecentScanned {
-				t.Errorf("got %v, but want %v", lex.text(), test.wantRecentScanned)
+			if lex.Text() != test.wantRecentScanned {
+				t.Errorf("got %v, but want %v", lex.Text(), test.wantRecentScanned)
 			}
 		})
 	}

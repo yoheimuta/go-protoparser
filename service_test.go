@@ -61,7 +61,7 @@ service SearchService {
 			},
 		},
 		{
-			name: "parse normal service with the emptyStatement option",
+			name: "parse normal service with the emptyStatement Option",
 			input: `
 service SearchService {
   // Search searches items.
@@ -107,7 +107,7 @@ service SearchService {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			lex := newlexer(strings.NewReader(test.input))
+			lex := NewLexer(strings.NewReader(test.input))
 			got, err := parseService(lex)
 			switch {
 			case test.wantErr:
@@ -123,8 +123,8 @@ service SearchService {
 			if !reflect.DeepEqual(got, test.wantService) {
 				t.Errorf("got %v, but want %v", got, test.wantService)
 			}
-			if lex.text() != test.wantRecentScanned {
-				t.Errorf("got %v, but want %v", lex.text(), test.wantRecentScanned)
+			if lex.Text() != test.wantRecentScanned {
+				t.Errorf("got %v, but want %v", lex.Text(), test.wantRecentScanned)
 			}
 		})
 	}

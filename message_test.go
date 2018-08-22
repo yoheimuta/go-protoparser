@@ -73,7 +73,7 @@ message Outer {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			lex := newlexer(strings.NewReader(test.input))
+			lex := NewLexer(strings.NewReader(test.input))
 			got, err := parseMessage(lex)
 			switch {
 			case test.wantErr:
@@ -89,8 +89,8 @@ message Outer {
 			if !reflect.DeepEqual(got, test.wantMessage) {
 				t.Errorf("got %v, but want %v", util_test.PrettyFormat(got), util_test.PrettyFormat(test.wantMessage))
 			}
-			if lex.text() != test.wantRecentScanned {
-				t.Errorf("got %v, but want %v", lex.text(), test.wantRecentScanned)
+			if lex.Text() != test.wantRecentScanned {
+				t.Errorf("got %v, but want %v", lex.Text(), test.wantRecentScanned)
 			}
 		})
 	}

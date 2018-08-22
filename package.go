@@ -6,27 +6,27 @@ import (
 )
 
 // 'package' var';'
-func parsePackage(lex *lexer) (string, error) {
-	text := lex.text()
+func parsePackage(lex *Lexer) (string, error) {
+	text := lex.Text()
 	if text != "package" {
-		return "", fmt.Errorf("[BUG] not found package, text=%s", text)
+		return "", fmt.Errorf("[BUG] not found package, Text=%s", text)
 	}
 
 	// consume 'package' {
-	lex.next()
+	lex.Next()
 	// }
 
 	var packageName string
-	for lex.text() != ";" && lex.token != scanner.EOF {
-		packageName += lex.text()
+	for lex.Text() != ";" && lex.token != scanner.EOF {
+		packageName += lex.Text()
 
 		// consume {
-		lex.next()
+		lex.Next()
 		// }
 	}
 
 	// consume ';' {
-	lex.next()
+	lex.Next()
 	// }
 	return packageName, nil
 }

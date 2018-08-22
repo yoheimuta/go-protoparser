@@ -12,23 +12,23 @@ type EnumField struct {
 }
 
 // comment var '=' tag';'
-func parseEnumField(lex *lexer) (*EnumField, error) {
+func parseEnumField(lex *Lexer) (*EnumField, error) {
 	field := &EnumField{}
 
 	// get comments {
 	if lex.token != scanner.Comment {
-		return nil, fmt.Errorf("not found comment, text=%s", lex.text())
+		return nil, fmt.Errorf("not found comment, Text=%s", lex.Text())
 	}
 	field.Comments = parseComments(lex)
 	// }
 
-	field.Name = lex.text()
+	field.Name = lex.Text()
 
 	// consume the rest {
-	for lex.text() != ";" && lex.token != scanner.EOF {
-		lex.next()
+	for lex.Text() != ";" && lex.token != scanner.EOF {
+		lex.Next()
 	}
-	lex.next()
+	lex.Next()
 	// }
 	return field, nil
 }

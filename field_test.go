@@ -28,7 +28,7 @@ func TestParseField(t *testing.T) {
 			},
 		},
 		{
-			name:  "parsing a normal field with repreated and a field option",
+			name:  "parsing a normal field with repreated and a field Option",
 			input: "repeated int32 samples = 4 [packed=true];",
 			wantField: &Field{
 				Type: &Type{
@@ -43,14 +43,14 @@ func TestParseField(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			lex := newlexer(strings.NewReader(test.input))
+			lex := NewLexer(strings.NewReader(test.input))
 			got := parseField(lex)
 
 			if !reflect.DeepEqual(got, test.wantField) {
 				t.Errorf("got %v, but want %v", got, test.wantField)
 			}
-			if lex.text() != test.wantRecentScanned {
-				t.Errorf("got %v, but want %v", lex.text(), test.wantRecentScanned)
+			if lex.Text() != test.wantRecentScanned {
+				t.Errorf("got %v, but want %v", lex.Text(), test.wantRecentScanned)
 			}
 		})
 	}

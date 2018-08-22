@@ -19,7 +19,7 @@ func TestParseEnumField(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "parse a normal without an option",
+			name: "parse a normal without an Option",
 			input: `
 // UNKNOWN is the unknown state.
 UNKNOWN = 0;
@@ -49,7 +49,7 @@ RUNNING = 2 [(custom_option) = "hello world"];
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			lex := newlexer(strings.NewReader(test.input))
+			lex := NewLexer(strings.NewReader(test.input))
 			got, err := parseEnumField(lex)
 			switch {
 			case test.wantErr:
@@ -65,8 +65,8 @@ RUNNING = 2 [(custom_option) = "hello world"];
 			if !reflect.DeepEqual(got, test.wantEnumField) {
 				t.Errorf("got %v, but want %v", got, test.wantEnumField)
 			}
-			if lex.text() != test.wantRecentScanned {
-				t.Errorf("got %v, but want %v", lex.text(), test.wantRecentScanned)
+			if lex.Text() != test.wantRecentScanned {
+				t.Errorf("got %v, but want %v", lex.Text(), test.wantRecentScanned)
 			}
 		})
 	}

@@ -6,15 +6,15 @@ type Type struct {
 	Name string
 }
 
-func parseType(lex *lexer) *Type {
-	s := lex.text()
-	lex.next()
+func parseType(lex *Lexer) *Type {
+	s := lex.Text()
+	lex.Next()
 
-	for lex.text() == "." {
-		s += lex.text()
-		lex.next()
-		s += lex.text()
-		lex.next()
+	for lex.Text() == "." {
+		s += lex.Text()
+		lex.Next()
+		s += lex.Text()
+		lex.Next()
 	}
 	return &Type{
 		Name: s,

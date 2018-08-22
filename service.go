@@ -13,22 +13,22 @@ type Service struct {
 }
 
 // "service var '{' serviceContent '}'
-func parseService(lex *lexer) (*Service, error) {
-	text := lex.text()
+func parseService(lex *Lexer) (*Service, error) {
+	text := lex.Text()
 	if text != "service" {
-		return nil, fmt.Errorf("[BUG] not found service, text=%s", text)
+		return nil, fmt.Errorf("[BUG] not found service, Text=%s", text)
 	}
 	// consume 'service'
-	lex.next()
+	lex.Next()
 
 	// get the service name {
-	name := lex.text()
-	lex.next()
+	name := lex.Text()
+	lex.Next()
 	// }
 
 	// get the rpcs {
 	/// consume '{' {
-	lex.next()
+	lex.Next()
 	/// }
 	rpcs, err := parseServiceContent(lex)
 	if err != nil {
@@ -37,7 +37,7 @@ func parseService(lex *lexer) (*Service, error) {
 	// }
 
 	// consume '}' {
-	lex.next()
+	lex.Next()
 	// }
 
 	return &Service{
@@ -47,15 +47,15 @@ func parseService(lex *lexer) (*Service, error) {
 }
 
 // rpc
-func parseServiceContent(lex *lexer) ([]*RPC, error) {
+func parseServiceContent(lex *Lexer) ([]*RPC, error) {
 	var rpcs []*RPC
-	for lex.text() != "}" && lex.token != scanner.EOF {
+	for lex.Text() != "}" && lex.token != scanner.EOF {
 		if lex.token != scanner.Comment {
-			return nil, fmt.Errorf("not found comment, text=%s", lex.text())
+			return nil, fmt.Errorf("not found comment, Text=%s", lex.Text())
 		}
 		comments := parseComments(lex)
 
-		switch lex.text() {
+		switch lex.Text() {
 		case "rpc":
 			var rpc *RPC
 			rpc, err := parseRPC(lex)
@@ -65,7 +65,7 @@ func parseServiceContent(lex *lexer) ([]*RPC, error) {
 			rpc.Comments = append(rpc.Comments, comments...)
 			rpcs = append(rpcs, rpc)
 		default:
-			return nil, fmt.Errorf("not found rpc, text=%s", lex.text())
+			return nil, fmt.Errorf("not found rpc, Text=%s", lex.Text())
 		}
 	}
 	return rpcs, nil

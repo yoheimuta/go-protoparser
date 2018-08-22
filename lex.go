@@ -8,34 +8,39 @@ import (
 	"text/scanner"
 )
 
-type lexer struct {
+// Lexer is a lexer.
+type Lexer struct {
 	scan  scanner.Scanner
 	token rune
 
 	debug bool
 }
 
-type option func(*lexer)
+// AOption is an option for NewLexer.
+type AOption func(*Lexer)
 
-func withDebug(debug bool) option {
-	return func(l *lexer) {
+// WithDebug is an option to enable the debug mode.
+func WithDebug(debug bool) AOption {
+	return func(l *Lexer) {
 		l.debug = debug
 	}
 }
 
-func newlexer(input io.Reader, opts ...option) *lexer {
-	lex := new(lexer)
+// NewLexer creates a new lexer.
+func NewLexer(input io.Reader, opts ...AOption) *Lexer {
+	lex := new(Lexer)
 	for _, opt := range opts {
 		opt(lex)
 	}
 
 	lex.scan.Init(input)
 	lex.scan.Mode = scanner.ScanIdents | scanner.ScanInts | scanner.ScanFloats | scanner.ScanComments
-	lex.next()
+	lex.Next()
 	return lex
 }
 
-func (lex *lexer) next() {
+// Next scans the internal buffer.
+func (lex *Lexer) Next() {
 	lex.token = lex.scan.Scan()
 
 	if lex.debug {
@@ -43,7 +48,7 @@ func (lex *lexer) next() {
 		if ok {
 			log.Printf(
 				"[DEBUG] Token : [%s], position [%v] called from %s:%d\n",
-				lex.text(),
+				lex.Text(),
 				lex.scan.Pos(),
 				filepath.Base(file),
 				line,
@@ -52,6 +57,7 @@ func (lex *lexer) next() {
 	}
 }
 
-func (lex *lexer) text() string {
+// Text returns the current token text.
+func (lex *Lexer) Text() string {
 	return lex.scan.TokenText()
 }
