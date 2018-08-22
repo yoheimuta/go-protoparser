@@ -33,7 +33,7 @@ oneof foo {
 			wantOneof: &Oneof{
 				Name: "foo",
 				Fields: []*Field{
-					&Field{
+					{
 						Name: "name",
 						Type: &Type{
 							Name: "string",
@@ -42,7 +42,7 @@ oneof foo {
 							`// name is the foo's name.`,
 						},
 					},
-					&Field{
+					{
 						Name: "sub_messages",
 						Type: &Type{
 							Name: "SubMessage",
