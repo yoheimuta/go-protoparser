@@ -11,6 +11,7 @@ type Field struct {
 }
 
 // type name = number validator';'
+// See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#normal_field
 func parseField(lex *lexer) *Field {
 	field := &Field{}
 
