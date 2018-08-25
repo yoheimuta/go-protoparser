@@ -58,8 +58,21 @@ const (
 
 func asMiscToken(ch rune) Token {
 	m := map[rune]Token{
-		',': TCOMMA,
-		'.': TDOT,
+		';':  TSEMICOLON,
+		':':  TCOLON,
+		'=':  TEQUALS,
+		'"':  TQUOTE,
+		'\'': TQUOTE,
+		'(':  TLEFTPAREN,
+		')':  TRIGHTPAREN,
+		'{':  TLEFTCURLY,
+		'}':  TRIGHTCURLY,
+		'[':  TLEFTSQUARE,
+		']':  TRIGHTSQUARE,
+		'<':  TLESS,
+		'>':  TGREATER,
+		',':  TCOMMA,
+		'.':  TDOT,
 	}
 	if t, ok := m[ch]; ok {
 		return t
@@ -69,8 +82,22 @@ func asMiscToken(ch rune) Token {
 
 func asKeywordToken(st string) Token {
 	m := map[string]Token{
-		"service": TSERVICE,
-		"rpc":     TRPC,
+		"syntax":   TSYNTAX,
+		"service":  TSERVICE,
+		"rpc":      TRPC,
+		"returns":  TRETURNS,
+		"message":  TMESSAGE,
+		"import":   TIMPORT,
+		"package":  TPACKAGE,
+		"option":   TOPTION,
+		"repeated": TREPEATED,
+		"weak":     TWEAK,
+		"public":   TPUBLIC,
+		"oneof":    TONEOF,
+		"map":      TMAP,
+		"reserved": TRESERVED,
+		"enum":     TENUM,
+		"stream":   TSTREAM,
 	}
 
 	if t, ok := m[st]; ok {
