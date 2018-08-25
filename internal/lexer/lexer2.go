@@ -4,6 +4,9 @@ import (
 	"io"
 	"log"
 
+	"path/filepath"
+	"runtime"
+
 	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 )
 
@@ -51,6 +54,21 @@ func NewLexer2(input io.Reader, opts ...Option2) *Lexer2 {
 
 // Next scans the read buffer.
 func (lex *Lexer2) Next() {
+	defer func() {
+		if lex.debug {
+			_, file, line, ok := runtime.Caller(2)
+			if ok {
+				log.Printf(
+					"[DEBUG] Text=[%s], Token=[%v] called from %s:%d\n",
+					lex.Text,
+					lex.Token,
+					filepath.Base(file),
+					line,
+				)
+			}
+		}
+	}()
+
 	if lex.ignoreNext {
 		lex.ignoreNext = false
 		return
@@ -72,4 +90,9 @@ func (lex *Lexer2) IsEOF() bool {
 // LatestErr returns the latest non-EOF error that was encountered by the Lexer2.Next().
 func (lex *Lexer2) LatestErr() error {
 	return lex.scanErr
+}
+
+// SetIgnoreNext sets true to ignoreNext.
+func (lex *Lexer2) SetIgnoreNext() {
+	lex.ignoreNext = true
 }
