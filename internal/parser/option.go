@@ -14,8 +14,8 @@ type Option struct {
 // option = "option" optionName  "=" constant ";"
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#option
 func (p *Parser) ParseOption() (*Option, error) {
-	p.lex.Next()
-	if p.lex.Text != "option" {
+	p.lex.NextKeyword()
+	if p.lex.Token != scanner.TOPTION {
 		return nil, p.unexpected("option")
 	}
 

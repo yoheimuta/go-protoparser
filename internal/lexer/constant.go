@@ -5,7 +5,7 @@ import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 // ReadConstant reads a constant.
 // constant = fullIdent | ( [ "-" | "+" ] intLit ) | ( [ "-" | "+" ] floatLit ) | strLit | boolLit
 func (lex *Lexer2) ReadConstant() (string, error) {
-	lex.scan.Mode = scanner.ScanLit
+	lex.scanner.Mode = scanner.ScanLit
 	lex.Next()
 
 	cons := lex.Text

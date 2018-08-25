@@ -5,7 +5,7 @@ import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 // ReadFullIdent reads a fullIdent.
 // fullIdent = ident { "." ident }
 func (lex *Lexer2) ReadFullIdent() (string, error) {
-	lex.scan.Mode = scanner.ScanIdent
+	lex.scanner.Mode = scanner.ScanIdent
 	lex.Next()
 
 	if lex.Token != scanner.TIDENT {

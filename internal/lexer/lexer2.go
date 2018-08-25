@@ -22,7 +22,7 @@ type Lexer2 struct {
 	// function is set, the error is reported to os.Stderr.
 	Error func(lexer *Lexer2, err error)
 
-	scan       *scanner.Scanner
+	scanner    *scanner.Scanner
 	scanErr    error
 	ignoreNext bool
 	debug      bool
@@ -48,7 +48,7 @@ func NewLexer2(input io.Reader, opts ...Option2) *Lexer2 {
 	lex.Error = func(_ *Lexer2, err error) {
 		log.Printf(`Lexer encountered the error "%v"`, err)
 	}
-	lex.scan = scanner.NewScanner(input)
+	lex.scanner = scanner.NewScanner(input)
 	return lex
 }
 
@@ -75,11 +75,22 @@ func (lex *Lexer2) Next() {
 	}
 
 	var err error
-	lex.Token, lex.Text, err = lex.scan.Scan()
+	lex.Token, lex.Text, err = lex.scanner.Scan()
 	if err != nil {
 		lex.scanErr = err
 		lex.Error(lex, err)
 	}
+}
+
+// NextKeyword scans the read buffer with ScanKeyword mode.
+func (lex *Lexer2) NextKeyword() {
+	mode := lex.scanner.Mode
+	defer func() {
+		lex.scanner.Mode = mode
+	}()
+
+	lex.scanner.Mode = scanner.ScanKeyword
+	lex.Next()
 }
 
 // IsEOF checks whether read buffer is empty.
