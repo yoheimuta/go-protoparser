@@ -10,7 +10,7 @@ import (
 
 // Lexer is a lexer.
 type Lexer struct {
-	// Token is the lexical element.
+	// Token is the text/scanner token.
 	Token rune
 
 	scan  scanner.Scanner
