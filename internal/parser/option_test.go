@@ -72,6 +72,10 @@ func TestParser_ParseOption(t *testing.T) {
 			if !reflect.DeepEqual(got, test.wantOption) {
 				t.Errorf("got %v, but want %v", got, test.wantOption)
 			}
+
+			if !parser.IsEOF() {
+				t.Errorf("got not eof, but want eof")
+			}
 		})
 	}
 

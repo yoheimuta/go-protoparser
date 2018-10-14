@@ -45,6 +45,10 @@ func TestParser_ParseSyntax(t *testing.T) {
 			if got != test.wantSyntax {
 				t.Errorf("got %v, but want %v", got, test.wantSyntax)
 			}
+
+			if !parser.IsEOF() {
+				t.Errorf("got not eof, but want eof")
+			}
 		})
 	}
 
