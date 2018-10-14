@@ -17,6 +17,6 @@ func NewParser(lex *lexer.Lexer2) *Parser {
 // IsEOF checks whether the lex's read buffer is empty.
 func (p *Parser) IsEOF() bool {
 	p.lex.Next()
-	defer p.lex.SetIgnoreNext()
+	defer p.lex.UnNext()
 	return p.lex.IsEOF()
 }

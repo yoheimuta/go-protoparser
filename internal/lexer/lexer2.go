@@ -22,10 +22,9 @@ type Lexer2 struct {
 	// function is set, the error is reported to os.Stderr.
 	Error func(lexer *Lexer2, err error)
 
-	scanner    *scanner.Scanner
-	scanErr    error
-	ignoreNext bool
-	debug      bool
+	scanner *scanner.Scanner
+	scanErr error
+	debug   bool
 }
 
 // Option2 is an option for lexer.NewLexer2.
@@ -68,11 +67,6 @@ func (lex *Lexer2) Next() {
 			}
 		}
 	}()
-
-	if lex.ignoreNext {
-		lex.ignoreNext = false
-		return
-	}
 
 	var err error
 	lex.Token, lex.Text, err = lex.scanner.Scan()
@@ -117,7 +111,8 @@ func (lex *Lexer2) LatestErr() error {
 	return lex.scanErr
 }
 
-// SetIgnoreNext sets true to ignoreNext.
-func (lex *Lexer2) SetIgnoreNext() {
-	lex.ignoreNext = true
+// UnNext put the latest text back to the read buffer.
+func (lex *Lexer2) UnNext() {
+	lex.scanner.UnScan(lex.Text)
+	lex.Token = scanner.TILLEGAL
 }

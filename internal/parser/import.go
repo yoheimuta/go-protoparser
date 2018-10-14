@@ -36,7 +36,7 @@ func (p *Parser) ParseImport() (*Import, error) {
 		modifier = ImportModifierWeak
 	case scanner.TSTRLIT:
 		modifier = ImportModifierNone
-		p.lex.SetIgnoreNext()
+		p.lex.UnNext()
 	}
 
 	p.lex.NextStrLit()

@@ -16,7 +16,7 @@ func (lex *Lexer2) ReadConstant() (string, error) {
 	case lex.Token == scanner.TBOOLLIT:
 		return cons, nil
 	case lex.Token == scanner.TIDENT:
-		lex.SetIgnoreNext()
+		lex.UnNext()
 		fullIdent, err := lex.ReadFullIdent()
 		if err != nil {
 			return "", err

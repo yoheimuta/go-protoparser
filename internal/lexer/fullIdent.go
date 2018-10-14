@@ -16,7 +16,7 @@ func (lex *Lexer2) ReadFullIdent() (string, error) {
 
 	for !lex.IsEOF() {
 		if lex.Token != scanner.TDOT {
-			lex.SetIgnoreNext()
+			lex.UnNext()
 			break
 		}
 		lex.Next()

@@ -10,7 +10,8 @@ var eof = rune(0)
 
 // Scanner represents a lexical scanner.
 type Scanner struct {
-	r *bufio.Reader
+	r              *bufio.Reader
+	lastReadBuffer []rune
 
 	// The Mode field controls which tokens are recognized.
 	Mode Mode
@@ -24,6 +25,11 @@ func NewScanner(r io.Reader) *Scanner {
 }
 
 func (s *Scanner) read() rune {
+	if 0 < len(s.lastReadBuffer) {
+		var ch rune
+		ch, s.lastReadBuffer = s.lastReadBuffer[len(s.lastReadBuffer)-1], s.lastReadBuffer[:len(s.lastReadBuffer)-1]
+		return ch
+	}
 	ch, _, err := s.r.ReadRune()
 	if err != nil {
 		return eof
@@ -31,14 +37,25 @@ func (s *Scanner) read() rune {
 	return ch
 }
 
-func (s *Scanner) unread() {
-	_ = s.r.UnreadRune()
+func (s *Scanner) unread(ch rune) {
+	s.lastReadBuffer = append(s.lastReadBuffer, ch)
 }
 
 func (s *Scanner) peek() rune {
 	ch := s.read()
-	s.unread()
+	s.unread(ch)
 	return ch
+}
+
+// UnScan put the specified text back to the read buffer.
+func (s *Scanner) UnScan(text string) {
+	var reversedRunes []rune
+	for _, ch := range text {
+		reversedRunes = append([]rune{ch}, reversedRunes...)
+	}
+	for _, ch := range reversedRunes {
+		s.unread(ch)
+	}
 }
 
 // Scan returns the next token and text value.

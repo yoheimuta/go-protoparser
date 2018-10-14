@@ -73,7 +73,7 @@ func (p *Parser) parseOptionName() (string, error) {
 	for {
 		p.lex.Next()
 		if p.lex.Token != scanner.TDOT {
-			p.lex.SetIgnoreNext()
+			p.lex.UnNext()
 			break
 		}
 		optionName += p.lex.Text

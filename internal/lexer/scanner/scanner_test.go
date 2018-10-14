@@ -290,3 +290,55 @@ fugafuga
 		})
 	}
 }
+
+func TestScanner_UnScan(t *testing.T) {
+	tests := []struct {
+		name  string
+		mode  scanner.Mode
+		input string
+	}{
+		{
+			name:  "unscan ident",
+			input: "service",
+		},
+		{
+			name:  "unscan boolLit",
+			mode:  scanner.ScanBoolLit,
+			input: "true",
+		},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			s := scanner.NewScanner(strings.NewReader(test.input))
+			s.Mode = test.mode
+			token, text, err := s.Scan()
+			if err != nil {
+				t.Errorf("got err %v, but want nil", err)
+				return
+			}
+			eof, _, _ := s.Scan()
+			if eof != scanner.TEOF {
+				t.Errorf("got %v, but want TEOF", eof)
+			}
+
+			s.UnScan(text)
+			token2, text2, err := s.Scan()
+			if err != nil {
+				t.Errorf("got err %v, but want nil", err)
+				return
+			}
+			if token != token2 {
+				t.Errorf("got %v, but want %v", token, token2)
+			}
+			if text != text2 {
+				t.Errorf("got %v, but want %v", text, text2)
+			}
+			eof, _, _ = s.Scan()
+			if eof != scanner.TEOF {
+				t.Errorf("got %v, but want TEOF", eof)
+			}
+		})
+	}
+}
