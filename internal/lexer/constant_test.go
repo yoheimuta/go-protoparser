@@ -9,55 +9,65 @@ import (
 
 func TestLexer2_ReadConstant(t *testing.T) {
 	tests := []struct {
-		name     string
-		input    string
-		wantText string
-		wantErr  bool
+		name      string
+		input     string
+		wantText  string
+		wantIsEOF bool
+		wantErr   bool
 	}{
 		{
-			name:     "fullIdent",
-			input:    "foo.bar",
-			wantText: "foo.bar",
+			name:      "fullIdent",
+			input:     "foo.bar",
+			wantText:  "foo.bar",
+			wantIsEOF: true,
 		},
 		{
-			name:     "intLit",
-			input:    "1928",
-			wantText: "1928",
+			name:      "intLit",
+			input:     "1928",
+			wantText:  "1928",
+			wantIsEOF: true,
 		},
 		{
-			name:     "+intLit",
-			input:    "+1928",
-			wantText: "+1928",
+			name:      "+intLit",
+			input:     "+1928",
+			wantText:  "+1928",
+			wantIsEOF: true,
 		},
 		{
-			name:     "-intLit",
-			input:    "-1928",
-			wantText: "-1928",
+			name:      "-intLit",
+			input:     "-1928",
+			wantText:  "-1928",
+			wantIsEOF: true,
 		},
 		{
-			name:     "floatLit",
-			input:    "1928.123",
-			wantText: "1928.123",
+			name:      "floatLit",
+			input:     "1928.123",
+			wantText:  "1928.123",
+			wantIsEOF: true,
 		},
 		{
-			name:     "+floatLit",
-			input:    "+1928e10",
-			wantText: "+1928e10",
+			name:      "+floatLit",
+			input:     "+1928e10",
+			wantText:  "+1928e10",
+			wantIsEOF: true,
 		},
 		{
-			name:     "-floatLit",
-			input:    "-1928E-3",
-			wantText: "-1928E-3",
+			name:      "-floatLit",
+			input:     "-1928E-3",
+			wantText:  "-1928E-3",
+			wantIsEOF: true,
 		},
 		{
-			name:     "strLit",
-			input:    `"あいうえお''"`,
-			wantText: `"あいうえお''"`,
+			name:      "strLit",
+			input:     `"あいうえお''"`,
+			wantText:  `"あいうえお''"`,
+			wantIsEOF: true,
 		},
 		{
-			name:     "boolLit",
-			input:    "true",
-			wantText: "true",
+			name:      "boolLit",
+			input:     "true",
+			wantText:  "true",
+			wantIsEOF: true,
 		},
 		{
 			name:     "boolLit.",
@@ -82,8 +92,10 @@ func TestLexer2_ReadConstant(t *testing.T) {
 			got, err := lex.ReadConstant()
 
 			switch {
-			case test.wantErr && err == nil:
-				t.Errorf("got nil but want err")
+			case test.wantErr:
+				if err == nil {
+					t.Errorf("got err nil, but want err")
+				}
 				return
 			case !test.wantErr && err != nil:
 				t.Errorf("got err %v, but want nil", err)
@@ -92,6 +104,11 @@ func TestLexer2_ReadConstant(t *testing.T) {
 
 			if got != test.wantText {
 				t.Errorf("got %s, but want %s", got, test.wantText)
+			}
+
+			lex.Next()
+			if lex.IsEOF() != test.wantIsEOF {
+				t.Errorf("got %v, but want %v", lex.IsEOF(), test.wantIsEOF)
 			}
 		})
 	}
