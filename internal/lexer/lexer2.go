@@ -91,6 +91,11 @@ func (lex *Lexer2) NextStrLit() {
 	lex.nextWithSpecificMode(scanner.ScanStrLit)
 }
 
+// NextNumberLit scans the read buffer with ScanNumberLit mode.
+func (lex *Lexer2) NextNumberLit() {
+	lex.nextWithSpecificMode(scanner.ScanNumberLit)
+}
+
 func (lex *Lexer2) nextWithSpecificMode(nextMode scanner.Mode) {
 	mode := lex.scanner.Mode
 	defer func() {
