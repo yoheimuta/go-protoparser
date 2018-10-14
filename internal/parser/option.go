@@ -66,6 +66,8 @@ func (p *Parser) parseOptionName() (string, error) {
 			return "", p.unexpected(")")
 		}
 		optionName += p.lex.Text
+	default:
+		return "", p.unexpected("ident or left paren")
 	}
 
 	for {
