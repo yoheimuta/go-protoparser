@@ -82,14 +82,28 @@ func (lex *Lexer2) Next() {
 	}
 }
 
+// NextKeywordOrStrLit scans the read buffer with ScanKeyword or ScanStrLit modes.
+func (lex *Lexer2) NextKeywordOrStrLit() {
+	lex.nextWithSpecificMode(scanner.ScanKeyword | scanner.ScanStrLit)
+}
+
 // NextKeyword scans the read buffer with ScanKeyword mode.
 func (lex *Lexer2) NextKeyword() {
+	lex.nextWithSpecificMode(scanner.ScanKeyword)
+}
+
+// NextStrLit scans the read buffer with ScanStrLit mode.
+func (lex *Lexer2) NextStrLit() {
+	lex.nextWithSpecificMode(scanner.ScanStrLit)
+}
+
+func (lex *Lexer2) nextWithSpecificMode(nextMode uint) {
 	mode := lex.scanner.Mode
 	defer func() {
 		lex.scanner.Mode = mode
 	}()
 
-	lex.scanner.Mode = scanner.ScanKeyword
+	lex.scanner.Mode = nextMode
 	lex.Next()
 }
 
