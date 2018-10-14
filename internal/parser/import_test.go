@@ -39,7 +39,7 @@ func TestParser_ParseImport(t *testing.T) {
 			},
 		},
 		{
-			name:  "parsing the statement with public",
+			name:  "parsing an excerpt from the official reference",
 			input: `import public "other.proto";`,
 			wantImport: &parser.Import{
 				Modifier: parser.ImportModifierPublic,

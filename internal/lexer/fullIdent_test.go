@@ -9,25 +9,34 @@ import (
 
 func TestLexer2_ReadFullIdent(t *testing.T) {
 	tests := []struct {
-		name     string
-		input    string
-		wantText string
-		wantErr  bool
+		name      string
+		input     string
+		wantText  string
+		wantIsEOF bool
+		wantErr   bool
 	}{
 		{
-			name:     "ident",
-			input:    "foo",
+			name:      "ident",
+			input:     "foo",
+			wantText:  "foo",
+			wantIsEOF: true,
+		},
+		{
+			name:     "ident;",
+			input:    "foo;",
 			wantText: "foo",
 		},
 		{
-			name:     "ident.ident",
-			input:    "foo.true",
-			wantText: "foo.true",
+			name:      "ident.ident",
+			input:     "foo.true",
+			wantText:  "foo.true",
+			wantIsEOF: true,
 		},
 		{
-			name:     "ident.ident.ident.ident",
-			input:    "foo.bar.rpc.fuga",
-			wantText: "foo.bar.rpc.fuga",
+			name:      "ident.ident.ident.ident",
+			input:     "foo.bar.rpc.fuga",
+			wantText:  "foo.bar.rpc.fuga",
+			wantIsEOF: true,
 		},
 		{
 			name:    "empty string",
@@ -47,8 +56,10 @@ func TestLexer2_ReadFullIdent(t *testing.T) {
 			got, err := lex.ReadFullIdent()
 
 			switch {
-			case test.wantErr && err == nil:
-				t.Errorf("got nil but want err")
+			case test.wantErr:
+				if err == nil {
+					t.Errorf("got err nil, but want err")
+				}
 				return
 			case !test.wantErr && err != nil:
 				t.Errorf("got err %v, but want nil", err)
@@ -57,6 +68,11 @@ func TestLexer2_ReadFullIdent(t *testing.T) {
 
 			if got != test.wantText {
 				t.Errorf("got %s, but want %s", got, test.wantText)
+			}
+
+			lex.Next()
+			if lex.IsEOF() != test.wantIsEOF {
+				t.Errorf("got %v, but want %v", lex.IsEOF(), test.wantIsEOF)
 			}
 		})
 	}
