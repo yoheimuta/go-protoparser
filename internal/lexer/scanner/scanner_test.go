@@ -16,7 +16,7 @@ func TestScanner_Scan(t *testing.T) {
 
 	tests := []struct {
 		name  string
-		mode  uint
+		mode  scanner.Mode
 		input string
 		wants []want
 	}{

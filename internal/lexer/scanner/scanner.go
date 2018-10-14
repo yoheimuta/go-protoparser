@@ -13,7 +13,7 @@ type Scanner struct {
 	r *bufio.Reader
 
 	// The Mode field controls which tokens are recognized.
-	Mode uint
+	Mode Mode
 }
 
 // NewScanner returns a new instance of Scanner.

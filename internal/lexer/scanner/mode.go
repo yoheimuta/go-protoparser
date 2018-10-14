@@ -1,8 +1,11 @@
 package scanner
 
+// Mode is an enum type to control recognition of tokens.
+type Mode uint
+
 // Predefined mode bits to control recognition of tokens.
 const (
-	ScanIdent = 1 << iota
+	ScanIdent Mode = 1 << iota
 	ScanNumberLit
 	ScanStrLit
 	ScanBoolLit

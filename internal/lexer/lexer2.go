@@ -97,7 +97,7 @@ func (lex *Lexer2) NextStrLit() {
 	lex.nextWithSpecificMode(scanner.ScanStrLit)
 }
 
-func (lex *Lexer2) nextWithSpecificMode(nextMode uint) {
+func (lex *Lexer2) nextWithSpecificMode(nextMode scanner.Mode) {
 	mode := lex.scanner.Mode
 	defer func() {
 		lex.scanner.Mode = mode
