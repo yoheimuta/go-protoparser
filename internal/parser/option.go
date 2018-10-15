@@ -6,8 +6,8 @@ import (
 
 // Option can be used in proto files, messages, enums and services.
 type Option struct {
-	Name     string
-	Constant string
+	OptionName string
+	Constant   string
 }
 
 // ParseOption parses the option.
@@ -40,8 +40,8 @@ func (p *Parser) ParseOption() (*Option, error) {
 	}
 
 	return &Option{
-		Name:     optionName,
-		Constant: constant,
+		OptionName: optionName,
+		Constant:   constant,
 	}, nil
 }
 

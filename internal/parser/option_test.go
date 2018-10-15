@@ -39,16 +39,16 @@ func TestParser_ParseOption(t *testing.T) {
 			name:  "parsing an excerpt from the official reference",
 			input: `option java_package = "com.example.foo";`,
 			wantOption: &parser.Option{
-				Name:     "java_package",
-				Constant: `"com.example.foo"`,
+				OptionName: "java_package",
+				Constant:   `"com.example.foo"`,
 			},
 		},
 		{
 			name:  "parsing fullIdent",
 			input: `option java_package.baz.bar = "com.example.foo";`,
 			wantOption: &parser.Option{
-				Name:     "java_package.baz.bar",
-				Constant: `"com.example.foo"`,
+				OptionName: "java_package.baz.bar",
+				Constant:   `"com.example.foo"`,
 			},
 		},
 	}
