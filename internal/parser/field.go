@@ -50,20 +50,9 @@ func (p *Parser) ParseField() (*Field, error) {
 		return nil, p.unexpected("fieldNumber")
 	}
 
-	var fieldOptions []*FieldOption
-	p.lex.Next()
-	if p.lex.Token == scanner.TLEFTSQUARE {
-		fieldOptions, err = p.parseFieldOptions()
-		if err != nil {
-			return nil, p.unexpected("fieldOptions")
-		}
-
-		p.lex.Next()
-		if p.lex.Token != scanner.TRIGHTSQUARE {
-			return nil, p.unexpected("]")
-		}
-	} else {
-		p.lex.UnNext()
+	fieldOptions, err := p.parseFieldOptionsOption()
+	if err != nil {
+		return nil, err
 	}
 
 	p.lex.Next()
@@ -78,6 +67,25 @@ func (p *Parser) ParseField() (*Field, error) {
 		FieldNumber:  fieldNumber,
 		FieldOptions: fieldOptions,
 	}, nil
+}
+
+// [ "[" fieldOptions "]" ]
+func (p *Parser) parseFieldOptionsOption() ([]*FieldOption, error) {
+	p.lex.Next()
+	if p.lex.Token == scanner.TLEFTSQUARE {
+		fieldOptions, err := p.parseFieldOptions()
+		if err != nil {
+			return nil, p.unexpected("fieldOptions")
+		}
+
+		p.lex.Next()
+		if p.lex.Token != scanner.TRIGHTSQUARE {
+			return nil, p.unexpected("]")
+		}
+		return fieldOptions, nil
+	}
+	p.lex.UnNext()
+	return nil, nil
 }
 
 // fieldOptions = fieldOption { ","  fieldOption }
