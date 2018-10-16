@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
-	"github.com/yoheimuta/go-protoparser/internal/parser"
+	"github.com/yoheimuta/go-protoparser/parser"
 )
 
 func TestParser_ParseImport(t *testing.T) {

@@ -5,24 +5,24 @@ import (
 	"testing"
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
-	"github.com/yoheimuta/go-protoparser/internal/parser"
+	"github.com/yoheimuta/go-protoparser/parser"
 )
 
-func TestParser_ParseSyntax(t *testing.T) {
+func TestParser_ParsePackage(t *testing.T) {
 	tests := []struct {
-		name       string
-		input      string
-		wantSyntax string
-		wantErr    bool
+		name        string
+		input       string
+		wantPackage string
+		wantErr     bool
 	}{
 		{
 			name:    "parsing an empty",
 			wantErr: true,
 		},
 		{
-			name:       "parsing an excerpt from the official reference",
-			input:      `syntax = "proto3";`,
-			wantSyntax: "proto3",
+			name:        "parsing an excerpt from the official reference",
+			input:       `package foo.bar;`,
+			wantPackage: "foo.bar",
 		},
 	}
 
@@ -30,7 +30,7 @@ func TestParser_ParseSyntax(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			parser := parser.NewParser(lexer.NewLexer2(strings.NewReader(test.input)))
-			got, err := parser.ParseSyntax()
+			got, err := parser.ParsePackage()
 			switch {
 			case test.wantErr:
 				if err == nil {
@@ -42,8 +42,8 @@ func TestParser_ParseSyntax(t *testing.T) {
 				return
 			}
 
-			if got != test.wantSyntax {
-				t.Errorf("got %v, but want %v", got, test.wantSyntax)
+			if got != test.wantPackage {
+				t.Errorf("got %v, but want %v", got, test.wantPackage)
 			}
 
 			if !parser.IsEOF() {
