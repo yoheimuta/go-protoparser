@@ -14,7 +14,7 @@ type ParseReservedErr struct {
 
 // Error represents an error condition.
 func (e *ParseReservedErr) Error() string {
-	return fmt.Sprintf("%v %v", e.ParseRangesErr, e.ParseFieldNamesErr)
+	return fmt.Sprintf("%v:%v", e.ParseRangesErr, e.ParseFieldNamesErr)
 }
 
 // Range is a range of field numbers. End is an optional value.
