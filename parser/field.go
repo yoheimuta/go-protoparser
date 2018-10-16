@@ -101,7 +101,7 @@ func (p *Parser) parseFieldOptions() ([]*FieldOption, error) {
 
 	for {
 		p.lex.Next()
-		if p.lex.Token != scanner.TDOT {
+		if p.lex.Token != scanner.TCOMMA {
 			p.lex.UnNext()
 			break
 		}

@@ -55,6 +55,26 @@ func TestParser_ParseField(t *testing.T) {
 				},
 			},
 		},
+		{
+			name:  "parsing fieldOptions",
+			input: "repeated int32 samples = 4 [packed=true, required=false];",
+			wantField: &parser.Field{
+				IsRepeated:  true,
+				Type:        "int32",
+				FieldName:   "samples",
+				FieldNumber: "4",
+				FieldOptions: []*parser.FieldOption{
+					{
+						OptionName: "packed",
+						Constant:   "true",
+					},
+					{
+						OptionName: "required",
+						Constant:   "false",
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
