@@ -8,7 +8,6 @@ import (
 
 // ParseEnumBodyStatementErr consists of the enum body statement parse errors.
 type ParseEnumBodyStatementErr struct {
-	ParseOptionErr         error
 	ParseEnumFieldErr      error
 	ParseEmptyStatementErr error
 }
@@ -16,8 +15,7 @@ type ParseEnumBodyStatementErr struct {
 // Error represents an error condition.
 func (e *ParseEnumBodyStatementErr) Error() string {
 	return fmt.Sprintf(
-		"%v:%v:%v",
-		e.ParseOptionErr,
+		"%v:%v",
 		e.ParseEnumFieldErr,
 		e.ParseEmptyStatementErr,
 	)
@@ -84,36 +82,42 @@ func (p *Parser) parseEnumBody() ([]interface{}, error) {
 	var stmts []interface{}
 
 	for {
-		option, optionErr := p.ParseOption()
-		if optionErr == nil {
+		p.lex.NextKeyword()
+		token := p.lex.Token
+		p.lex.UnNext()
+
+		switch token {
+		case scanner.TOPTION:
+			option, err := p.ParseOption()
+			if err != nil {
+				return nil, err
+			}
 			stmts = append(stmts, option)
-			continue
-		}
-		p.lex.UnNext()
+		default:
+			enumField, enumFieldErr := p.parseEnumField()
+			if enumFieldErr == nil {
+				stmts = append(stmts, enumField)
+				break
+			}
+			p.lex.UnNext()
 
-		enumField, enumFieldErr := p.parseEnumField()
-		if enumFieldErr == nil {
-			stmts = append(stmts, enumField)
-			continue
-		}
-		p.lex.UnNext()
+			emptyErr := p.lex.ReadEmptyStatement()
+			if emptyErr == nil {
+				stmts = append(stmts, EmptyStatement{})
+				break
+			}
 
-		emptyErr := p.lex.ReadEmptyStatement()
-		if emptyErr == nil {
-			stmts = append(stmts, EmptyStatement{})
-			continue
+			return nil, &ParseEnumBodyStatementErr{
+				ParseEnumFieldErr:      enumFieldErr,
+				ParseEmptyStatementErr: emptyErr,
+			}
 		}
 
 		p.lex.Next()
 		if p.lex.Token == scanner.TRIGHTCURLY {
 			return stmts, nil
 		}
-
-		return nil, &ParseEnumBodyStatementErr{
-			ParseOptionErr:         optionErr,
-			ParseEnumFieldErr:      enumFieldErr,
-			ParseEmptyStatementErr: emptyErr,
-		}
+		p.lex.UnNext()
 	}
 }
 
