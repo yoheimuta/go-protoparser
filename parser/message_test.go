@@ -78,7 +78,7 @@ message outer {
 						Constant:   "true",
 					},
 					&parser.Message{
-						MessageName: "Inner",
+						MessageName: "inner",
 						MessageBody: []interface{}{
 							&parser.Field{
 								Type:        "int64",
@@ -88,11 +88,15 @@ message outer {
 						},
 					},
 					&parser.Field{
-						IsRepeated:   true,
-						Type:         "",
-						FieldName:    "",
-						FieldNumber:  "",
-						FieldOptions: nil,
+						IsRepeated:  true,
+						Type:        "inner",
+						FieldName:   "inner_message",
+						FieldNumber: "2",
+					},
+					&parser.Field{
+						Type:        "EnumAllowingAlias",
+						FieldName:   "enum_field",
+						FieldNumber: "3",
 					},
 					&parser.MapField{
 						KeyType:     "int32",
