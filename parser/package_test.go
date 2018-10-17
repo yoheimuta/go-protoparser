@@ -4,6 +4,8 @@ import (
 	"strings"
 	"testing"
 
+	"reflect"
+
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
 	"github.com/yoheimuta/go-protoparser/parser"
 )
@@ -12,7 +14,7 @@ func TestParser_ParsePackage(t *testing.T) {
 	tests := []struct {
 		name        string
 		input       string
-		wantPackage string
+		wantPackage *parser.Package
 		wantErr     bool
 	}{
 		{
@@ -20,9 +22,11 @@ func TestParser_ParsePackage(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name:        "parsing an excerpt from the official reference",
-			input:       `package foo.bar;`,
-			wantPackage: "foo.bar",
+			name:  "parsing an excerpt from the official reference",
+			input: `package foo.bar;`,
+			wantPackage: &parser.Package{
+				Name: "foo.bar",
+			},
 		},
 	}
 
@@ -42,7 +46,7 @@ func TestParser_ParsePackage(t *testing.T) {
 				return
 			}
 
-			if got != test.wantPackage {
+			if !reflect.DeepEqual(got, test.wantPackage) {
 				t.Errorf("got %v, but want %v", got, test.wantPackage)
 			}
 

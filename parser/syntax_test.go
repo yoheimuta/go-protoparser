@@ -4,6 +4,8 @@ import (
 	"strings"
 	"testing"
 
+	"reflect"
+
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
 	"github.com/yoheimuta/go-protoparser/parser"
 )
@@ -12,7 +14,7 @@ func TestParser_ParseSyntax(t *testing.T) {
 	tests := []struct {
 		name       string
 		input      string
-		wantSyntax string
+		wantSyntax *parser.Syntax
 		wantErr    bool
 	}{
 		{
@@ -20,9 +22,11 @@ func TestParser_ParseSyntax(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name:       "parsing an excerpt from the official reference",
-			input:      `syntax = "proto3";`,
-			wantSyntax: "proto3",
+			name:  "parsing an excerpt from the official reference",
+			input: `syntax = "proto3";`,
+			wantSyntax: &parser.Syntax{
+				ProtobufVersion: "proto3",
+			},
 		},
 	}
 
@@ -42,7 +46,7 @@ func TestParser_ParseSyntax(t *testing.T) {
 				return
 			}
 
-			if got != test.wantSyntax {
+			if !reflect.DeepEqual(got, test.wantSyntax) {
 				t.Errorf("got %v, but want %v", got, test.wantSyntax)
 			}
 
