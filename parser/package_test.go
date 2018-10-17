@@ -29,8 +29,8 @@ func TestParser_ParsePackage(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			parser := parser.NewParser(lexer.NewLexer2(strings.NewReader(test.input)))
-			got, err := parser.ParsePackage()
+			p := parser.NewParser(lexer.NewLexer2(strings.NewReader(test.input)))
+			got, err := p.ParsePackage()
 			switch {
 			case test.wantErr:
 				if err == nil {
@@ -46,7 +46,7 @@ func TestParser_ParsePackage(t *testing.T) {
 				t.Errorf("got %v, but want %v", got, test.wantPackage)
 			}
 
-			if !parser.IsEOF() {
+			if !p.IsEOF() {
 				t.Errorf("got not eof, but want eof")
 			}
 		})

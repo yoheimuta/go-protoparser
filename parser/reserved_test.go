@@ -75,8 +75,8 @@ func TestParser_ParseReserved(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			parser := parser.NewParser(lexer.NewLexer2(strings.NewReader(test.input)))
-			got, err := parser.ParseReserved()
+			p := parser.NewParser(lexer.NewLexer2(strings.NewReader(test.input)))
+			got, err := p.ParseReserved()
 			switch {
 			case test.wantErr:
 				if err == nil {
@@ -92,7 +92,7 @@ func TestParser_ParseReserved(t *testing.T) {
 				t.Errorf("got %v, but want %v", got, test.wantReserved)
 			}
 
-			if !parser.IsEOF() {
+			if !p.IsEOF() {
 				t.Errorf("got not eof, but want eof")
 			}
 		})

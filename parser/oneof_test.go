@@ -65,8 +65,8 @@ func TestParser_ParseOneof(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			parser := parser.NewParser(lexer.NewLexer2(strings.NewReader(test.input)))
-			got, err := parser.ParseOneof()
+			p := parser.NewParser(lexer.NewLexer2(strings.NewReader(test.input)))
+			got, err := p.ParseOneof()
 			switch {
 			case test.wantErr:
 				if err == nil {
@@ -82,7 +82,7 @@ func TestParser_ParseOneof(t *testing.T) {
 				t.Errorf("got %v, but want %v", got, test.wantOneof)
 			}
 
-			if !parser.IsEOF() {
+			if !p.IsEOF() {
 				t.Errorf("got not eof, but want eof")
 			}
 		})
