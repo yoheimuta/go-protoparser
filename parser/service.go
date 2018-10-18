@@ -93,6 +93,7 @@ func (p *Parser) parseServiceBody() ([]interface{}, error) {
 		if p.lex.Token == scanner.TRIGHTCURLY {
 			return stmts, nil
 		}
+		p.lex.UnNext()
 	}
 }
 
@@ -232,6 +233,9 @@ func (p *Parser) parseRPCOptions() ([]*Option, error) {
 				return nil, err
 			}
 			options = append(options, option)
+		case scanner.TRIGHTCURLY:
+			// This spec is not documented, but allowed by practices.
+			break
 		default:
 			err := p.lex.ReadEmptyStatement()
 			if err != nil {

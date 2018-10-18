@@ -70,6 +70,42 @@ service SearchService {
 				},
 			},
 		},
+		{
+			name: "parsing rpcs",
+			input: `
+// ItemService is a service to manage items.
+service ItemService {
+    // CreateUserItem is a method to create a user's item.
+    rpc CreateUserItem(CreateUserItemRequest) returns (aggregatespb.UserItemAggregate) {}
+
+    // UpdateUserItem is a method to update a user's item.
+    rpc UpdateUserItem(UpdateUserItemRequest) returns (entitiespb.UserItem) {}
+}
+`,
+			wantService: &parser.Service{
+				ServiceName: "ItemService",
+				ServiceBody: []interface{}{
+					&parser.RPC{
+						RPCName: "CreateUserItem",
+						RPCRequest: &parser.RPCRequest{
+							MessageType: "CreateUserItemRequest",
+						},
+						RPCResponse: &parser.RPCResponse{
+							MessageType: "aggregatespb.UserItemAggregate",
+						},
+					},
+					&parser.RPC{
+						RPCName: "UpdateUserItem",
+						RPCRequest: &parser.RPCRequest{
+							MessageType: "UpdateUserItemRequest",
+						},
+						RPCResponse: &parser.RPCResponse{
+							MessageType: "entitiespb.UserItem",
+						},
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

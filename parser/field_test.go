@@ -11,10 +11,11 @@ import (
 
 func TestParser_ParseField(t *testing.T) {
 	tests := []struct {
-		name      string
-		input     string
-		wantField *parser.Field
-		wantErr   bool
+		name       string
+		input      string
+		permissive bool
+		wantField  *parser.Field
+		wantErr    bool
 	}{
 		{
 			name:    "parsing an empty",
@@ -75,12 +76,33 @@ func TestParser_ParseField(t *testing.T) {
 				},
 			},
 		},
+		{
+			name:    "parsing an invalid fieldOption constant",
+			input:   "int64 display_order = 1 [(validator.field) = {int_gt: 0}];",
+			wantErr: true,
+		},
+		{
+			name:       "parsing fieldOption constant with { by permissive mode. Required by go-proto-validators",
+			input:      "int64 display_order = 1 [(validator.field) = {int_gt: 0}];",
+			permissive: true,
+			wantField: &parser.Field{
+				Type:        "int64",
+				FieldName:   "display_order",
+				FieldNumber: "1",
+				FieldOptions: []*parser.FieldOption{
+					{
+						OptionName: "(validator.field)",
+						Constant:   "{int_gt:0}",
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			p := parser.NewParser(lexer.NewLexer2(strings.NewReader(test.input)))
+			p := parser.NewParser(lexer.NewLexer2(strings.NewReader(test.input), lexer.WithPermissive(test.permissive)))
 			got, err := p.ParseField()
 			switch {
 			case test.wantErr:
