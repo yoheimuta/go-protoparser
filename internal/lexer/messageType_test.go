@@ -33,6 +33,12 @@ func TestLexer2_ReadMessageType(t *testing.T) {
 			wantText:  ".search.SearchRequest",
 			wantIsEOF: true,
 		},
+		{
+			name:      "ident.ident",
+			input:     "aggregatespb.UserItemAggregate",
+			wantText:  "aggregatespb.UserItemAggregate",
+			wantIsEOF: true,
+		},
 	}
 	for _, test := range tests {
 		test := test

@@ -5,8 +5,7 @@ import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 // ReadConstant reads a constant.
 // constant = fullIdent | ( [ "-" | "+" ] intLit ) | ( [ "-" | "+" ] floatLit ) | strLit | boolLit
 func (lex *Lexer2) ReadConstant() (string, error) {
-	lex.scanner.Mode = scanner.ScanLit
-	lex.Next()
+	lex.NextLit()
 
 	cons := lex.Text
 
@@ -15,7 +14,9 @@ func (lex *Lexer2) ReadConstant() (string, error) {
 		return cons, nil
 	case lex.Token == scanner.TBOOLLIT:
 		return cons, nil
-	case lex.Token == scanner.TIDENT:
+	case lex.Token == scanner.TIDENT,
+		// go-proto-validators requires this exceptions.
+		lex.Token == scanner.TLEFTCURLY && lex.permissive:
 		lex.UnNext()
 		fullIdent, err := lex.ReadFullIdent()
 		if err != nil {
@@ -25,7 +26,7 @@ func (lex *Lexer2) ReadConstant() (string, error) {
 	case lex.Token == scanner.TINTLIT, lex.Token == scanner.TFLOATLIT:
 		return cons, nil
 	case lex.Text == "-" || lex.Text == "+":
-		lex.Next()
+		lex.NextLit()
 
 		switch lex.Token {
 		case scanner.TINTLIT, scanner.TFLOATLIT:

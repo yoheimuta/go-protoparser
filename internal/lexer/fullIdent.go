@@ -5,13 +5,11 @@ import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 // ReadFullIdent reads a fullIdent.
 // fullIdent = ident { "." ident }
 func (lex *Lexer2) ReadFullIdent() (string, error) {
-	lex.scanner.Mode = scanner.ScanIdent
-	lex.Next()
-
-	if lex.Token != scanner.TIDENT {
-		return "", lex.unexpected(lex.Text, "TIDENT")
+	ident, err := lex.readIdent()
+	if err != nil {
+		return "", err
 	}
-	fullIdent := lex.Text
+	fullIdent := ident
 	lex.Next()
 
 	for !lex.IsEOF() {
@@ -19,13 +17,35 @@ func (lex *Lexer2) ReadFullIdent() (string, error) {
 			lex.UnNext()
 			break
 		}
-		lex.Next()
 
-		if lex.Token != scanner.TIDENT {
-			return "", lex.unexpected(lex.Text, "TIDENT")
+		ident, err = lex.readIdent()
+		if err != nil {
+			return "", err
 		}
-		fullIdent += "." + lex.Text
+		fullIdent += "." + ident
 		lex.Next()
 	}
 	return fullIdent, nil
+}
+
+func (lex *Lexer2) readIdent() (string, error) {
+	lex.Next()
+
+	switch lex.Token {
+	case scanner.TIDENT:
+		return lex.Text, nil
+	case scanner.TLEFTCURLY:
+		// go-proto-validators requires this exceptions.
+		if lex.permissive {
+			ident := lex.Text
+			for {
+				lex.Next()
+				ident += lex.Text
+				if lex.Token == scanner.TRIGHTCURLY {
+					return ident, nil
+				}
+			}
+		}
+	}
+	return "", lex.unexpected(lex.Text, "TIDENT")
 }

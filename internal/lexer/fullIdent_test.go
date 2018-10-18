@@ -9,11 +9,12 @@ import (
 
 func TestLexer2_ReadFullIdent(t *testing.T) {
 	tests := []struct {
-		name      string
-		input     string
-		wantText  string
-		wantIsEOF bool
-		wantErr   bool
+		name       string
+		input      string
+		permissive bool
+		wantText   string
+		wantIsEOF  bool
+		wantErr    bool
 	}{
 		{
 			name:      "ident",
@@ -39,6 +40,19 @@ func TestLexer2_ReadFullIdent(t *testing.T) {
 			wantIsEOF: true,
 		},
 		{
+			name:       "read { by permissive mode. Required by go-proto-validators",
+			input:      "{int_gt: 0}",
+			permissive: true,
+			wantText:   "{int_gt:0}",
+			wantIsEOF:  true,
+		},
+		{
+			name:     "read invalid {.",
+			input:    "{int_gt: 0}",
+			wantText: "{int_gt:0}",
+			wantErr:  true,
+		},
+		{
 			name:    "empty string",
 			input:   "",
 			wantErr: true,
@@ -52,7 +66,7 @@ func TestLexer2_ReadFullIdent(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			lex := lexer.NewLexer2(strings.NewReader(test.input))
+			lex := lexer.NewLexer2(strings.NewReader(test.input), lexer.WithPermissive(test.permissive))
 			got, err := lex.ReadFullIdent()
 
 			switch {

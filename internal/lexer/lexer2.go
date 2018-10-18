@@ -22,9 +22,10 @@ type Lexer2 struct {
 	// function is set, the error is reported to os.Stderr.
 	Error func(lexer *Lexer2, err error)
 
-	scanner *scanner.Scanner
-	scanErr error
-	debug   bool
+	scanner    *scanner.Scanner
+	scanErr    error
+	debug      bool
+	permissive bool
 }
 
 // Option2 is an option for lexer.NewLexer2.
@@ -34,6 +35,13 @@ type Option2 func(*Lexer2)
 func WithDebug2(debug bool) Option2 {
 	return func(l *Lexer2) {
 		l.debug = debug
+	}
+}
+
+// WithPermissive is an option to allow the permissive scan rather than the just documented spec.
+func WithPermissive(permissive bool) Option2 {
+	return func(l *Lexer2) {
+		l.permissive = permissive
 	}
 }
 
@@ -89,6 +97,11 @@ func (lex *Lexer2) NextKeyword() {
 // NextStrLit scans the read buffer with ScanStrLit mode.
 func (lex *Lexer2) NextStrLit() {
 	lex.nextWithSpecificMode(scanner.ScanStrLit)
+}
+
+// NextLit scans the read buffer with ScanLit mode.
+func (lex *Lexer2) NextLit() {
+	lex.nextWithSpecificMode(scanner.ScanLit)
 }
 
 // NextNumberLit scans the read buffer with ScanNumberLit mode.
