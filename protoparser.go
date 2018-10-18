@@ -2,75 +2,41 @@ package protoparser
 
 import (
 	"io"
-	"text/scanner"
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
+	"github.com/yoheimuta/go-protoparser/parser"
 )
 
-// ProtocolBuffer is the parsed result from a Protocol Buffer file.
-type ProtocolBuffer struct {
-	Package  string
-	Service  *Service
-	Messages []*Message
-	Enums    []*Enum
+// ParseConfig is a config for parser.
+type ParseConfig struct {
+	debug      bool
+	permissive bool
+}
+
+// Option is an option for ParseConfig.
+type Option func(*ParseConfig)
+
+// WithDebug is an option to enable the debug mode.
+func WithDebug(debug bool) Option {
+	return func(l *ParseConfig) {
+		l.debug = debug
+	}
+}
+
+// WithPermissive is an option to allow the permissive parsing rather than the just documented spec.
+func WithPermissive(permissive bool) Option {
+	return func(l *ParseConfig) {
+		l.permissive = permissive
+	}
 }
 
 // Parse parses a Protocol Buffer file.
-func Parse(input io.Reader) (*ProtocolBuffer, error) {
-	lex := lexer.NewLexer(input)
-	return parse(lex)
-}
-
-// comment\npackage...
-// comment\nservice...
-// comment\nmessage...
-// comment\nenum...
-// See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file
-func parse(lex *lexer.Lexer) (*ProtocolBuffer, error) {
-	var pkg string
-	service := &Service{}
-	var messages []*Message
-	var enums []*Enum
-	for lex.Token != scanner.EOF {
-		comments := parseComments(lex)
-
-		switch lex.Text() {
-		case "package":
-			p, err := parsePackage(lex)
-			if err != nil {
-				return nil, err
-			}
-			pkg = p
-		case "service":
-			s, err := parseService(lex)
-			if err != nil {
-				return nil, err
-			}
-			s.Comments = append(s.Comments, comments...)
-			service = s
-		case "message":
-			message, err := parseMessage(lex)
-			if err != nil {
-				return nil, err
-			}
-			message.Comments = append(message.Comments, comments...)
-			messages = append(messages, message)
-		case "enum":
-			enum, err := parseEnum(lex)
-			if err != nil {
-				return nil, err
-			}
-			enum.Comments = append(enum.Comments, comments...)
-			enums = append(enums, enum)
-		default:
-			lex.Next()
-			continue
-		}
+func Parse(input io.Reader, options ...Option) (*parser.Proto, error) {
+	config := &ParseConfig{}
+	for _, opt := range options {
+		opt(config)
 	}
-	return &ProtocolBuffer{
-		Package:  pkg,
-		Service:  service,
-		Messages: messages,
-		Enums:    enums,
-	}, nil
+
+	p := parser.NewParser(lexer.NewLexer2(input, lexer.WithDebug2(config.debug), lexer.WithPermissive(config.permissive)))
+	return p.ParseProto()
 }

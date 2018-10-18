@@ -10,7 +10,9 @@ import (
 )
 
 var (
-	proto = flag.String("proto", "_testdata/parser.proto", "path to the Protocol Buffer file")
+	proto      = flag.String("proto", "_testdata/parser.proto", "path to the Protocol Buffer file")
+	debug      = flag.Bool("debug", false, "debug flag to output more parsing process detail")
+	permissive = flag.Bool("permissive", true, "permissive flag to allow the permissive parsing rather than the just documented spec")
 )
 
 func run() int {
@@ -23,7 +25,7 @@ func run() int {
 	}
 	defer reader.Close()
 
-	got, err := protoparser.Parse(reader)
+	got, err := protoparser.Parse(reader, protoparser.WithDebug(*debug), protoparser.WithPermissive(*permissive))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to parse, err %v\n", err)
 		return 1

@@ -29,3 +29,12 @@ test/lint:
 	# checks dispensable type conversions.
 	unconvert -v ./...
 
+## RUN_EXAMPLE_DEBUG is a debug flag argument for run/example.
+RUN_EXAMPLE_DEBUG=false
+
+## RUN_EXAMPLE_PERMISSIVE is a permissive flag argument for run/example.
+RUN_EXAMPLE_PERMISSIVE=true
+
+## run/example runs `go run _example/main.go`
+run/example:
+	go run _example/main.go -debug=$(RUN_EXAMPLE_DEBUG) -permissive=$(RUN_EXAMPLE_PERMISSIVE)
