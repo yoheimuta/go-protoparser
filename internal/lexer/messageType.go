@@ -5,7 +5,7 @@ import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 // ReadMessageType reads a messageType.
 // messageType = [ "." ] { ident "." } messageName
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#identifiers
-func (lex *Lexer2) ReadMessageType() (string, error) {
+func (lex *Lexer) ReadMessageType() (string, error) {
 	lex.Next()
 
 	var messageType string

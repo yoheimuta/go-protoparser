@@ -10,8 +10,8 @@ import (
 	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 )
 
-// Lexer2 is a lexer.
-type Lexer2 struct {
+// Lexer is a lexer.
+type Lexer struct {
 	// Token is the lexical token.
 	Token scanner.Token
 
@@ -20,7 +20,7 @@ type Lexer2 struct {
 
 	// Error is called for each error encountered. If no Error
 	// function is set, the error is reported to os.Stderr.
-	Error func(lexer *Lexer2, err error)
+	Error func(lexer *Lexer, err error)
 
 	scanner    *scanner.Scanner
 	scanErr    error
@@ -29,30 +29,30 @@ type Lexer2 struct {
 }
 
 // Option2 is an option for lexer.NewLexer2.
-type Option2 func(*Lexer2)
+type Option2 func(*Lexer)
 
 // WithDebug2 is an option to enable the debug mode.
 func WithDebug2(debug bool) Option2 {
-	return func(l *Lexer2) {
+	return func(l *Lexer) {
 		l.debug = debug
 	}
 }
 
 // WithPermissive is an option to allow the permissive scan rather than the just documented spec.
 func WithPermissive(permissive bool) Option2 {
-	return func(l *Lexer2) {
+	return func(l *Lexer) {
 		l.permissive = permissive
 	}
 }
 
 // NewLexer2 creates a new lexer.
-func NewLexer2(input io.Reader, opts ...Option2) *Lexer2 {
-	lex := new(Lexer2)
+func NewLexer2(input io.Reader, opts ...Option2) *Lexer {
+	lex := new(Lexer)
 	for _, opt := range opts {
 		opt(lex)
 	}
 
-	lex.Error = func(_ *Lexer2, err error) {
+	lex.Error = func(_ *Lexer, err error) {
 		log.Printf(`Lexer encountered the error "%v"`, err)
 	}
 	lex.scanner = scanner.NewScanner(input)
@@ -60,7 +60,7 @@ func NewLexer2(input io.Reader, opts ...Option2) *Lexer2 {
 }
 
 // Next scans the read buffer.
-func (lex *Lexer2) Next() {
+func (lex *Lexer) Next() {
 	defer func() {
 		if lex.debug {
 			_, file, line, ok := runtime.Caller(2)
@@ -85,31 +85,31 @@ func (lex *Lexer2) Next() {
 }
 
 // NextKeywordOrStrLit scans the read buffer with ScanKeyword or ScanStrLit modes.
-func (lex *Lexer2) NextKeywordOrStrLit() {
+func (lex *Lexer) NextKeywordOrStrLit() {
 	lex.nextWithSpecificMode(scanner.ScanKeyword | scanner.ScanStrLit)
 }
 
 // NextKeyword scans the read buffer with ScanKeyword mode.
-func (lex *Lexer2) NextKeyword() {
+func (lex *Lexer) NextKeyword() {
 	lex.nextWithSpecificMode(scanner.ScanKeyword)
 }
 
 // NextStrLit scans the read buffer with ScanStrLit mode.
-func (lex *Lexer2) NextStrLit() {
+func (lex *Lexer) NextStrLit() {
 	lex.nextWithSpecificMode(scanner.ScanStrLit)
 }
 
 // NextLit scans the read buffer with ScanLit mode.
-func (lex *Lexer2) NextLit() {
+func (lex *Lexer) NextLit() {
 	lex.nextWithSpecificMode(scanner.ScanLit)
 }
 
 // NextNumberLit scans the read buffer with ScanNumberLit mode.
-func (lex *Lexer2) NextNumberLit() {
+func (lex *Lexer) NextNumberLit() {
 	lex.nextWithSpecificMode(scanner.ScanNumberLit)
 }
 
-func (lex *Lexer2) nextWithSpecificMode(nextMode scanner.Mode) {
+func (lex *Lexer) nextWithSpecificMode(nextMode scanner.Mode) {
 	mode := lex.scanner.Mode
 	defer func() {
 		lex.scanner.Mode = mode
@@ -120,17 +120,17 @@ func (lex *Lexer2) nextWithSpecificMode(nextMode scanner.Mode) {
 }
 
 // IsEOF checks whether read buffer is empty.
-func (lex *Lexer2) IsEOF() bool {
+func (lex *Lexer) IsEOF() bool {
 	return lex.Token == scanner.TEOF
 }
 
-// LatestErr returns the latest non-EOF error that was encountered by the Lexer2.Next().
-func (lex *Lexer2) LatestErr() error {
+// LatestErr returns the latest non-EOF error that was encountered by the Lexer.Next().
+func (lex *Lexer) LatestErr() error {
 	return lex.scanErr
 }
 
 // UnNext put the latest text back to the read buffer.
-func (lex *Lexer2) UnNext() {
+func (lex *Lexer) UnNext() {
 	lex.scanner.UnScan(lex.Text)
 	lex.Token = scanner.TILLEGAL
 }

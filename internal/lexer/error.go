@@ -5,7 +5,7 @@ import (
 	"runtime"
 )
 
-func (lex *Lexer2) unexpected(found, expected string) error {
+func (lex *Lexer) unexpected(found, expected string) error {
 	debug := ""
 	if lex.debug {
 		_, file, line, _ := runtime.Caller(1)
