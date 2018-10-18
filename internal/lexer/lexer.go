@@ -28,25 +28,25 @@ type Lexer struct {
 	permissive bool
 }
 
-// Option2 is an option for lexer.NewLexer.
-type Option2 func(*Lexer)
+// Option is an option for lexer.NewLexer.
+type Option func(*Lexer)
 
-// WithDebug2 is an option to enable the debug mode.
-func WithDebug2(debug bool) Option2 {
+// WithDebug is an option to enable the debug mode.
+func WithDebug(debug bool) Option {
 	return func(l *Lexer) {
 		l.debug = debug
 	}
 }
 
 // WithPermissive is an option to allow the permissive scan rather than the just documented spec.
-func WithPermissive(permissive bool) Option2 {
+func WithPermissive(permissive bool) Option {
 	return func(l *Lexer) {
 		l.permissive = permissive
 	}
 }
 
 // NewLexer creates a new lexer.
-func NewLexer(input io.Reader, opts ...Option2) *Lexer {
+func NewLexer(input io.Reader, opts ...Option) *Lexer {
 	lex := new(Lexer)
 	for _, opt := range opts {
 		opt(lex)
