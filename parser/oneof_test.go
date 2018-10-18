@@ -65,7 +65,7 @@ func TestParser_ParseOneof(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			p := parser.NewParser(lexer.NewLexer2(strings.NewReader(test.input)))
+			p := parser.NewParser(lexer.NewLexer(strings.NewReader(test.input)))
 			got, err := p.ParseOneof()
 			switch {
 			case test.wantErr:

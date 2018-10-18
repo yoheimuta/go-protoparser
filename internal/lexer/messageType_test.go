@@ -43,7 +43,7 @@ func TestLexer2_ReadMessageType(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			lex := lexer.NewLexer2(strings.NewReader(test.input))
+			lex := lexer.NewLexer(strings.NewReader(test.input))
 			got, err := lex.ReadMessageType()
 
 			switch {

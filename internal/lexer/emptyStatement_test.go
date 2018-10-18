@@ -26,7 +26,7 @@ func TestLexer2_ReadEmptyStatement(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			lex := lexer.NewLexer2(strings.NewReader(test.input))
+			lex := lexer.NewLexer(strings.NewReader(test.input))
 			err := lex.ReadEmptyStatement()
 
 			switch {

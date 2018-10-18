@@ -37,6 +37,6 @@ func Parse(input io.Reader, options ...Option) (*parser.Proto, error) {
 		opt(config)
 	}
 
-	p := parser.NewParser(lexer.NewLexer2(input, lexer.WithDebug2(config.debug), lexer.WithPermissive(config.permissive)))
+	p := parser.NewParser(lexer.NewLexer(input, lexer.WithDebug2(config.debug), lexer.WithPermissive(config.permissive)))
 	return p.ParseProto()
 }
