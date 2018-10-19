@@ -60,6 +60,30 @@ func TestParser_ParseOneof(t *testing.T) {
 				OneofName: "foo",
 			},
 		},
+		{
+			name: "parsing an emptyStatement",
+			input: `oneof foo {
+    string name = 4;
+    ;
+    SubMessage sub_message = 9;
+}
+`,
+			wantOneof: &parser.Oneof{
+				OneofFields: []*parser.OneofField{
+					{
+						Type:        "string",
+						FieldName:   "name",
+						FieldNumber: "4",
+					},
+					{
+						Type:        "SubMessage",
+						FieldName:   "sub_message",
+						FieldNumber: "9",
+					},
+				},
+				OneofName: "foo",
+			},
+		},
 	}
 
 	for _, test := range tests {

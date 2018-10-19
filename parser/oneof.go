@@ -1,8 +1,6 @@
 package parser
 
 import (
-	"fmt"
-
 	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 )
 
@@ -42,12 +40,14 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 
 	var oneofFields []*OneofField
 	for {
+		err := p.lex.ReadEmptyStatement()
+		if err == nil {
+			continue
+		}
+
 		oneofField, err := p.parseOneofField()
 		if err != nil {
-			errEmpty := p.lex.ReadEmptyStatement()
-			if errEmpty != nil {
-				return nil, p.unexpected(fmt.Sprintf("oneofField %v | emptyStatement %v", err, errEmpty))
-			}
+			return nil, err
 		}
 		oneofFields = append(oneofFields, oneofField)
 
