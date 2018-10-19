@@ -75,7 +75,7 @@ func (p *Parser) parseFieldOptionsOption() ([]*FieldOption, error) {
 	if p.lex.Token == scanner.TLEFTSQUARE {
 		fieldOptions, err := p.parseFieldOptions()
 		if err != nil {
-			return nil, p.unexpected("fieldOptions")
+			return nil, err
 		}
 
 		p.lex.Next()
@@ -93,7 +93,7 @@ func (p *Parser) parseFieldOptionsOption() ([]*FieldOption, error) {
 func (p *Parser) parseFieldOptions() ([]*FieldOption, error) {
 	opt, err := p.parseFieldOption()
 	if err != nil {
-		return nil, p.unexpected("fieldOption")
+		return nil, err
 	}
 
 	var opts []*FieldOption
@@ -128,15 +128,68 @@ func (p *Parser) parseFieldOption() (*FieldOption, error) {
 		return nil, p.unexpected("=")
 	}
 
-	constant, err := p.lex.ReadConstant()
-	if err != nil {
-		return nil, err
+	var constant string
+	p.lex.Next()
+	token := p.lex.Token
+	p.lex.UnNext()
+	switch token {
+	// go-proto-validators requires this exceptions.
+	case scanner.TLEFTCURLY:
+		if !p.permissive {
+			return nil, p.unexpected("constant or permissive mode")
+		}
+
+		constant, err = p.parseGoProtoValidatorFieldOptionConstant()
+		if err != nil {
+			return nil, err
+		}
+	default:
+		constant, err = p.lex.ReadConstant()
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return &FieldOption{
 		OptionName: optionName,
 		Constant:   constant,
 	}, nil
+}
+
+// goProtoValidatorFieldOptionConstant = "{" ident ":" constant "}"
+func (p *Parser) parseGoProtoValidatorFieldOptionConstant() (string, error) {
+	var ret string
+
+	p.lex.Next()
+	if p.lex.Token != scanner.TLEFTCURLY {
+		return "", p.unexpected("{")
+	}
+	ret += p.lex.Text
+
+	p.lex.Next()
+	if p.lex.Token != scanner.TIDENT {
+		return "", p.unexpected("ident")
+	}
+	ret += p.lex.Text
+
+	p.lex.Next()
+	if p.lex.Token != scanner.TCOLON {
+		return "", p.unexpected(":")
+	}
+	ret += p.lex.Text
+
+	constant, err := p.lex.ReadConstant()
+	if err != nil {
+		return "", err
+	}
+	ret += constant
+
+	p.lex.Next()
+	if p.lex.Token != scanner.TRIGHTCURLY {
+		return "", p.unexpected("}")
+	}
+	ret += p.lex.Text
+	return ret, nil
 }
 
 var typeConstants = map[string]struct{}{

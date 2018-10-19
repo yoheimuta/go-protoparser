@@ -102,7 +102,7 @@ func TestParser_ParseField(t *testing.T) {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			p := parser.NewParser(lexer.NewLexer(strings.NewReader(test.input), lexer.WithPermissive(test.permissive)))
+			p := parser.NewParser(lexer.NewLexer(strings.NewReader(test.input)), parser.WithPermissive(test.permissive))
 			got, err := p.ParseField()
 			switch {
 			case test.wantErr:
