@@ -22,10 +22,9 @@ type Lexer struct {
 	// function is set, the error is reported to os.Stderr.
 	Error func(lexer *Lexer, err error)
 
-	scanner    *scanner.Scanner
-	scanErr    error
-	debug      bool
-	permissive bool
+	scanner *scanner.Scanner
+	scanErr error
+	debug   bool
 }
 
 // Option is an option for lexer.NewLexer.
@@ -35,13 +34,6 @@ type Option func(*Lexer)
 func WithDebug(debug bool) Option {
 	return func(l *Lexer) {
 		l.debug = debug
-	}
-}
-
-// WithPermissive is an option to allow the permissive scan rather than the just documented spec.
-func WithPermissive(permissive bool) Option {
-	return func(l *Lexer) {
-		l.permissive = permissive
 	}
 }
 

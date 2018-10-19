@@ -14,9 +14,7 @@ func (lex *Lexer) ReadConstant() (string, error) {
 		return cons, nil
 	case lex.Token == scanner.TBOOLLIT:
 		return cons, nil
-	case lex.Token == scanner.TIDENT,
-		// go-proto-validators requires this exceptions.
-		lex.Token == scanner.TLEFTCURLY && lex.permissive:
+	case lex.Token == scanner.TIDENT:
 		lex.UnNext()
 		fullIdent, err := lex.ReadFullIdent()
 		if err != nil {
