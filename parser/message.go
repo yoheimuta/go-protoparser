@@ -63,6 +63,14 @@ func (p *Parser) parseMessageBody() ([]interface{}, error) {
 		return nil, p.unexpected("{")
 	}
 
+	// Parses emptyBody. This spec is not documented, but allowed in general. {
+	p.lex.Next()
+	if p.lex.Token == scanner.TRIGHTCURLY {
+		return nil, nil
+	}
+	p.lex.UnNext()
+	// }
+
 	var stmts []interface{}
 
 	for {

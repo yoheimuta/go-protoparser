@@ -107,6 +107,16 @@ message outer {
 				},
 			},
 		},
+		{
+			name: "parsing an empty MessageBody",
+			input: `
+message Outer {
+}
+`,
+			wantMessage: &parser.Message{
+				MessageName: "Outer",
+			},
+		},
 	}
 
 	for _, test := range tests {

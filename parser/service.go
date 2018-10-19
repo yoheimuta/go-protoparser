@@ -234,7 +234,7 @@ func (p *Parser) parseRPCOptions() ([]*Option, error) {
 			}
 			options = append(options, option)
 		case scanner.TRIGHTCURLY:
-			// This spec is not documented, but allowed by practices.
+			// This spec is not documented, but allowed in general.
 			break
 		default:
 			err := p.lex.ReadEmptyStatement()
