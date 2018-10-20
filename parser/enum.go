@@ -6,18 +6,16 @@ import (
 	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 )
 
-// ParseEnumBodyStatementErr consists of the enum body statement parse errors.
-type ParseEnumBodyStatementErr struct {
-	ParseEnumFieldErr      error
-	ParseEmptyStatementErr error
+type parseEnumBodyStatementErr struct {
+	parseEnumFieldErr      error
+	parseEmptyStatementErr error
 }
 
-// Error represents an error condition.
-func (e *ParseEnumBodyStatementErr) Error() string {
+func (e *parseEnumBodyStatementErr) Error() string {
 	return fmt.Sprintf(
 		"%v:%v",
-		e.ParseEnumFieldErr,
-		e.ParseEmptyStatementErr,
+		e.parseEnumFieldErr,
+		e.parseEmptyStatementErr,
 	)
 }
 
@@ -107,9 +105,9 @@ func (p *Parser) parseEnumBody() ([]interface{}, error) {
 				break
 			}
 
-			return nil, &ParseEnumBodyStatementErr{
-				ParseEnumFieldErr:      enumFieldErr,
-				ParseEmptyStatementErr: emptyErr,
+			return nil, &parseEnumBodyStatementErr{
+				parseEnumFieldErr:      enumFieldErr,
+				parseEmptyStatementErr: emptyErr,
 			}
 		}
 
