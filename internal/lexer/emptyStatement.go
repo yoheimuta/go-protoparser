@@ -3,7 +3,8 @@ package lexer
 import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 
 // ReadEmptyStatement reads an emptyStatement.
-// emptyStatement = ";"
+//  emptyStatement = ";"
+//
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#emptystatement
 func (lex *Lexer) ReadEmptyStatement() error {
 	lex.Next()

@@ -18,7 +18,8 @@ type Field struct {
 }
 
 // ParseField parses the field.
-// field = [ "repeated" ] type fieldName "=" fieldNumber [ "[" fieldOptions "]" ] ";"
+//  field = [ "repeated" ] type fieldName "=" fieldNumber [ "[" fieldOptions "]" ] ";"
+//
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#field
 func (p *Parser) ParseField() (*Field, error) {
 	var isRepeated bool

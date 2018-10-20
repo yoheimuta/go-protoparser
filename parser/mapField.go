@@ -12,7 +12,8 @@ type MapField struct {
 }
 
 // ParseMapField parses the mapField.
-// mapField = "map" "<" keyType "," type ">" mapName "=" fieldNumber [ "[" fieldOptions "]" ] ";"
+//  mapField = "map" "<" keyType "," type ">" mapName "=" fieldNumber [ "[" fieldOptions "]" ] ";"
+//
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#map_field
 func (p *Parser) ParseMapField() (*MapField, error) {
 	p.lex.NextKeyword()

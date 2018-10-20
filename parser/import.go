@@ -19,7 +19,8 @@ type Import struct {
 }
 
 // ParseImport parses the import.
-// import = "import" [ "weak" | "public" ] strLit ";"
+//  import = "import" [ "weak" | "public" ] strLit ";"
+//
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#import_statement
 func (p *Parser) ParseImport() (*Import, error) {
 	p.lex.NextKeyword()

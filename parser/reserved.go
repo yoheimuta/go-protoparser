@@ -29,7 +29,8 @@ type Reserved struct {
 }
 
 // ParseReserved parses the reserved.
-// reserved = "reserved" ( ranges | fieldNames ) ";"
+//  reserved = "reserved" ( ranges | fieldNames ) ";"
+//
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#reserved
 func (p *Parser) ParseReserved() (*Reserved, error) {
 	p.lex.NextKeyword()

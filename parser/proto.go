@@ -10,7 +10,8 @@ type Proto struct {
 }
 
 // ParseProto parses the proto.
-// proto = syntax { import | package | option | topLevelDef | emptyStatement }
+//  proto = syntax { import | package | option | topLevelDef | emptyStatement }
+//
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file
 func (p *Parser) ParseProto() (*Proto, error) {
 	syntax, err := p.ParseSyntax()

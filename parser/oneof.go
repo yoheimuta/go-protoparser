@@ -19,8 +19,9 @@ type Oneof struct {
 }
 
 // ParseOneof parses the oneof.
-// oneof = "oneof" oneofName "{" { oneofField | emptyStatement } "}"
-// https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#oneof_and_oneof_field
+//  oneof = "oneof" oneofName "{" { oneofField | emptyStatement } "}"
+//
+// See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#oneof_and_oneof_field
 func (p *Parser) ParseOneof() (*Oneof, error) {
 	p.lex.NextKeyword()
 	if p.lex.Token != scanner.TONEOF {

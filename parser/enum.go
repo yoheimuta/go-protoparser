@@ -44,7 +44,8 @@ type Enum struct {
 }
 
 // ParseEnum parses the enum.
-// enum = "enum" enumName enumBody
+//  enum = "enum" enumName enumBody
+//
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#enum_definition
 func (p *Parser) ParseEnum() (*Enum, error) {
 	p.lex.NextKeyword()
