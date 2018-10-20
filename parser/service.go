@@ -30,7 +30,8 @@ type Service struct {
 }
 
 // ParseService parses the service.
-// service = "service" serviceName "{" { option | rpc | emptyStatement } "}"
+//  service = "service" serviceName "{" { option | rpc | emptyStatement } "}"
+//
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#service_definition
 func (p *Parser) ParseService() (*Service, error) {
 	p.lex.NextKeyword()

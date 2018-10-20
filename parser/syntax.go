@@ -8,7 +8,8 @@ type Syntax struct {
 }
 
 // ParseSyntax parses the syntax.
-// syntax = "syntax" "=" quote "proto3" quote ";"
+//  syntax = "syntax" "=" quote "proto3" quote ";"
+//
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#syntax
 func (p *Parser) ParseSyntax() (*Syntax, error) {
 	p.lex.NextKeyword()
