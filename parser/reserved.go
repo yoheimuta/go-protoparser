@@ -6,15 +6,14 @@ import (
 	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 )
 
-// ParseReservedErr consists of the reserved parser errors.
-type ParseReservedErr struct {
-	ParseRangesErr     error
-	ParseFieldNamesErr error
+type parseReservedErr struct {
+	parseRangesErr     error
+	parseFieldNamesErr error
 }
 
 // Error represents an error condition.
-func (e *ParseReservedErr) Error() string {
-	return fmt.Sprintf("%v:%v", e.ParseRangesErr, e.ParseFieldNamesErr)
+func (e *parseReservedErr) Error() string {
+	return fmt.Sprintf("%v:%v", e.parseRangesErr, e.parseFieldNamesErr)
 }
 
 // Range is a range of field numbers. End is an optional value.
@@ -50,9 +49,9 @@ func (p *Parser) ParseReserved() (*Reserved, error) {
 			return nil, fieldNames, nil
 		}
 
-		return nil, nil, &ParseReservedErr{
-			ParseRangesErr:     err,
-			ParseFieldNamesErr: ferr,
+		return nil, nil, &parseReservedErr{
+			parseRangesErr:     err,
+			parseFieldNamesErr: ferr,
 		}
 	}
 
