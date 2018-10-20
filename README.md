@@ -1,10 +1,10 @@
-# go-protoparser
+# go-protoparser [![GoDoc](https://godoc.org/github.com/yoheimuta/go-protoparser?status.svg)](https://godoc.org/github.com/yoheimuta/go-protoparser)
 
 go-protoparser is a yet another Go package which parses a Protocol Buffer file (proto3).
 
-- Conforms to the exactly official spec. Ref: https://developers.google.com/protocol-buffers/docs/reference/proto3-spec.
+- Conforms to the exactly [official spec](https://developers.google.com/protocol-buffers/docs/reference/proto3-spec). 
 - Undergone rigorous testing. The parser can parses all examples of the official spec well.
-- Easy to use the parser. You can just call the Parser function and receive the Proto struct. See example and usage in detail.
+- Easy to use the parser. You can just call the [Parse function](https://godoc.org/github.com/yoheimuta/go-protoparser#Parse) and receive the [Proto struct](https://godoc.org/github.com/yoheimuta/go-protoparser/parser#Proto).
 
 ### Installation
 
