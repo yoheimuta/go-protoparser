@@ -1,10 +1,9 @@
 package parser_test
 
 import (
+	"reflect"
 	"strings"
 	"testing"
-
-	"reflect"
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
 	"github.com/yoheimuta/go-protoparser/parser"

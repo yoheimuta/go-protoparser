@@ -3,7 +3,6 @@ package lexer
 import (
 	"io"
 	"log"
-
 	"path/filepath"
 	"runtime"
 
