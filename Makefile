@@ -3,11 +3,11 @@ test/all: test/lint test
 
 ## test runs `go test`
 test:
-	time go test -v -p 2 -count 1 -timeout 240s -race ./...
+	go test -v -p 2 -count 1 -timeout 240s -race ./...
 
 ## test runs `go test -run $(RUN)`
 test/run:
-	time go test -v -p 2 -count 1 -timeout 240s -race ./... -run $(RUN)
+	go test -v -p 2 -count 1 -timeout 240s -race ./... -run $(RUN)
 
 ## test/lint runs linter
 test/lint:
