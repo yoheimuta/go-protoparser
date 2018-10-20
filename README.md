@@ -29,7 +29,7 @@ enum EnumAllowingAlias {
 message outer {
     option (my_option).a = true;
     message inner {   // Level 2
-                      int64 ival = 1;
+        int64 ival = 1;
     }
     repeated inner inner_message = 2;
     EnumAllowingAlias enum_field =3;
