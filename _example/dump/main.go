@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	proto      = flag.String("proto", "_testdata/parser.proto", "path to the Protocol Buffer file")
+	proto      = flag.String("proto", "_testdata/simple.proto", "path to the Protocol Buffer file")
 	debug      = flag.Bool("debug", false, "debug flag to output more parsing process detail")
 	permissive = flag.Bool("permissive", true, "permissive flag to allow the permissive parsing rather than the just documented spec")
 )
