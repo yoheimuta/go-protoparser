@@ -1,4 +1,4 @@
-// An example from the official reference
+// An example of the official reference
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file
 syntax = "proto3";
 import public "other.proto";
