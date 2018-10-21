@@ -35,7 +35,7 @@ enum EnumAllowingAlias {
 }
 message outer {
   option (my_option).a = true;
-  message inner {   // Level 2
+  message inner {
     int64 ival = 1;
   }
   repeated inner inner_message = 2;
