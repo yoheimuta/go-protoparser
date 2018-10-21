@@ -169,6 +169,10 @@ option java_package = "com.example.foo";
 // message
 message outer {
 }
+// enum
+enum EnumAllowingAlias {
+  option allow_alias = true;
+}
 `,
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
@@ -216,6 +220,20 @@ syntax2
 						Comments: []*parser.Comment{
 							{
 								Raw: `// message`,
+							},
+						},
+					},
+					&parser.Enum{
+						EnumName: "EnumAllowingAlias",
+						EnumBody: []interface{}{
+							&parser.Option{
+								OptionName: "allow_alias",
+								Constant:   "true",
+							},
+						},
+						Comments: []*parser.Comment{
+							{
+								Raw: `// enum`,
 							},
 						},
 					},

@@ -41,6 +41,9 @@ type Enum struct {
 	// EnumBody can have options and enum fields.
 	// The element of this is the union of an option, enumField and emptyStatement.
 	EnumBody []interface{}
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // ParseEnum parses the enum.

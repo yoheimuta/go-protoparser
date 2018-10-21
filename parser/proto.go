@@ -83,6 +83,7 @@ func (p *Parser) parseProtoBody() ([]interface{}, error) {
 			if err != nil {
 				return nil, err
 			}
+			enum.Comments = comments
 			protoBody = append(protoBody, enum)
 		case scanner.TSERVICE:
 			service, err := p.ParseService()
