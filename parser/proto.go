@@ -39,6 +39,8 @@ func (p *Parser) parseProtoBody() ([]interface{}, error) {
 	var protoBody []interface{}
 
 	for {
+		comments := p.ParseComments()
+
 		if p.IsEOF() {
 			return protoBody, nil
 		}
@@ -53,6 +55,7 @@ func (p *Parser) parseProtoBody() ([]interface{}, error) {
 			if err != nil {
 				return nil, err
 			}
+			importValue.Comments = comments
 			protoBody = append(protoBody, importValue)
 		case scanner.TPACKAGE:
 			packageValue, err := p.ParsePackage()

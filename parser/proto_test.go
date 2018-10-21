@@ -160,6 +160,8 @@ service SearchService {
 syntax2
 */
 syntax = "proto3";
+// import
+import public "other.proto";
 `,
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
@@ -172,6 +174,17 @@ syntax = "proto3";
 							Raw: `/*
 syntax2
 */`,
+						},
+					},
+				},
+				ProtoBody: []interface{}{
+					&parser.Import{
+						Modifier: parser.ImportModifierPublic,
+						Location: `"other.proto"`,
+						Comments: []*parser.Comment{
+							{
+								Raw: `// import`,
+							},
 						},
 					},
 				},
