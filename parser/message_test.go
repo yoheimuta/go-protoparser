@@ -128,6 +128,10 @@ message outer {
   }
   // field
   repeated inner inner_message = 2;
+  // enum
+  enum EnumAllowingAlias {
+    option allow_alias = true;
+  }
   EnumAllowingAlias enum_field =3;
   map<int32, string> my_map = 4;
 }
@@ -167,6 +171,20 @@ message outer {
 						Comments: []*parser.Comment{
 							{
 								Raw: "// field",
+							},
+						},
+					},
+					&parser.Enum{
+						EnumName: "EnumAllowingAlias",
+						EnumBody: []interface{}{
+							&parser.Option{
+								OptionName: "allow_alias",
+								Constant:   "true",
+							},
+						},
+						Comments: []*parser.Comment{
+							{
+								Raw: `// enum`,
 							},
 						},
 					},

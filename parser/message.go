@@ -88,6 +88,7 @@ func (p *Parser) parseMessageBody() ([]interface{}, error) {
 			if err != nil {
 				return nil, err
 			}
+			enum.Comments = comments
 			stmts = append(stmts, enum)
 		case scanner.TMESSAGE:
 			message, err := p.ParseMessage()
