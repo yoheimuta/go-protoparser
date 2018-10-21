@@ -152,6 +152,31 @@ service SearchService {
 				},
 			},
 		},
+		{
+			name: "parsing comments",
+			input: `
+// syntax
+/*
+syntax2
+*/
+syntax = "proto3";
+`,
+			wantProto: &parser.Proto{
+				Syntax: &parser.Syntax{
+					ProtobufVersion: "proto3",
+					Comments: []*parser.Comment{
+						{
+							Raw: `// syntax`,
+						},
+						{
+							Raw: `/*
+syntax2
+*/`,
+						},
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

@@ -14,10 +14,12 @@ type Proto struct {
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file
 func (p *Parser) ParseProto() (*Proto, error) {
+	syntaxComments := p.ParseComments()
 	syntax, err := p.ParseSyntax()
 	if err != nil {
 		return nil, err
 	}
+	syntax.Comments = syntaxComments
 
 	protoBody, err := p.parseProtoBody()
 	if err != nil {
