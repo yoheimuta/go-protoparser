@@ -150,7 +150,7 @@ message outer {
 						Constant:   "true",
 						Comments: []*parser.Comment{
 							{
-								Raw: "// option",
+								Raw: `// option`,
 							},
 						},
 					},
@@ -163,14 +163,14 @@ message outer {
 								FieldNumber: "1",
 								Comments: []*parser.Comment{
 									{
-										Raw: "// Level 2",
+										Raw: `// Level 2`,
 									},
 								},
 							},
 						},
 						Comments: []*parser.Comment{
 							{
-								Raw: "// message",
+								Raw: `// message`,
 							},
 						},
 					},
@@ -181,7 +181,7 @@ message outer {
 						FieldNumber: "2",
 						Comments: []*parser.Comment{
 							{
-								Raw: "// field",
+								Raw: `// field`,
 							},
 						},
 					},
