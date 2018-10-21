@@ -16,6 +16,9 @@ type OneofField struct {
 type Oneof struct {
 	OneofFields []*OneofField
 	OneofName   string
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // ParseOneof parses the oneof.

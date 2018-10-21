@@ -109,6 +109,7 @@ func (p *Parser) parseMessageBody() ([]interface{}, error) {
 			if err != nil {
 				return nil, err
 			}
+			oneof.Comments = comments
 			stmts = append(stmts, oneof)
 		case scanner.TMAP:
 			mapField, err := p.ParseMapField()

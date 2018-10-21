@@ -135,6 +135,11 @@ message outer {
   }
   EnumAllowingAlias enum_field =3;
   map<int32, string> my_map = 4;
+  // oneof
+  oneof foo {
+    string name = 5;
+    SubMessage sub_message = 6;
+  }
 }
 `,
 			wantMessage: &parser.Message{
@@ -204,6 +209,26 @@ message outer {
 						Type:        "string",
 						MapName:     "my_map",
 						FieldNumber: "4",
+					},
+					&parser.Oneof{
+						OneofFields: []*parser.OneofField{
+							{
+								Type:        "string",
+								FieldName:   "name",
+								FieldNumber: "5",
+							},
+							{
+								Type:        "SubMessage",
+								FieldName:   "sub_message",
+								FieldNumber: "6",
+							},
+						},
+						OneofName: "foo",
+						Comments: []*parser.Comment{
+							{
+								Raw: `// oneof`,
+							},
+						},
 					},
 				},
 			},
