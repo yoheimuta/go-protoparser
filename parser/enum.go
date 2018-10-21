@@ -30,6 +30,9 @@ type EnumField struct {
 	Ident            string
 	Number           string
 	EnumValueOptions []*EnumValueOption
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // EmptyStatement represents ";".
@@ -101,6 +104,7 @@ func (p *Parser) parseEnumBody() ([]interface{}, error) {
 		default:
 			enumField, enumFieldErr := p.parseEnumField()
 			if enumFieldErr == nil {
+				enumField.Comments = comments
 				stmts = append(stmts, enumField)
 				break
 			}

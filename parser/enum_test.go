@@ -99,6 +99,7 @@ func TestParser_ParseEnum(t *testing.T) {
 			input: `enum EnumAllowingAlias {
   // option
   option allow_alias = true;
+  // UNKNOWN
   UNKNOWN = 0;
 }
 `,
@@ -117,6 +118,11 @@ func TestParser_ParseEnum(t *testing.T) {
 					&parser.EnumField{
 						Ident:  "UNKNOWN",
 						Number: "0",
+						Comments: []*parser.Comment{
+							{
+								Raw: `// UNKNOWN`,
+							},
+						},
 					},
 				},
 			},
