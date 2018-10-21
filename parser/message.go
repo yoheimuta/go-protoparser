@@ -102,6 +102,7 @@ func (p *Parser) parseMessageBody() ([]interface{}, error) {
 			if err != nil {
 				return nil, err
 			}
+			option.Comments = comments
 			stmts = append(stmts, option)
 		case scanner.TONEOF:
 			oneof, err := p.ParseOneof()

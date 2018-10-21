@@ -121,6 +121,7 @@ message Outer {
 			name: "parsing comments",
 			input: `
 message outer {
+  // option
   option (my_option).a = true;
   // message
   message inner {   // Level 2
@@ -142,6 +143,11 @@ message outer {
 					&parser.Option{
 						OptionName: "(my_option).a",
 						Constant:   "true",
+						Comments: []*parser.Comment{
+							{
+								Raw: "// option",
+							},
+						},
 					},
 					&parser.Message{
 						MessageName: "inner",
