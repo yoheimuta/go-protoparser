@@ -15,6 +15,9 @@ type Field struct {
 	FieldName    string
 	FieldNumber  string
 	FieldOptions []*FieldOption
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // ParseField parses the field.

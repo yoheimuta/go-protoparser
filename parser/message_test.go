@@ -25,7 +25,7 @@ func TestParser_ParseMessage(t *testing.T) {
 			input: `
 message Outer {
   option (my_option).a = true;
-  message Inner {   // Level 2
+  message Inner {
     int64 ival = 1;
   }
   map<int32, string> my_map = 2;
@@ -62,7 +62,7 @@ message Outer {
 			input: `
 message outer {
   option (my_option).a = true;
-  message inner {   // Level 2
+  message inner {
     int64 ival = 1;
   }
   repeated inner inner_message = 2;
@@ -126,6 +126,7 @@ message outer {
   message inner {   // Level 2
     int64 ival = 1;
   }
+  // field
   repeated inner inner_message = 2;
   EnumAllowingAlias enum_field =3;
   map<int32, string> my_map = 4;
@@ -145,6 +146,11 @@ message outer {
 								Type:        "int64",
 								FieldName:   "ival",
 								FieldNumber: "1",
+								Comments: []*parser.Comment{
+									{
+										Raw: "// Level 2",
+									},
+								},
 							},
 						},
 						Comments: []*parser.Comment{
@@ -158,6 +164,11 @@ message outer {
 						Type:        "inner",
 						FieldName:   "inner_message",
 						FieldNumber: "2",
+						Comments: []*parser.Comment{
+							{
+								Raw: "// field",
+							},
+						},
 					},
 					&parser.Field{
 						Type:        "EnumAllowingAlias",

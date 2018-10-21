@@ -123,6 +123,7 @@ func (p *Parser) parseMessageBody() ([]interface{}, error) {
 		default:
 			field, fieldErr := p.ParseField()
 			if fieldErr == nil {
+				field.Comments = comments
 				stmts = append(stmts, field)
 				break
 			}
