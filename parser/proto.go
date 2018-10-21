@@ -76,6 +76,7 @@ func (p *Parser) parseProtoBody() ([]interface{}, error) {
 			if err != nil {
 				return nil, err
 			}
+			message.Comments = comments
 			protoBody = append(protoBody, message)
 		case scanner.TENUM:
 			enum, err := p.ParseEnum()

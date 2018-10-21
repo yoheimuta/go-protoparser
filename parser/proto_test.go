@@ -166,6 +166,9 @@ import public "other.proto";
 package foo.bar;
 // option
 option java_package = "com.example.foo";
+// message
+message outer {
+}
 `,
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
@@ -205,6 +208,14 @@ syntax2
 						Comments: []*parser.Comment{
 							{
 								Raw: `// option`,
+							},
+						},
+					},
+					&parser.Message{
+						MessageName: "outer",
+						Comments: []*parser.Comment{
+							{
+								Raw: `// message`,
 							},
 						},
 					},

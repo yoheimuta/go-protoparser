@@ -25,6 +25,9 @@ type Message struct {
 	// MessageBody can have fields, nested enum definitions, nested message definitions,
 	// options, oneofs, map fields, and reserved statements.
 	MessageBody []interface{}
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // ParseMessage parses the message.
