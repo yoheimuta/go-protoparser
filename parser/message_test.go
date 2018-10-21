@@ -117,6 +117,62 @@ message Outer {
 				MessageName: "Outer",
 			},
 		},
+		{
+			name: "parsing comments",
+			input: `
+message outer {
+  option (my_option).a = true;
+  // message
+  message inner {   // Level 2
+    int64 ival = 1;
+  }
+  repeated inner inner_message = 2;
+  EnumAllowingAlias enum_field =3;
+  map<int32, string> my_map = 4;
+}
+`,
+			wantMessage: &parser.Message{
+				MessageName: "outer",
+				MessageBody: []interface{}{
+					&parser.Option{
+						OptionName: "(my_option).a",
+						Constant:   "true",
+					},
+					&parser.Message{
+						MessageName: "inner",
+						MessageBody: []interface{}{
+							&parser.Field{
+								Type:        "int64",
+								FieldName:   "ival",
+								FieldNumber: "1",
+							},
+						},
+						Comments: []*parser.Comment{
+							{
+								Raw: "// message",
+							},
+						},
+					},
+					&parser.Field{
+						IsRepeated:  true,
+						Type:        "inner",
+						FieldName:   "inner_message",
+						FieldNumber: "2",
+					},
+					&parser.Field{
+						Type:        "EnumAllowingAlias",
+						FieldName:   "enum_field",
+						FieldNumber: "3",
+					},
+					&parser.MapField{
+						KeyType:     "int32",
+						Type:        "string",
+						MapName:     "my_map",
+						FieldNumber: "4",
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

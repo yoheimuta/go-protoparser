@@ -76,6 +76,8 @@ func (p *Parser) parseMessageBody() ([]interface{}, error) {
 	var stmts []interface{}
 
 	for {
+		comments := p.ParseComments()
+
 		p.lex.NextKeyword()
 		token := p.lex.Token
 		p.lex.UnNext()
@@ -92,6 +94,7 @@ func (p *Parser) parseMessageBody() ([]interface{}, error) {
 			if err != nil {
 				return nil, err
 			}
+			message.Comments = comments
 			stmts = append(stmts, message)
 		case scanner.TOPTION:
 			option, err := p.ParseOption()
