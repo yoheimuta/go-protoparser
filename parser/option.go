@@ -8,6 +8,9 @@ import (
 type Option struct {
 	OptionName string
 	Constant   string
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // ParseOption parses the option.

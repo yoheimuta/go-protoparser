@@ -69,6 +69,7 @@ func (p *Parser) parseProtoBody() ([]interface{}, error) {
 			if err != nil {
 				return nil, err
 			}
+			option.Comments = comments
 			protoBody = append(protoBody, option)
 		case scanner.TMESSAGE:
 			message, err := p.ParseMessage()

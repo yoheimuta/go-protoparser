@@ -164,6 +164,8 @@ syntax = "proto3";
 import public "other.proto";
 /* package */
 package foo.bar;
+// option
+option java_package = "com.example.foo";
 `,
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
@@ -194,6 +196,15 @@ syntax2
 						Comments: []*parser.Comment{
 							{
 								Raw: `/* package */`,
+							},
+						},
+					},
+					&parser.Option{
+						OptionName: "java_package",
+						Constant:   `"com.example.foo"`,
+						Comments: []*parser.Comment{
+							{
+								Raw: `// option`,
 							},
 						},
 					},
