@@ -141,6 +141,8 @@ message outer {
     string name = 5;
     SubMessage sub_message = 6;
   }
+  // reserved
+  reserved "bar";
 }
 `,
 			wantMessage: &parser.Message{
@@ -233,6 +235,16 @@ message outer {
 						Comments: []*parser.Comment{
 							{
 								Raw: `// oneof`,
+							},
+						},
+					},
+					&parser.Reserved{
+						FieldNames: []string{
+							`"bar"`,
+						},
+						Comments: []*parser.Comment{
+							{
+								Raw: `// reserved`,
 							},
 						},
 					},

@@ -26,6 +26,9 @@ type Range struct {
 type Reserved struct {
 	Ranges     []*Range
 	FieldNames []string
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // ParseReserved parses the reserved.
