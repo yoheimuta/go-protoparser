@@ -162,6 +162,8 @@ syntax2
 syntax = "proto3";
 // import
 import public "other.proto";
+/* package */
+package foo.bar;
 `,
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
@@ -184,6 +186,14 @@ syntax2
 						Comments: []*parser.Comment{
 							{
 								Raw: `// import`,
+							},
+						},
+					},
+					&parser.Package{
+						Name: `foo.bar`,
+						Comments: []*parser.Comment{
+							{
+								Raw: `/* package */`,
 							},
 						},
 					},
