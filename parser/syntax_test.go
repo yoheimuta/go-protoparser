@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
+	"github.com/yoheimuta/go-protoparser/internal/util_test"
 	"github.com/yoheimuta/go-protoparser/parser"
 )
 
@@ -27,6 +28,40 @@ func TestParser_ParseSyntax(t *testing.T) {
 				ProtobufVersion: "proto3",
 			},
 		},
+		{
+			name: "parsing a comment",
+			input: `
+// use proto3
+syntax = "proto3";
+`,
+			wantSyntax: &parser.Syntax{
+				ProtobufVersion: "proto3",
+				Comments: []*parser.Comment{
+					{
+						Raw: `// use proto3`,
+					},
+				},
+			},
+		},
+		{
+			name: "parsing a comment",
+			input: `
+/*
+use proto3
+*/
+syntax = "proto3";
+`,
+			wantSyntax: &parser.Syntax{
+				ProtobufVersion: "proto3",
+				Comments: []*parser.Comment{
+					{
+						Raw: `/*
+use proto3
+*/`,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
@@ -46,7 +81,7 @@ func TestParser_ParseSyntax(t *testing.T) {
 			}
 
 			if !reflect.DeepEqual(got, test.wantSyntax) {
-				t.Errorf("got %v, but want %v", got, test.wantSyntax)
+				t.Errorf("got %v, but want %v", util_test.PrettyFormat(got), util_test.PrettyFormat(test.wantSyntax))
 			}
 
 			if !p.IsEOF() {
