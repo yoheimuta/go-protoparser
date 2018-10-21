@@ -36,15 +36,16 @@ func (c *Comment) Lines() []string {
 }
 
 // ParseComments parsers a sequence of comments.
-//  comments = comment { comment }
+//  comments = { comment }
 //
 // See https://developers.google.com/protocol-buffers/docs/proto3#adding-comments
-func (p *Parser) ParseComments() ([]*Comment, error) {
+func (p *Parser) ParseComments() []*Comment {
 	var comments []*Comment
 	for {
 		comment, err := p.parseComment()
 		if err != nil {
-			return comments, err
+			// ignores the err because the comment is optional.
+			return comments
 		}
 		comments = append(comments, comment)
 	}

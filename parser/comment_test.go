@@ -187,10 +187,10 @@ comment
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			p := parser.NewParser(lexer.NewLexer(strings.NewReader(test.input)))
-			got, err := p.ParseComments()
+			got := p.ParseComments()
 
 			if !reflect.DeepEqual(got, test.wantComments) {
-				t.Errorf("got %v, but want %v, err %v", util_test.PrettyFormat(got), util_test.PrettyFormat(test.wantComments), err)
+				t.Errorf("got %v, but want %v", util_test.PrettyFormat(got), util_test.PrettyFormat(test.wantComments))
 			}
 
 			if !p.IsEOF() {

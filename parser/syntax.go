@@ -5,7 +5,7 @@ import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 // Syntax is used to define the protobuf version.
 type Syntax struct {
 	ProtobufVersion string
-	// Comments are the only ones placed at the beginning.
+	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
 }
 
@@ -14,7 +14,7 @@ type Syntax struct {
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#syntax
 func (p *Parser) ParseSyntax() (*Syntax, error) {
-	comments, _ := p.ParseComments()
+	comments := p.ParseComments()
 
 	p.lex.NextKeyword()
 	if p.lex.Token != scanner.TSYNTAX {
