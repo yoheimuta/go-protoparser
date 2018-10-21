@@ -173,6 +173,10 @@ message outer {
 enum EnumAllowingAlias {
   option allow_alias = true;
 }
+// service
+service SearchService {
+  rpc Search (SearchRequest) returns (SearchResponse);
+}
 `,
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
@@ -234,6 +238,25 @@ syntax2
 						Comments: []*parser.Comment{
 							{
 								Raw: `// enum`,
+							},
+						},
+					},
+					&parser.Service{
+						ServiceName: "SearchService",
+						ServiceBody: []interface{}{
+							&parser.RPC{
+								RPCName: "Search",
+								RPCRequest: &parser.RPCRequest{
+									MessageType: "SearchRequest",
+								},
+								RPCResponse: &parser.RPCResponse{
+									MessageType: "SearchResponse",
+								},
+							},
+						},
+						Comments: []*parser.Comment{
+							{
+								Raw: `// service`,
 							},
 						},
 					},

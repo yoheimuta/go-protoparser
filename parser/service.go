@@ -27,6 +27,9 @@ type Service struct {
 	ServiceName string
 	// ServiceBody can have options and rpcs.
 	ServiceBody []interface{}
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // ParseService parses the service.

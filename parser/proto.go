@@ -90,6 +90,7 @@ func (p *Parser) parseProtoBody() ([]interface{}, error) {
 			if err != nil {
 				return nil, err
 			}
+			service.Comments = comments
 			protoBody = append(protoBody, service)
 		default:
 			err := p.lex.ReadEmptyStatement()
