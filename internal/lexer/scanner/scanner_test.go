@@ -318,12 +318,8 @@ func TestScanner_UnScan(t *testing.T) {
 				t.Errorf("got err %v, but want nil", err)
 				return
 			}
-			eof, _, _ := s.Scan()
-			if eof != scanner.TEOF {
-				t.Errorf("got %v, but want TEOF", eof)
-			}
 
-			s.UnScan(text)
+			s.UnScan()
 			token2, text2, err := s.Scan()
 			if err != nil {
 				t.Errorf("got err %v, but want nil", err)
@@ -335,7 +331,7 @@ func TestScanner_UnScan(t *testing.T) {
 			if text != text2 {
 				t.Errorf("got %v, but want %v", text, text2)
 			}
-			eof, _, _ = s.Scan()
+			eof, _, _ := s.Scan()
 			if eof != scanner.TEOF {
 				t.Errorf("got %v, but want TEOF", eof)
 			}

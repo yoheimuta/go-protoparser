@@ -12,6 +12,7 @@ var eof = rune(0)
 type Scanner struct {
 	r              *bufio.Reader
 	lastReadBuffer []rune
+	lastScanRaw    []rune
 
 	// The Mode field controls which tokens are recognized.
 	Mode Mode
@@ -24,7 +25,14 @@ func NewScanner(r io.Reader) *Scanner {
 	}
 }
 
-func (s *Scanner) read() rune {
+func (s *Scanner) read() (r rune) {
+	defer func() {
+		if r == eof {
+			return
+		}
+		s.lastScanRaw = append(s.lastScanRaw, r)
+	}()
+
 	if 0 < len(s.lastReadBuffer) {
 		var ch rune
 		ch, s.lastReadBuffer = s.lastReadBuffer[len(s.lastReadBuffer)-1], s.lastReadBuffer[:len(s.lastReadBuffer)-1]
@@ -43,14 +51,17 @@ func (s *Scanner) unread(ch rune) {
 
 func (s *Scanner) peek() rune {
 	ch := s.read()
-	s.unread(ch)
+	if ch != eof {
+		s.lastScanRaw = s.lastScanRaw[0 : len(s.lastScanRaw)-1]
+		s.unread(ch)
+	}
 	return ch
 }
 
 // UnScan put the specified text back to the read buffer.
-func (s *Scanner) UnScan(text string) {
+func (s *Scanner) UnScan() {
 	var reversedRunes []rune
-	for _, ch := range text {
+	for _, ch := range s.lastScanRaw {
 		reversedRunes = append([]rune{ch}, reversedRunes...)
 	}
 	for _, ch := range reversedRunes {
@@ -59,13 +70,18 @@ func (s *Scanner) UnScan(text string) {
 }
 
 // Scan returns the next token and text value.
-func (s *Scanner) Scan() (Token, string, error) {
+func (s *Scanner) Scan() (tok Token, text string, err error) {
+	s.lastScanRaw = s.lastScanRaw[:0]
+	return s.scan()
+}
+
+func (s *Scanner) scan() (Token, string, error) {
 	ch := s.peek()
 
 	switch {
 	case unicode.IsSpace(ch):
 		s.read()
-		return s.Scan()
+		return s.scan()
 	case s.isEOF():
 		return TEOF, "", nil
 	case isLetter(ch):
@@ -88,7 +104,7 @@ func (s *Scanner) Scan() (Token, string, error) {
 		if s.Mode&ScanComment != 0 {
 			return TCOMMENT, lit, nil
 		}
-		return s.Scan()
+		return s.scan()
 	case isQuote(ch) && s.Mode&ScanStrLit != 0:
 		lit, err := s.scanStrLit()
 		if err != nil {

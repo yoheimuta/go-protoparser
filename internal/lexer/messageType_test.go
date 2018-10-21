@@ -63,7 +63,7 @@ func TestLexer2_ReadMessageType(t *testing.T) {
 
 			lex.Next()
 			if lex.IsEOF() != test.wantIsEOF {
-				t.Errorf("got %v, but want %v", lex.IsEOF(), test.wantIsEOF)
+				t.Errorf("got %v(%v)(%v), but want %v", lex.IsEOF(), lex.Token, lex.Text, test.wantIsEOF)
 			}
 		})
 	}

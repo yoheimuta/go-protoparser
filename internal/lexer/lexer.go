@@ -127,6 +127,6 @@ func (lex *Lexer) LatestErr() error {
 
 // UnNext put the latest text back to the read buffer.
 func (lex *Lexer) UnNext() {
-	lex.scanner.UnScan(lex.Text)
+	lex.scanner.UnScan()
 	lex.Token = scanner.TILLEGAL
 }
