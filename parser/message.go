@@ -116,6 +116,7 @@ func (p *Parser) parseMessageBody() ([]interface{}, error) {
 			if err != nil {
 				return nil, err
 			}
+			mapField.Comments = comments
 			stmts = append(stmts, mapField)
 		case scanner.TRESERVED:
 			reserved, err := p.ParseReserved()

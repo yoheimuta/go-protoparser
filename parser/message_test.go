@@ -134,6 +134,7 @@ message outer {
     option allow_alias = true;
   }
   EnumAllowingAlias enum_field =3;
+  // map
   map<int32, string> my_map = 4;
   // oneof
   oneof foo {
@@ -209,6 +210,11 @@ message outer {
 						Type:        "string",
 						MapName:     "my_map",
 						FieldNumber: "4",
+						Comments: []*parser.Comment{
+							{
+								Raw: `// map`,
+							},
+						},
 					},
 					&parser.Oneof{
 						OneofFields: []*parser.OneofField{
