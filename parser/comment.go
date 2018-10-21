@@ -1,6 +1,10 @@
 package parser
 
-import "strings"
+import (
+	"strings"
+
+	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+)
 
 const (
 	cStyleCommentPrefix     = "/*"
@@ -29,4 +33,31 @@ func (c *Comment) Lines() []string {
 		raw = strings.TrimPrefix(raw, cPlusStyleCommentPrefix)
 	}
 	return strings.Split(raw, "\n")
+}
+
+// ParseComments parsers a sequence of comments.
+//  comments = comment { comment }
+//
+// See https://developers.google.com/protocol-buffers/docs/proto3#adding-comments
+func (p *Parser) ParseComments() ([]*Comment, error) {
+	var comments []*Comment
+	for {
+		comment, err := p.parseComment()
+		if err != nil {
+			return comments, err
+		}
+		comments = append(comments, comment)
+	}
+}
+
+// See https://developers.google.com/protocol-buffers/docs/proto3#adding-comments
+func (p *Parser) parseComment() (*Comment, error) {
+	p.lex.NextComment()
+	if p.lex.Token == scanner.TCOMMENT {
+		return &Comment{
+			Raw: p.lex.Text,
+		}, nil
+	}
+	defer p.lex.UnNext()
+	return nil, p.unexpected("comment")
 }
