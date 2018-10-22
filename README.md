@@ -18,6 +18,9 @@ A Protocol Buffer file versioned 3 which is [an example of the official referenc
 
 ```proto
 syntax = "proto3";
+// An example of the official reference
+// See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file
+package examplepb;
 import public "other.proto";
 option java_package = "com.example.foo";
 enum EnumAllowingAlias {
@@ -42,33 +45,50 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
 ```json
 {
   "Syntax": {
-    "ProtobufVersion": "proto3"
+    "ProtobufVersion": "proto3",
+    "Comments": null
   },
   "ProtoBody": [
     {
+      "Name": "examplepb",
+      "Comments": [
+        {
+          "Raw": "// An example of the official reference"
+        },
+        {
+          "Raw": "// See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file"
+        }
+      ]
+    },
+    {
       "Modifier": 1,
-      "Location": "\"other.proto\""
+      "Location": "\"other.proto\"",
+      "Comments": null
     },
     {
       "OptionName": "java_package",
-      "Constant": "\"com.example.foo\""
+      "Constant": "\"com.example.foo\"",
+      "Comments": null
     },
     {
       "EnumName": "EnumAllowingAlias",
       "EnumBody": [
         {
           "OptionName": "allow_alias",
-          "Constant": "true"
+          "Constant": "true",
+          "Comments": null
         },
         {
           "Ident": "UNKNOWN",
           "Number": "0",
-          "EnumValueOptions": null
+          "EnumValueOptions": null,
+          "Comments": null
         },
         {
           "Ident": "STARTED",
           "Number": "1",
-          "EnumValueOptions": null
+          "EnumValueOptions": null,
+          "Comments": null
         },
         {
           "Ident": "RUNNING",
@@ -78,16 +98,19 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
               "OptionName": "(custom_option)",
               "Constant": "\"hello world\""
             }
-          ]
+          ],
+          "Comments": null
         }
-      ]
+      ],
+      "Comments": null
     },
     {
       "MessageName": "outer",
       "MessageBody": [
         {
           "OptionName": "(my_option).a",
-          "Constant": "true"
+          "Constant": "true",
+          "Comments": null
         },
         {
           "MessageName": "inner",
@@ -97,32 +120,42 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
               "Type": "int64",
               "FieldName": "ival",
               "FieldNumber": "1",
-              "FieldOptions": null
+              "FieldOptions": null,
+              "Comments": [
+                {
+                  "Raw": "// Level 2"
+                }
+              ]
             }
-          ]
+          ],
+          "Comments": null
         },
         {
           "IsRepeated": true,
           "Type": "inner",
           "FieldName": "inner_message",
           "FieldNumber": "2",
-          "FieldOptions": null
+          "FieldOptions": null,
+          "Comments": null
         },
         {
           "IsRepeated": false,
           "Type": "EnumAllowingAlias",
           "FieldName": "enum_field",
           "FieldNumber": "3",
-          "FieldOptions": null
+          "FieldOptions": null,
+          "Comments": null
         },
         {
           "KeyType": "int32",
           "Type": "string",
           "MapName": "my_map",
           "FieldNumber": "4",
-          "FieldOptions": null
+          "FieldOptions": null,
+          "Comments": null
         }
-      ]
+      ],
+      "Comments": null
     }
   ]
 }
@@ -161,10 +194,6 @@ func main() {
 	os.Exit(run())
 }
 ```
-
-### TODO
-
-- [ ] Parse comments. Currently, the parser ignores comments.
 
 ### Motivation
 
