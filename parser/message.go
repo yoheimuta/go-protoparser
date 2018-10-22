@@ -25,6 +25,9 @@ type Message struct {
 	// MessageBody can have fields, nested enum definitions, nested message definitions,
 	// options, oneofs, map fields, and reserved statements.
 	MessageBody []interface{}
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // ParseMessage parses the message.
@@ -73,6 +76,8 @@ func (p *Parser) parseMessageBody() ([]interface{}, error) {
 	var stmts []interface{}
 
 	for {
+		comments := p.ParseComments()
+
 		p.lex.NextKeyword()
 		token := p.lex.Token
 		p.lex.UnNext()
@@ -83,40 +88,47 @@ func (p *Parser) parseMessageBody() ([]interface{}, error) {
 			if err != nil {
 				return nil, err
 			}
+			enum.Comments = comments
 			stmts = append(stmts, enum)
 		case scanner.TMESSAGE:
 			message, err := p.ParseMessage()
 			if err != nil {
 				return nil, err
 			}
+			message.Comments = comments
 			stmts = append(stmts, message)
 		case scanner.TOPTION:
 			option, err := p.ParseOption()
 			if err != nil {
 				return nil, err
 			}
+			option.Comments = comments
 			stmts = append(stmts, option)
 		case scanner.TONEOF:
 			oneof, err := p.ParseOneof()
 			if err != nil {
 				return nil, err
 			}
+			oneof.Comments = comments
 			stmts = append(stmts, oneof)
 		case scanner.TMAP:
 			mapField, err := p.ParseMapField()
 			if err != nil {
 				return nil, err
 			}
+			mapField.Comments = comments
 			stmts = append(stmts, mapField)
 		case scanner.TRESERVED:
 			reserved, err := p.ParseReserved()
 			if err != nil {
 				return nil, err
 			}
+			reserved.Comments = comments
 			stmts = append(stmts, reserved)
 		default:
 			field, fieldErr := p.ParseField()
 			if fieldErr == nil {
+				field.Comments = comments
 				stmts = append(stmts, field)
 				break
 			}

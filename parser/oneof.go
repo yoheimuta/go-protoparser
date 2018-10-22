@@ -10,12 +10,18 @@ type OneofField struct {
 	FieldName    string
 	FieldNumber  string
 	FieldOptions []*FieldOption
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // Oneof consists of oneof fields and a oneof name.
 type Oneof struct {
 	OneofFields []*OneofField
 	OneofName   string
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // ParseOneof parses the oneof.
@@ -41,6 +47,8 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 
 	var oneofFields []*OneofField
 	for {
+		comments := p.ParseComments()
+
 		err := p.lex.ReadEmptyStatement()
 		if err == nil {
 			continue
@@ -50,6 +58,7 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 		if err != nil {
 			return nil, err
 		}
+		oneofField.Comments = comments
 		oneofFields = append(oneofFields, oneofField)
 
 		p.lex.Next()

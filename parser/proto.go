@@ -14,10 +14,12 @@ type Proto struct {
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file
 func (p *Parser) ParseProto() (*Proto, error) {
+	syntaxComments := p.ParseComments()
 	syntax, err := p.ParseSyntax()
 	if err != nil {
 		return nil, err
 	}
+	syntax.Comments = syntaxComments
 
 	protoBody, err := p.parseProtoBody()
 	if err != nil {
@@ -37,6 +39,8 @@ func (p *Parser) parseProtoBody() ([]interface{}, error) {
 	var protoBody []interface{}
 
 	for {
+		comments := p.ParseComments()
+
 		if p.IsEOF() {
 			return protoBody, nil
 		}
@@ -51,36 +55,42 @@ func (p *Parser) parseProtoBody() ([]interface{}, error) {
 			if err != nil {
 				return nil, err
 			}
+			importValue.Comments = comments
 			protoBody = append(protoBody, importValue)
 		case scanner.TPACKAGE:
 			packageValue, err := p.ParsePackage()
 			if err != nil {
 				return nil, err
 			}
+			packageValue.Comments = comments
 			protoBody = append(protoBody, packageValue)
 		case scanner.TOPTION:
 			option, err := p.ParseOption()
 			if err != nil {
 				return nil, err
 			}
+			option.Comments = comments
 			protoBody = append(protoBody, option)
 		case scanner.TMESSAGE:
 			message, err := p.ParseMessage()
 			if err != nil {
 				return nil, err
 			}
+			message.Comments = comments
 			protoBody = append(protoBody, message)
 		case scanner.TENUM:
 			enum, err := p.ParseEnum()
 			if err != nil {
 				return nil, err
 			}
+			enum.Comments = comments
 			protoBody = append(protoBody, enum)
 		case scanner.TSERVICE:
 			service, err := p.ParseService()
 			if err != nil {
 				return nil, err
 			}
+			service.Comments = comments
 			protoBody = append(protoBody, service)
 		default:
 			err := p.lex.ReadEmptyStatement()

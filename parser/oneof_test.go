@@ -84,6 +84,41 @@ func TestParser_ParseOneof(t *testing.T) {
 				OneofName: "foo",
 			},
 		},
+		{
+			name: "parsing comments",
+			input: `oneof foo {
+    // name
+    string name = 4;
+    // sub_message
+    SubMessage sub_message = 9;
+}
+`,
+			wantOneof: &parser.Oneof{
+				OneofFields: []*parser.OneofField{
+					{
+						Type:        "string",
+						FieldName:   "name",
+						FieldNumber: "4",
+						Comments: []*parser.Comment{
+							{
+								Raw: `// name`,
+							},
+						},
+					},
+					{
+						Type:        "SubMessage",
+						FieldName:   "sub_message",
+						FieldNumber: "9",
+						Comments: []*parser.Comment{
+							{
+								Raw: `// sub_message`,
+							},
+						},
+					},
+				},
+				OneofName: "foo",
+			},
+		},
 	}
 
 	for _, test := range tests {

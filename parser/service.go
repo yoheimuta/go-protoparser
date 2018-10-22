@@ -20,6 +20,9 @@ type RPC struct {
 	RPCRequest  *RPCRequest
 	RPCResponse *RPCResponse
 	Options     []*Option
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // Service consists of RPCs.
@@ -27,6 +30,9 @@ type Service struct {
 	ServiceName string
 	// ServiceBody can have options and rpcs.
 	ServiceBody []interface{}
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // ParseService parses the service.
@@ -66,6 +72,8 @@ func (p *Parser) parseServiceBody() ([]interface{}, error) {
 
 	var stmts []interface{}
 	for {
+		comments := p.ParseComments()
+
 		p.lex.NextKeyword()
 		token := p.lex.Token
 		p.lex.UnNext()
@@ -76,12 +84,14 @@ func (p *Parser) parseServiceBody() ([]interface{}, error) {
 			if err != nil {
 				return nil, err
 			}
+			option.Comments = comments
 			stmts = append(stmts, option)
 		case scanner.TRPC:
 			rpc, err := p.parseRPC()
 			if err != nil {
 				return nil, err
 			}
+			rpc.Comments = comments
 			stmts = append(stmts, rpc)
 		default:
 			err := p.lex.ReadEmptyStatement()

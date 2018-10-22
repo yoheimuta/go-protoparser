@@ -5,6 +5,9 @@ import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 // Package can be used to prevent name clashes between protocol message types.
 type Package struct {
 	Name string
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // ParsePackage parses the package.

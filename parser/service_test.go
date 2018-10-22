@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
+	"github.com/yoheimuta/go-protoparser/internal/util_test"
 	"github.com/yoheimuta/go-protoparser/parser"
 )
 
@@ -93,6 +94,11 @@ service ItemService {
 						RPCResponse: &parser.RPCResponse{
 							MessageType: "aggregatespb.UserItemAggregate",
 						},
+						Comments: []*parser.Comment{
+							{
+								Raw: "// CreateUserItem is a method to create a user's item.",
+							},
+						},
 					},
 					&parser.RPC{
 						RPCName: "UpdateUserItem",
@@ -101,6 +107,11 @@ service ItemService {
 						},
 						RPCResponse: &parser.RPCResponse{
 							MessageType: "entitiespb.UserItem",
+						},
+						Comments: []*parser.Comment{
+							{
+								Raw: "// UpdateUserItem is a method to update a user's item.",
+							},
 						},
 					},
 				},
@@ -125,7 +136,7 @@ service ItemService {
 			}
 
 			if !reflect.DeepEqual(got, test.wantService) {
-				t.Errorf("got %v, but want %v", got, test.wantService)
+				t.Errorf("got %v, but want %v", util_test.PrettyFormat(got), util_test.PrettyFormat(test.wantService))
 			}
 
 			if !p.IsEOF() {

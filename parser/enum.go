@@ -30,6 +30,9 @@ type EnumField struct {
 	Ident            string
 	Number           string
 	EnumValueOptions []*EnumValueOption
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // EmptyStatement represents ";".
@@ -41,6 +44,9 @@ type Enum struct {
 	// EnumBody can have options and enum fields.
 	// The element of this is the union of an option, enumField and emptyStatement.
 	EnumBody []interface{}
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // ParseEnum parses the enum.
@@ -81,6 +87,8 @@ func (p *Parser) parseEnumBody() ([]interface{}, error) {
 	var stmts []interface{}
 
 	for {
+		comments := p.ParseComments()
+
 		p.lex.NextKeyword()
 		token := p.lex.Token
 		p.lex.UnNext()
@@ -91,10 +99,12 @@ func (p *Parser) parseEnumBody() ([]interface{}, error) {
 			if err != nil {
 				return nil, err
 			}
+			option.Comments = comments
 			stmts = append(stmts, option)
 		default:
 			enumField, enumFieldErr := p.parseEnumField()
 			if enumFieldErr == nil {
+				enumField.Comments = comments
 				stmts = append(stmts, enumField)
 				break
 			}

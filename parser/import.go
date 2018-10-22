@@ -16,6 +16,9 @@ const (
 type Import struct {
 	Modifier ImportModifier
 	Location string
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // ParseImport parses the import.

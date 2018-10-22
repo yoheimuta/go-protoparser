@@ -5,6 +5,9 @@ import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 // Syntax is used to define the protobuf version.
 type Syntax struct {
 	ProtobufVersion string
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // ParseSyntax parses the syntax.

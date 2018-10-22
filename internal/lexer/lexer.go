@@ -100,6 +100,11 @@ func (lex *Lexer) NextNumberLit() {
 	lex.nextWithSpecificMode(scanner.ScanNumberLit)
 }
 
+// NextComment scans the read buffer with ScanComment mode.
+func (lex *Lexer) NextComment() {
+	lex.nextWithSpecificMode(scanner.ScanComment)
+}
+
 func (lex *Lexer) nextWithSpecificMode(nextMode scanner.Mode) {
 	mode := lex.scanner.Mode
 	defer func() {
@@ -122,6 +127,6 @@ func (lex *Lexer) LatestErr() error {
 
 // UnNext put the latest text back to the read buffer.
 func (lex *Lexer) UnNext() {
-	lex.scanner.UnScan(lex.Text)
+	lex.scanner.UnScan()
 	lex.Token = scanner.TILLEGAL
 }

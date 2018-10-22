@@ -94,6 +94,39 @@ func TestParser_ParseEnum(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "parsing comments",
+			input: `enum EnumAllowingAlias {
+  // option
+  option allow_alias = true;
+  // UNKNOWN
+  UNKNOWN = 0;
+}
+`,
+			wantEnum: &parser.Enum{
+				EnumName: "EnumAllowingAlias",
+				EnumBody: []interface{}{
+					&parser.Option{
+						OptionName: "allow_alias",
+						Constant:   "true",
+						Comments: []*parser.Comment{
+							{
+								Raw: `// option`,
+							},
+						},
+					},
+					&parser.EnumField{
+						Ident:  "UNKNOWN",
+						Number: "0",
+						Comments: []*parser.Comment{
+							{
+								Raw: `// UNKNOWN`,
+							},
+						},
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

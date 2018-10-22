@@ -35,7 +35,7 @@ enum EnumAllowingAlias {
 }
 message outer {
   option (my_option).a = true;
-  message inner {   // Level 2
+  message inner {
     int64 ival = 1;
   }
   repeated inner inner_message = 2;
@@ -146,6 +146,117 @@ service SearchService {
 								RPCResponse: &parser.RPCResponse{
 									MessageType: "SearchResponse",
 								},
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			name: "parsing comments",
+			input: `
+// syntax
+/*
+syntax2
+*/
+syntax = "proto3";
+// import
+import public "other.proto";
+/* package */
+package foo.bar;
+// option
+option java_package = "com.example.foo";
+// message
+message outer {
+}
+// enum
+enum EnumAllowingAlias {
+  option allow_alias = true;
+}
+// service
+service SearchService {
+  rpc Search (SearchRequest) returns (SearchResponse);
+}
+`,
+			wantProto: &parser.Proto{
+				Syntax: &parser.Syntax{
+					ProtobufVersion: "proto3",
+					Comments: []*parser.Comment{
+						{
+							Raw: `// syntax`,
+						},
+						{
+							Raw: `/*
+syntax2
+*/`,
+						},
+					},
+				},
+				ProtoBody: []interface{}{
+					&parser.Import{
+						Modifier: parser.ImportModifierPublic,
+						Location: `"other.proto"`,
+						Comments: []*parser.Comment{
+							{
+								Raw: `// import`,
+							},
+						},
+					},
+					&parser.Package{
+						Name: `foo.bar`,
+						Comments: []*parser.Comment{
+							{
+								Raw: `/* package */`,
+							},
+						},
+					},
+					&parser.Option{
+						OptionName: "java_package",
+						Constant:   `"com.example.foo"`,
+						Comments: []*parser.Comment{
+							{
+								Raw: `// option`,
+							},
+						},
+					},
+					&parser.Message{
+						MessageName: "outer",
+						Comments: []*parser.Comment{
+							{
+								Raw: `// message`,
+							},
+						},
+					},
+					&parser.Enum{
+						EnumName: "EnumAllowingAlias",
+						EnumBody: []interface{}{
+							&parser.Option{
+								OptionName: "allow_alias",
+								Constant:   "true",
+							},
+						},
+						Comments: []*parser.Comment{
+							{
+								Raw: `// enum`,
+							},
+						},
+					},
+					&parser.Service{
+						ServiceName: "SearchService",
+						ServiceBody: []interface{}{
+							&parser.RPC{
+								RPCName: "Search",
+								RPCRequest: &parser.RPCRequest{
+									MessageType: "SearchRequest",
+								},
+								RPCResponse: &parser.RPCResponse{
+									MessageType: "SearchResponse",
+								},
+							},
+						},
+						Comments: []*parser.Comment{
+							{
+								Raw: `// service`,
 							},
 						},
 					},

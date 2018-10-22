@@ -25,7 +25,7 @@ func TestParser_ParseMessage(t *testing.T) {
 			input: `
 message Outer {
   option (my_option).a = true;
-  message Inner {   // Level 2
+  message Inner {
     int64 ival = 1;
   }
   map<int32, string> my_map = 2;
@@ -62,7 +62,7 @@ message Outer {
 			input: `
 message outer {
   option (my_option).a = true;
-  message inner {   // Level 2
+  message inner {
     int64 ival = 1;
   }
   repeated inner inner_message = 2;
@@ -115,6 +115,140 @@ message Outer {
 `,
 			wantMessage: &parser.Message{
 				MessageName: "Outer",
+			},
+		},
+		{
+			name: "parsing comments",
+			input: `
+message outer {
+  // option
+  option (my_option).a = true;
+  // message
+  message inner {   // Level 2
+    int64 ival = 1;
+  }
+  // field
+  repeated inner inner_message = 2;
+  // enum
+  enum EnumAllowingAlias {
+    option allow_alias = true;
+  }
+  EnumAllowingAlias enum_field =3;
+  // map
+  map<int32, string> my_map = 4;
+  // oneof
+  oneof foo {
+    string name = 5;
+    SubMessage sub_message = 6;
+  }
+  // reserved
+  reserved "bar";
+}
+`,
+			wantMessage: &parser.Message{
+				MessageName: "outer",
+				MessageBody: []interface{}{
+					&parser.Option{
+						OptionName: "(my_option).a",
+						Constant:   "true",
+						Comments: []*parser.Comment{
+							{
+								Raw: `// option`,
+							},
+						},
+					},
+					&parser.Message{
+						MessageName: "inner",
+						MessageBody: []interface{}{
+							&parser.Field{
+								Type:        "int64",
+								FieldName:   "ival",
+								FieldNumber: "1",
+								Comments: []*parser.Comment{
+									{
+										Raw: `// Level 2`,
+									},
+								},
+							},
+						},
+						Comments: []*parser.Comment{
+							{
+								Raw: `// message`,
+							},
+						},
+					},
+					&parser.Field{
+						IsRepeated:  true,
+						Type:        "inner",
+						FieldName:   "inner_message",
+						FieldNumber: "2",
+						Comments: []*parser.Comment{
+							{
+								Raw: `// field`,
+							},
+						},
+					},
+					&parser.Enum{
+						EnumName: "EnumAllowingAlias",
+						EnumBody: []interface{}{
+							&parser.Option{
+								OptionName: "allow_alias",
+								Constant:   "true",
+							},
+						},
+						Comments: []*parser.Comment{
+							{
+								Raw: `// enum`,
+							},
+						},
+					},
+					&parser.Field{
+						Type:        "EnumAllowingAlias",
+						FieldName:   "enum_field",
+						FieldNumber: "3",
+					},
+					&parser.MapField{
+						KeyType:     "int32",
+						Type:        "string",
+						MapName:     "my_map",
+						FieldNumber: "4",
+						Comments: []*parser.Comment{
+							{
+								Raw: `// map`,
+							},
+						},
+					},
+					&parser.Oneof{
+						OneofFields: []*parser.OneofField{
+							{
+								Type:        "string",
+								FieldName:   "name",
+								FieldNumber: "5",
+							},
+							{
+								Type:        "SubMessage",
+								FieldName:   "sub_message",
+								FieldNumber: "6",
+							},
+						},
+						OneofName: "foo",
+						Comments: []*parser.Comment{
+							{
+								Raw: `// oneof`,
+							},
+						},
+					},
+					&parser.Reserved{
+						FieldNames: []string{
+							`"bar"`,
+						},
+						Comments: []*parser.Comment{
+							{
+								Raw: `// reserved`,
+							},
+						},
+					},
+				},
 			},
 		},
 	}

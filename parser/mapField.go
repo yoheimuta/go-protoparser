@@ -9,6 +9,9 @@ type MapField struct {
 	MapName      string
 	FieldNumber  string
 	FieldOptions []*FieldOption
+
+	// Comments are the optional ones placed at the beginning.
+	Comments []*Comment
 }
 
 // ParseMapField parses the mapField.
