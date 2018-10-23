@@ -6,13 +6,16 @@ import (
 	"github.com/yoheimuta/go-protoparser/parser"
 )
 
+// ServiceBody is unordered in nature, but each slice field preserves the original order.
+type ServiceBody struct {
+	Options []*parser.Option
+	RPCs    []*parser.RPC
+}
+
 // Service consists of RPCs.
 type Service struct {
 	ServiceName string
-
-	// ServiceBody is unordered in nature, but each slice field preserves the original order.
-	Options []*parser.Option
-	RPCs    []*parser.RPC
+	ServiceBody *ServiceBody
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*parser.Comment
@@ -24,23 +27,23 @@ func InterpretService(src *parser.Service) (*Service, error) {
 		return nil, nil
 	}
 
-	options, rpcs, err := interpretServiceBody(src.ServiceBody)
+	serviceBody, err := interpretServiceBody(src.ServiceBody)
 	if err != nil {
 		return nil, err
 	}
 	return &Service{
 		ServiceName: src.ServiceName,
-		Options:     options,
-		RPCs:        rpcs,
+		ServiceBody: serviceBody,
 		Comments:    src.Comments,
 	}, nil
 }
 
 func interpretServiceBody(src []interface{}) (
-	options []*parser.Option,
-	rpcs []*parser.RPC,
-	err error,
+	*ServiceBody,
+	error,
 ) {
+	var options []*parser.Option
+	var rpcs []*parser.RPC
 	for _, s := range src {
 		switch t := s.(type) {
 		case *parser.Option:
@@ -48,8 +51,11 @@ func interpretServiceBody(src []interface{}) (
 		case *parser.RPC:
 			rpcs = append(rpcs, t)
 		default:
-			err = fmt.Errorf("invalid ServiceBody type %v of %v", t, s)
+			return nil, fmt.Errorf("invalid ServiceBody type %v of %v", t, s)
 		}
 	}
-	return
+	return &ServiceBody{
+		Options: options,
+		RPCs:    rpcs,
+	}, nil
 }

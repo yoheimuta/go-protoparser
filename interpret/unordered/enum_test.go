@@ -54,28 +54,30 @@ func TestInterpretEnum(t *testing.T) {
 			},
 			wantEnum: &unordered.Enum{
 				EnumName: "EnumAllowingAlias",
-				Options: []*parser.Option{
-					{
-						OptionName: "allow_alias",
-						Constant:   "true",
+				EnumBody: &unordered.EnumBody{
+					Options: []*parser.Option{
+						{
+							OptionName: "allow_alias",
+							Constant:   "true",
+						},
 					},
-				},
-				EnumFields: []*parser.EnumField{
-					{
-						Ident:  "UNKNOWN",
-						Number: "0",
-					},
-					{
-						Ident:  "STARTED",
-						Number: "1",
-					},
-					{
-						Ident:  "RUNNING",
-						Number: "2",
-						EnumValueOptions: []*parser.EnumValueOption{
-							{
-								OptionName: "(custom_option)",
-								Constant:   `"hello world"`,
+					EnumFields: []*parser.EnumField{
+						{
+							Ident:  "UNKNOWN",
+							Number: "0",
+						},
+						{
+							Ident:  "STARTED",
+							Number: "1",
+						},
+						{
+							Ident:  "RUNNING",
+							Number: "2",
+							EnumValueOptions: []*parser.EnumValueOption{
+								{
+									OptionName: "(custom_option)",
+									Constant:   `"hello world"`,
+								},
 							},
 						},
 					},

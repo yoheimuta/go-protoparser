@@ -45,20 +45,22 @@ func TestInterpretService(t *testing.T) {
 			},
 			wantService: &unordered.Service{
 				ServiceName: "SearchService",
-				Options: []*parser.Option{
-					{
-						OptionName: "case-sensitive",
-						Constant:   "true",
-					},
-				},
-				RPCs: []*parser.RPC{
-					{
-						RPCName: "Search",
-						RPCRequest: &parser.RPCRequest{
-							MessageType: "SearchRequest",
+				ServiceBody: &unordered.ServiceBody{
+					Options: []*parser.Option{
+						{
+							OptionName: "case-sensitive",
+							Constant:   "true",
 						},
-						RPCResponse: &parser.RPCResponse{
-							MessageType: "SearchResponse",
+					},
+					RPCs: []*parser.RPC{
+						{
+							RPCName: "Search",
+							RPCRequest: &parser.RPCRequest{
+								MessageType: "SearchRequest",
+							},
+							RPCResponse: &parser.RPCResponse{
+								MessageType: "SearchResponse",
+							},
 						},
 					},
 				},

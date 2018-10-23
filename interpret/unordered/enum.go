@@ -6,14 +6,17 @@ import (
 	"github.com/yoheimuta/go-protoparser/parser"
 )
 
-// Enum consists of a name and an enum body.
-type Enum struct {
-	EnumName string
-
-	// EnumBody is unordered in nature, but each slice field preserves the original order.
+// EnumBody is unordered in nature, but each slice field preserves the original order.
+type EnumBody struct {
 	Options         []*parser.Option
 	EnumFields      []*parser.EnumField
 	EmptyStatements []*parser.EmptyStatement
+}
+
+// Enum consists of a name and an enum body.
+type Enum struct {
+	EnumName string
+	EnumBody *EnumBody
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*parser.Comment
@@ -25,25 +28,24 @@ func InterpretEnum(src *parser.Enum) (*Enum, error) {
 		return nil, nil
 	}
 
-	options, enumFields, emptyStatements, err := interpretEnumBody(src.EnumBody)
+	enumBody, err := interpretEnumBody(src.EnumBody)
 	if err != nil {
 		return nil, err
 	}
 	return &Enum{
-		EnumName:        src.EnumName,
-		Options:         options,
-		EnumFields:      enumFields,
-		EmptyStatements: emptyStatements,
-		Comments:        src.Comments,
+		EnumName: src.EnumName,
+		EnumBody: enumBody,
+		Comments: src.Comments,
 	}, nil
 }
 
 func interpretEnumBody(src []interface{}) (
-	options []*parser.Option,
-	enumFields []*parser.EnumField,
-	emptyStatements []*parser.EmptyStatement,
-	err error,
+	*EnumBody,
+	error,
 ) {
+	var options []*parser.Option
+	var enumFields []*parser.EnumField
+	var emptyStatements []*parser.EmptyStatement
 	for _, s := range src {
 		switch t := s.(type) {
 		case *parser.Option:
@@ -53,8 +55,12 @@ func interpretEnumBody(src []interface{}) (
 		case *parser.EmptyStatement:
 			emptyStatements = append(emptyStatements, t)
 		default:
-			err = fmt.Errorf("invalid EnumBody type %v of %v", t, s)
+			return nil, fmt.Errorf("invalid EnumBody type %v of %v", t, s)
 		}
 	}
-	return
+	return &EnumBody{
+		Options:         options,
+		EnumFields:      enumFields,
+		EmptyStatements: emptyStatements,
+	}, nil
 }
