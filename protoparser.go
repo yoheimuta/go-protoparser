@@ -4,6 +4,7 @@ import (
 	"io"
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
+	"github.com/yoheimuta/go-protoparser/interpret/unordered"
 	"github.com/yoheimuta/go-protoparser/parser"
 )
 
@@ -39,4 +40,9 @@ func Parse(input io.Reader, options ...Option) (*parser.Proto, error) {
 
 	p := parser.NewParser(lexer.NewLexer(input, lexer.WithDebug(config.debug)), parser.WithPermissive(config.permissive))
 	return p.ParseProto()
+}
+
+// UnorderedInterpret interprets a Proto to an unordered one without interface{}.
+func UnorderedInterpret(proto *parser.Proto) (*unordered.Proto, error) {
+	return unordered.InterpretProto(proto)
 }

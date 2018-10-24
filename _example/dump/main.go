@@ -13,6 +13,7 @@ var (
 	proto      = flag.String("proto", "_testdata/simple.proto", "path to the Protocol Buffer file")
 	debug      = flag.Bool("debug", false, "debug flag to output more parsing process detail")
 	permissive = flag.Bool("permissive", true, "permissive flag to allow the permissive parsing rather than the just documented spec")
+	unordered  = flag.Bool("unordered", false, "unordered flag to output another one without interface{}")
 )
 
 func run() int {
@@ -31,7 +32,17 @@ func run() int {
 		return 1
 	}
 
-	gotJSON, err := json.MarshalIndent(got, "", "  ")
+	var v interface{}
+	v = got
+	if *unordered {
+		v, err = protoparser.UnorderedInterpret(got)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "failed to interpret, err %v\n", err)
+			return 1
+		}
+	}
+
+	gotJSON, err := json.MarshalIndent(v, "", "  ")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to marshal, err %v\n", err)
 	}
