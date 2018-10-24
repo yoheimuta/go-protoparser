@@ -39,6 +39,9 @@ RUN_EXAMPLE_DEBUG=false
 ## RUN_EXAMPLE_PERMISSIVE is a permissive flag argument for run/example.
 RUN_EXAMPLE_PERMISSIVE=true
 
+## RUN_EXAMPLE_UNORDERED is an unordered flag argument for run/example.
+RUN_EXAMPLE_UNORDERED=false
+
 ## run/dump/example runs `go run _example/dump/main.go`
 run/dump/example:
-	go run _example/dump/main.go -debug=$(RUN_EXAMPLE_DEBUG) -permissive=$(RUN_EXAMPLE_PERMISSIVE)
+	go run _example/dump/main.go -debug=$(RUN_EXAMPLE_DEBUG) -permissive=$(RUN_EXAMPLE_PERMISSIVE) -unordered=${RUN_EXAMPLE_UNORDERED}
