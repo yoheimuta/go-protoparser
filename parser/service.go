@@ -257,6 +257,8 @@ func (p *Parser) parseRPCOptions() ([]*Option, error) {
 		p.lex.Next()
 		if p.lex.Token == scanner.TRIGHTCURLY {
 			return options, nil
+		} else {
+			p.lex.UnNext()
 		}
 	}
 }
