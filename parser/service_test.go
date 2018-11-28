@@ -72,6 +72,41 @@ service SearchService {
 			},
 		},
 		{
+			name: "parsing multiple rpc options",
+			input: `
+service SearchService {
+  rpc Search (SearchRequest) returns (SearchResponse) { 
+	option (my_option).a = true; 
+	option (my_option).b = false;
+  }
+}
+`,
+			wantService: &parser.Service{
+				ServiceName: "SearchService",
+				ServiceBody: []interface{}{
+					&parser.RPC{
+						RPCName: "Search",
+						RPCRequest: &parser.RPCRequest{
+							MessageType: "SearchRequest",
+						},
+						RPCResponse: &parser.RPCResponse{
+							MessageType: "SearchResponse",
+						},
+						Options: []*parser.Option{
+							{
+								OptionName: "(my_option).a",
+								Constant:   "true",
+							},
+							{
+								OptionName: "(my_option).b",
+								Constant:   "false",
+							},
+						},
+					},
+				},
+			},
+		},
+		{
 			name: "parsing rpcs",
 			input: `
 // ItemService is a service to manage items.
