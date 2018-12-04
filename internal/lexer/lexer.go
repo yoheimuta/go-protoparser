@@ -17,6 +17,9 @@ type Lexer struct {
 	// Text is the lexical value.
 	Text string
 
+	// Pos is the source position.
+	Pos scanner.Position
+
 	// Error is called for each error encountered. If no Error
 	// function is set, the error is reported to os.Stderr.
 	Error func(lexer *Lexer, err error)
@@ -57,9 +60,10 @@ func (lex *Lexer) Next() {
 			_, file, line, ok := runtime.Caller(2)
 			if ok {
 				log.Printf(
-					"[DEBUG] Text=[%s], Token=[%v] called from %s:%d\n",
+					"[DEBUG] Text=[%s], Token=[%v], Pos=[%s] called from %s:%d\n",
 					lex.Text,
 					lex.Token,
+					lex.Pos,
 					filepath.Base(file),
 					line,
 				)
@@ -68,7 +72,7 @@ func (lex *Lexer) Next() {
 	}()
 
 	var err error
-	lex.Token, lex.Text, err = lex.scanner.Scan()
+	lex.Token, lex.Text, lex.Pos, err = lex.scanner.Scan()
 	if err != nil {
 		lex.scanErr = err
 		lex.Error(lex, err)

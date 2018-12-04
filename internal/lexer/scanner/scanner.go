@@ -14,6 +14,9 @@ type Scanner struct {
 	lastReadBuffer []rune
 	lastScanRaw    []rune
 
+	// pos is a current source position.
+	pos *Position
+
 	// The Mode field controls which tokens are recognized.
 	Mode Mode
 }
@@ -21,7 +24,8 @@ type Scanner struct {
 // NewScanner returns a new instance of Scanner.
 func NewScanner(r io.Reader) *Scanner {
 	return &Scanner{
-		r: bufio.NewReader(r),
+		r:   bufio.NewReader(r),
+		pos: NewPosition(),
 	}
 }
 
@@ -31,6 +35,8 @@ func (s *Scanner) read() (r rune) {
 			return
 		}
 		s.lastScanRaw = append(s.lastScanRaw, r)
+
+		s.pos.Advance(r)
 	}()
 
 	if 0 < len(s.lastReadBuffer) {
@@ -47,6 +53,8 @@ func (s *Scanner) read() (r rune) {
 
 func (s *Scanner) unread(ch rune) {
 	s.lastReadBuffer = append(s.lastReadBuffer, ch)
+
+	s.pos.Revert(ch)
 }
 
 func (s *Scanner) peek() rune {
@@ -70,54 +78,57 @@ func (s *Scanner) UnScan() {
 }
 
 // Scan returns the next token and text value.
-func (s *Scanner) Scan() (tok Token, text string, err error) {
+func (s *Scanner) Scan() (Token, string, Position, error) {
 	s.lastScanRaw = s.lastScanRaw[:0]
 	return s.scan()
 }
 
-func (s *Scanner) scan() (Token, string, error) {
+func (s *Scanner) scan() (Token, string, Position, error) {
 	ch := s.peek()
+
+	startPos := *s.pos
+	startPos.Advance(ch)
 
 	switch {
 	case unicode.IsSpace(ch):
 		s.read()
 		return s.scan()
 	case s.isEOF():
-		return TEOF, "", nil
+		return TEOF, "", startPos, nil
 	case isLetter(ch):
 		ident := s.scanIdent()
 		if s.Mode&ScanBoolLit != 0 && isBoolLit(ident) {
-			return TBOOLLIT, ident, nil
+			return TBOOLLIT, ident, startPos, nil
 		}
 		if s.Mode&ScanNumberLit != 0 && isFloatLitKeyword(ident) {
-			return TFLOATLIT, ident, nil
+			return TFLOATLIT, ident, startPos, nil
 		}
 		if s.Mode&ScanKeyword != 0 && asKeywordToken(ident) != TILLEGAL {
-			return asKeywordToken(ident), ident, nil
+			return asKeywordToken(ident), ident, startPos, nil
 		}
-		return TIDENT, ident, nil
+		return TIDENT, ident, startPos, nil
 	case ch == '/':
 		lit, err := s.scanComment()
 		if err != nil {
-			return TILLEGAL, "", err
+			return TILLEGAL, "", startPos, err
 		}
 		if s.Mode&ScanComment != 0 {
-			return TCOMMENT, lit, nil
+			return TCOMMENT, lit, startPos, nil
 		}
 		return s.scan()
 	case isQuote(ch) && s.Mode&ScanStrLit != 0:
 		lit, err := s.scanStrLit()
 		if err != nil {
-			return TILLEGAL, "", err
+			return TILLEGAL, "", startPos, err
 		}
-		return TSTRLIT, lit, nil
+		return TSTRLIT, lit, startPos, nil
 	case (isDecimalDigit(ch) || ch == '.') && s.Mode&ScanNumberLit != 0:
 		tok, lit, err := s.scanNumberLit()
 		if err != nil {
-			return TILLEGAL, "", err
+			return TILLEGAL, "", startPos, err
 		}
-		return tok, lit, nil
+		return tok, lit, startPos, nil
 	default:
-		return asMiscToken(ch), string(s.read()), nil
+		return asMiscToken(ch), string(s.read()), startPos, nil
 	}
 }
