@@ -46,29 +46,71 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
 {
   "Syntax": {
     "ProtobufVersion": "proto3",
-    "Comments": null
+    "Comments": null,
+    "Meta": {
+      "Pos": {
+        "Offset": 1,
+        "Line": 1,
+        "Column": 1
+      }
+    }
   },
   "ProtoBody": [
     {
       "Name": "examplepb",
       "Comments": [
         {
-          "Raw": "// An example of the official reference"
+          "Raw": "// An example of the official reference",
+          "Meta": {
+            "Pos": {
+              "Offset": 20,
+              "Line": 2,
+              "Column": 1
+            }
+          }
         },
         {
-          "Raw": "// See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file"
+          "Raw": "// See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file",
+          "Meta": {
+            "Pos": {
+              "Offset": 60,
+              "Line": 3,
+              "Column": 1
+            }
+          }
         }
-      ]
+      ],
+      "Meta": {
+        "Pos": {
+          "Offset": 152,
+          "Line": 4,
+          "Column": 1
+        }
+      }
     },
     {
       "Modifier": 1,
       "Location": "\"other.proto\"",
-      "Comments": null
+      "Comments": null,
+      "Meta": {
+        "Pos": {
+          "Offset": 171,
+          "Line": 5,
+          "Column": 1
+        }
+      }
     },
     {
       "OptionName": "java_package",
       "Constant": "\"com.example.foo\"",
-      "Comments": null
+      "Comments": null,
+      "Meta": {
+        "Pos": {
+          "Offset": 200,
+          "Line": 6,
+          "Column": 1
+        }
+      }
     },
     {
       "EnumName": "EnumAllowingAlias",
@@ -76,19 +118,40 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
         {
           "OptionName": "allow_alias",
           "Constant": "true",
-          "Comments": null
+          "Comments": null,
+          "Meta": {
+            "Pos": {
+              "Offset": 270,
+              "Line": 8,
+              "Column": 5
+            }
+          }
         },
         {
           "Ident": "UNKNOWN",
           "Number": "0",
           "EnumValueOptions": null,
-          "Comments": null
+          "Comments": null,
+          "Meta": {
+            "Pos": {
+              "Offset": 301,
+              "Line": 9,
+              "Column": 5
+            }
+          }
         },
         {
           "Ident": "STARTED",
           "Number": "1",
           "EnumValueOptions": null,
-          "Comments": null
+          "Comments": null,
+          "Meta": {
+            "Pos": {
+              "Offset": 318,
+              "Line": 10,
+              "Column": 5
+            }
+          }
         },
         {
           "Ident": "RUNNING",
@@ -99,10 +162,24 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
               "Constant": "\"hello world\""
             }
           ],
-          "Comments": null
+          "Comments": null,
+          "Meta": {
+            "Pos": {
+              "Offset": 335,
+              "Line": 11,
+              "Column": 5
+            }
+          }
         }
       ],
-      "Comments": null
+      "Comments": null,
+      "Meta": {
+        "Pos": {
+          "Offset": 241,
+          "Line": 7,
+          "Column": 1
+        }
+      }
     },
     {
       "MessageName": "outer",
@@ -110,7 +187,14 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
         {
           "OptionName": "(my_option).a",
           "Constant": "true",
-          "Comments": null
+          "Comments": null,
+          "Meta": {
+            "Pos": {
+              "Offset": 404,
+              "Line": 14,
+              "Column": 5
+            }
+          }
         },
         {
           "MessageName": "inner",
@@ -123,12 +207,33 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
               "FieldOptions": null,
               "Comments": [
                 {
-                  "Raw": "// Level 2"
+                  "Raw": "// Level 2",
+                  "Meta": {
+                    "Pos": {
+                      "Offset": 455,
+                      "Line": 15,
+                      "Column": 23
+                    }
+                  }
                 }
-              ]
+              ],
+              "Meta": {
+                "Pos": {
+                  "Offset": 472,
+                  "Line": 16,
+                  "Column": 7
+                }
+              }
             }
           ],
-          "Comments": null
+          "Comments": null,
+          "Meta": {
+            "Pos": {
+              "Offset": 437,
+              "Line": 15,
+              "Column": 5
+            }
+          }
         },
         {
           "IsRepeated": true,
@@ -136,7 +241,14 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "FieldName": "inner_message",
           "FieldNumber": "2",
           "FieldOptions": null,
-          "Comments": null
+          "Comments": null,
+          "Meta": {
+            "Pos": {
+              "Offset": 498,
+              "Line": 18,
+              "Column": 5
+            }
+          }
         },
         {
           "IsRepeated": false,
@@ -144,7 +256,14 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "FieldName": "enum_field",
           "FieldNumber": "3",
           "FieldOptions": null,
-          "Comments": null
+          "Comments": null,
+          "Meta": {
+            "Pos": {
+              "Offset": 536,
+              "Line": 19,
+              "Column": 5
+            }
+          }
         },
         {
           "KeyType": "int32",
@@ -152,10 +271,24 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "MapName": "my_map",
           "FieldNumber": "4",
           "FieldOptions": null,
-          "Comments": null
+          "Comments": null,
+          "Meta": {
+            "Pos": {
+              "Offset": 573,
+              "Line": 20,
+              "Column": 5
+            }
+          }
         }
       ],
-      "Comments": null
+      "Comments": null,
+      "Meta": {
+        "Pos": {
+          "Offset": 384,
+          "Line": 13,
+          "Column": 1
+        }
+      }
     }
   ]
 }
