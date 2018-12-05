@@ -1,17 +1,26 @@
 package parser
 
-import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+import (
+	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
+)
 
 // RPCRequest is a request of RPC.
 type RPCRequest struct {
 	IsStream    bool
 	MessageType string
+
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // RPCResponse is a response of RPC.
 type RPCResponse struct {
 	IsStream    bool
 	MessageType string
+
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // RPC is a Remote Procedure Call.
@@ -23,6 +32,8 @@ type RPC struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // Service consists of RPCs.
@@ -33,6 +44,8 @@ type Service struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // ParseService parses the service.
@@ -44,6 +57,7 @@ func (p *Parser) ParseService() (*Service, error) {
 	if p.lex.Token != scanner.TSERVICE {
 		return nil, p.unexpected("service")
 	}
+	startPos := p.lex.Pos
 
 	p.lex.Next()
 	if p.lex.Token != scanner.TIDENT {
@@ -59,6 +73,7 @@ func (p *Parser) ParseService() (*Service, error) {
 	return &Service{
 		ServiceName: serviceName,
 		ServiceBody: serviceBody,
+		Meta:        meta.NewMeta(startPos),
 	}, nil
 }
 
@@ -116,6 +131,7 @@ func (p *Parser) parseRPC() (*RPC, error) {
 	if p.lex.Token != scanner.TRPC {
 		return nil, p.unexpected("rpc")
 	}
+	startPos := p.lex.Pos
 
 	p.lex.Next()
 	if p.lex.Token != scanner.TIDENT {
@@ -158,6 +174,7 @@ func (p *Parser) parseRPC() (*RPC, error) {
 		RPCRequest:  rpcRequest,
 		RPCResponse: rpcResponse,
 		Options:     opts,
+		Meta:        meta.NewMeta(startPos),
 	}, nil
 }
 
@@ -168,6 +185,7 @@ func (p *Parser) parseRPCRequest() (*RPCRequest, error) {
 	if p.lex.Token != scanner.TLEFTPAREN {
 		return nil, p.unexpected("(")
 	}
+	startPos := p.lex.Pos
 
 	p.lex.NextKeyword()
 	isStream := true
@@ -176,7 +194,7 @@ func (p *Parser) parseRPCRequest() (*RPCRequest, error) {
 		p.lex.UnNext()
 	}
 
-	messageType, err := p.lex.ReadMessageType()
+	messageType, _, err := p.lex.ReadMessageType()
 	if err != nil {
 		return nil, err
 	}
@@ -189,6 +207,7 @@ func (p *Parser) parseRPCRequest() (*RPCRequest, error) {
 	return &RPCRequest{
 		IsStream:    isStream,
 		MessageType: messageType,
+		Meta:        meta.NewMeta(startPos),
 	}, nil
 }
 
@@ -199,6 +218,7 @@ func (p *Parser) parseRPCResponse() (*RPCResponse, error) {
 	if p.lex.Token != scanner.TLEFTPAREN {
 		return nil, p.unexpected("(")
 	}
+	startPos := p.lex.Pos
 
 	p.lex.NextKeyword()
 	isStream := true
@@ -207,7 +227,7 @@ func (p *Parser) parseRPCResponse() (*RPCResponse, error) {
 		p.lex.UnNext()
 	}
 
-	messageType, err := p.lex.ReadMessageType()
+	messageType, _, err := p.lex.ReadMessageType()
 	if err != nil {
 		return nil, err
 	}
@@ -220,6 +240,7 @@ func (p *Parser) parseRPCResponse() (*RPCResponse, error) {
 	return &RPCResponse{
 		IsStream:    isStream,
 		MessageType: messageType,
+		Meta:        meta.NewMeta(startPos),
 	}, nil
 }
 

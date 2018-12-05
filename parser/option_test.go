@@ -7,6 +7,7 @@ import (
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 func TestParser_ParseOption(t *testing.T) {
@@ -41,6 +42,13 @@ func TestParser_ParseOption(t *testing.T) {
 			wantOption: &parser.Option{
 				OptionName: "java_package",
 				Constant:   `"com.example.foo"`,
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   1,
+						Column: 1,
+					},
+				},
 			},
 		},
 		{
@@ -49,6 +57,13 @@ func TestParser_ParseOption(t *testing.T) {
 			wantOption: &parser.Option{
 				OptionName: "(my_option).a",
 				Constant:   `true`,
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   1,
+						Column: 1,
+					},
+				},
 			},
 		},
 		{
@@ -57,6 +72,13 @@ func TestParser_ParseOption(t *testing.T) {
 			wantOption: &parser.Option{
 				OptionName: "java_package.baz.bar",
 				Constant:   `"com.example.foo"`,
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   1,
+						Column: 1,
+					},
+				},
 			},
 		},
 	}

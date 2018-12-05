@@ -8,6 +8,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
 	"github.com/yoheimuta/go-protoparser/internal/util_test"
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 func TestParser_ParseService(t *testing.T) {
@@ -35,10 +36,38 @@ service SearchService {
 						RPCName: "Search",
 						RPCRequest: &parser.RPCRequest{
 							MessageType: "SearchRequest",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 39,
+									Line:   3,
+									Column: 14,
+								},
+							},
 						},
 						RPCResponse: &parser.RPCResponse{
 							MessageType: "SearchResponse",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 63,
+									Line:   3,
+									Column: 38,
+								},
+							},
 						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 28,
+								Line:   3,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 2,
+						Line:   2,
+						Column: 1,
 					},
 				},
 			},
@@ -57,16 +86,51 @@ service SearchService {
 						RPCName: "Search",
 						RPCRequest: &parser.RPCRequest{
 							MessageType: "SearchRequest",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 39,
+									Line:   3,
+									Column: 14,
+								},
+							},
 						},
 						RPCResponse: &parser.RPCResponse{
 							MessageType: "SearchResponse",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 63,
+									Line:   3,
+									Column: 38,
+								},
+							},
 						},
 						Options: []*parser.Option{
 							{
 								OptionName: "(my_option).a",
 								Constant:   "true",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 82,
+										Line:   3,
+										Column: 57,
+									},
+								},
 							},
 						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 28,
+								Line:   3,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 2,
+						Line:   2,
+						Column: 1,
 					},
 				},
 			},
@@ -88,20 +152,62 @@ service SearchService {
 						RPCName: "Search",
 						RPCRequest: &parser.RPCRequest{
 							MessageType: "SearchRequest",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 39,
+									Line:   3,
+									Column: 14,
+								},
+							},
 						},
 						RPCResponse: &parser.RPCResponse{
 							MessageType: "SearchResponse",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 63,
+									Line:   3,
+									Column: 38,
+								},
+							},
 						},
 						Options: []*parser.Option{
 							{
 								OptionName: "(my_option).a",
 								Constant:   "true",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 84,
+										Line:   4,
+										Column: 2,
+									},
+								},
 							},
 							{
 								OptionName: "(my_option).b",
 								Constant:   "false",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 115,
+										Line:   5,
+										Column: 2,
+									},
+								},
 							},
 						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 28,
+								Line:   3,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 2,
+						Line:   2,
+						Column: 1,
 					},
 				},
 			},
@@ -125,13 +231,41 @@ service ItemService {
 						RPCName: "CreateUserItem",
 						RPCRequest: &parser.RPCRequest{
 							MessageType: "CreateUserItemRequest",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 150,
+									Line:   5,
+									Column: 23,
+								},
+							},
 						},
 						RPCResponse: &parser.RPCResponse{
 							MessageType: "aggregatespb.UserItemAggregate",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 182,
+									Line:   5,
+									Column: 55,
+								},
+							},
 						},
 						Comments: []*parser.Comment{
 							{
 								Raw: "// CreateUserItem is a method to create a user's item.",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 73,
+										Line:   4,
+										Column: 5,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 132,
+								Line:   5,
+								Column: 5,
 							},
 						},
 					},
@@ -139,15 +273,50 @@ service ItemService {
 						RPCName: "UpdateUserItem",
 						RPCRequest: &parser.RPCRequest{
 							MessageType: "UpdateUserItemRequest",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 300,
+									Line:   8,
+									Column: 23,
+								},
+							},
 						},
 						RPCResponse: &parser.RPCResponse{
 							MessageType: "entitiespb.UserItem",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 332,
+									Line:   8,
+									Column: 55,
+								},
+							},
 						},
 						Comments: []*parser.Comment{
 							{
 								Raw: "// UpdateUserItem is a method to update a user's item.",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 223,
+										Line:   7,
+										Column: 5,
+									},
+								},
 							},
 						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 282,
+								Line:   8,
+								Column: 5,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 47,
+						Line:   3,
+						Column: 1,
 					},
 				},
 			},

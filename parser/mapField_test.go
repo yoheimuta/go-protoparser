@@ -7,6 +7,7 @@ import (
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 func TestParser_ParseMapField(t *testing.T) {
@@ -38,6 +39,13 @@ func TestParser_ParseMapField(t *testing.T) {
 				Type:        "Project",
 				MapName:     "projects",
 				FieldNumber: "3",
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   1,
+						Column: 1,
+					},
+				},
 			},
 		},
 	}

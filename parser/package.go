@@ -1,6 +1,9 @@
 package parser
 
-import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+import (
+	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
+)
 
 // Package can be used to prevent name clashes between protocol message types.
 type Package struct {
@@ -8,6 +11,8 @@ type Package struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // ParsePackage parses the package.
@@ -19,8 +24,9 @@ func (p *Parser) ParsePackage() (*Package, error) {
 	if p.lex.Token != scanner.TPACKAGE {
 		return nil, p.unexpected("package")
 	}
+	startPos := p.lex.Pos
 
-	ident, err := p.lex.ReadFullIdent()
+	ident, _, err := p.lex.ReadFullIdent()
 	if err != nil {
 		return nil, p.unexpected("fullIdent")
 	}
@@ -32,5 +38,6 @@ func (p *Parser) ParsePackage() (*Package, error) {
 
 	return &Package{
 		Name: ident,
+		Meta: meta.NewMeta(startPos),
 	}, nil
 }

@@ -6,7 +6,9 @@ import (
 	"testing"
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
+	"github.com/yoheimuta/go-protoparser/internal/util_test"
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 func TestParser_ParseField(t *testing.T) {
@@ -38,6 +40,13 @@ func TestParser_ParseField(t *testing.T) {
 				Type:        "foo.bar",
 				FieldName:   "nested_message",
 				FieldNumber: "2",
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   1,
+						Column: 1,
+					},
+				},
 			},
 		},
 		{
@@ -52,6 +61,13 @@ func TestParser_ParseField(t *testing.T) {
 					{
 						OptionName: "packed",
 						Constant:   "true",
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   1,
+						Column: 1,
 					},
 				},
 			},
@@ -72,6 +88,13 @@ func TestParser_ParseField(t *testing.T) {
 					{
 						OptionName: "required",
 						Constant:   "false",
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   1,
+						Column: 1,
 					},
 				},
 			},
@@ -95,6 +118,13 @@ func TestParser_ParseField(t *testing.T) {
 						Constant:   "{int_gt:0}",
 					},
 				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   1,
+						Column: 1,
+					},
+				},
 			},
 		},
 	}
@@ -116,7 +146,7 @@ func TestParser_ParseField(t *testing.T) {
 			}
 
 			if !reflect.DeepEqual(got, test.wantField) {
-				t.Errorf("got %v, but want %v", got, test.wantField)
+				t.Errorf("got %v, but want %v", util_test.PrettyFormat(got), util_test.PrettyFormat(test.wantField))
 			}
 
 			if !p.IsEOF() {

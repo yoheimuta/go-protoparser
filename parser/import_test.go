@@ -7,6 +7,7 @@ import (
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 func TestParser_ParseImport(t *testing.T) {
@@ -36,6 +37,13 @@ func TestParser_ParseImport(t *testing.T) {
 			wantImport: &parser.Import{
 				Modifier: parser.ImportModifierNone,
 				Location: `"google/protobuf/timestamp.proto"`,
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   1,
+						Column: 1,
+					},
+				},
 			},
 		},
 		{
@@ -44,6 +52,13 @@ func TestParser_ParseImport(t *testing.T) {
 			wantImport: &parser.Import{
 				Modifier: parser.ImportModifierPublic,
 				Location: `"other.proto"`,
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   1,
+						Column: 1,
+					},
+				},
 			},
 		},
 		{
@@ -52,6 +67,13 @@ func TestParser_ParseImport(t *testing.T) {
 			wantImport: &parser.Import{
 				Modifier: parser.ImportModifierWeak,
 				Location: `"other.proto"`,
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   1,
+						Column: 1,
+					},
+				},
 			},
 		},
 	}

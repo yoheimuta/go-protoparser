@@ -6,7 +6,9 @@ import (
 	"testing"
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
+	"github.com/yoheimuta/go-protoparser/internal/util_test"
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 func TestParser_ParseMessage(t *testing.T) {
@@ -37,6 +39,13 @@ message Outer {
 					&parser.Option{
 						OptionName: "(my_option).a",
 						Constant:   "true",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 20,
+								Line:   3,
+								Column: 3,
+							},
+						},
 					},
 					&parser.Message{
 						MessageName: "Inner",
@@ -45,6 +54,20 @@ message Outer {
 								Type:        "int64",
 								FieldName:   "ival",
 								FieldNumber: "1",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 71,
+										Line:   5,
+										Column: 5,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 51,
+								Line:   4,
+								Column: 3,
 							},
 						},
 					},
@@ -53,6 +76,20 @@ message Outer {
 						Type:        "string",
 						MapName:     "my_map",
 						FieldNumber: "2",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 93,
+								Line:   7,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 2,
+						Line:   2,
+						Column: 1,
 					},
 				},
 			},
@@ -76,6 +113,13 @@ message outer {
 					&parser.Option{
 						OptionName: "(my_option).a",
 						Constant:   "true",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 20,
+								Line:   3,
+								Column: 3,
+							},
+						},
 					},
 					&parser.Message{
 						MessageName: "inner",
@@ -84,6 +128,20 @@ message outer {
 								Type:        "int64",
 								FieldName:   "ival",
 								FieldNumber: "1",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 71,
+										Line:   5,
+										Column: 5,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 51,
+								Line:   4,
+								Column: 3,
 							},
 						},
 					},
@@ -92,17 +150,45 @@ message outer {
 						Type:        "inner",
 						FieldName:   "inner_message",
 						FieldNumber: "2",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 93,
+								Line:   7,
+								Column: 3,
+							},
+						},
 					},
 					&parser.Field{
 						Type:        "EnumAllowingAlias",
 						FieldName:   "enum_field",
 						FieldNumber: "3",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 129,
+								Line:   8,
+								Column: 3,
+							},
+						},
 					},
 					&parser.MapField{
 						KeyType:     "int32",
 						Type:        "string",
 						MapName:     "my_map",
 						FieldNumber: "4",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 164,
+								Line:   9,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 2,
+						Line:   2,
+						Column: 1,
 					},
 				},
 			},
@@ -115,6 +201,13 @@ message Outer {
 `,
 			wantMessage: &parser.Message{
 				MessageName: "Outer",
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 2,
+						Line:   2,
+						Column: 1,
+					},
+				},
 			},
 		},
 		{
@@ -154,6 +247,20 @@ message outer {
 						Comments: []*parser.Comment{
 							{
 								Raw: `// option`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 20,
+										Line:   3,
+										Column: 3,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 32,
+								Line:   4,
+								Column: 3,
 							},
 						},
 					},
@@ -167,6 +274,20 @@ message outer {
 								Comments: []*parser.Comment{
 									{
 										Raw: `// Level 2`,
+										Meta: meta.Meta{
+											Pos: meta.Position{
+												Offset: 94,
+												Line:   6,
+												Column: 21,
+											},
+										},
+									},
+								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 109,
+										Line:   7,
+										Column: 5,
 									},
 								},
 							},
@@ -174,6 +295,20 @@ message outer {
 						Comments: []*parser.Comment{
 							{
 								Raw: `// message`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 63,
+										Line:   5,
+										Column: 3,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 76,
+								Line:   6,
+								Column: 3,
 							},
 						},
 					},
@@ -185,6 +320,20 @@ message outer {
 						Comments: []*parser.Comment{
 							{
 								Raw: `// field`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 131,
+										Line:   9,
+										Column: 3,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 142,
+								Line:   10,
+								Column: 3,
 							},
 						},
 					},
@@ -194,11 +343,32 @@ message outer {
 							&parser.Option{
 								OptionName: "allow_alias",
 								Constant:   "true",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 217,
+										Line:   13,
+										Column: 5,
+									},
+								},
 							},
 						},
 						Comments: []*parser.Comment{
 							{
 								Raw: `// enum`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 178,
+										Line:   11,
+										Column: 3,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 188,
+								Line:   12,
+								Column: 3,
 							},
 						},
 					},
@@ -206,6 +376,13 @@ message outer {
 						Type:        "EnumAllowingAlias",
 						FieldName:   "enum_field",
 						FieldNumber: "3",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 250,
+								Line:   15,
+								Column: 3,
+							},
+						},
 					},
 					&parser.MapField{
 						KeyType:     "int32",
@@ -215,6 +392,20 @@ message outer {
 						Comments: []*parser.Comment{
 							{
 								Raw: `// map`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 285,
+										Line:   16,
+										Column: 3,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 294,
+								Line:   17,
+								Column: 3,
 							},
 						},
 					},
@@ -224,17 +415,45 @@ message outer {
 								Type:        "string",
 								FieldName:   "name",
 								FieldNumber: "5",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 354,
+										Line:   20,
+										Column: 5,
+									},
+								},
 							},
 							{
 								Type:        "SubMessage",
 								FieldName:   "sub_message",
 								FieldNumber: "6",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 375,
+										Line:   21,
+										Column: 5,
+									},
+								},
 							},
 						},
 						OneofName: "foo",
 						Comments: []*parser.Comment{
 							{
 								Raw: `// oneof`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 327,
+										Line:   18,
+										Column: 3,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 338,
+								Line:   19,
+								Column: 3,
 							},
 						},
 					},
@@ -245,8 +464,29 @@ message outer {
 						Comments: []*parser.Comment{
 							{
 								Raw: `// reserved`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 409,
+										Line:   23,
+										Column: 3,
+									},
+								},
 							},
 						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 423,
+								Line:   24,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 2,
+						Line:   2,
+						Column: 1,
 					},
 				},
 			},
@@ -270,7 +510,7 @@ message outer {
 			}
 
 			if !reflect.DeepEqual(got, test.wantMessage) {
-				t.Errorf("got %v, but want %v", got, test.wantMessage)
+				t.Errorf("got %v, but want %v", util_test.PrettyFormat(got), util_test.PrettyFormat(test.wantMessage))
 			}
 
 			if !p.IsEOF() {

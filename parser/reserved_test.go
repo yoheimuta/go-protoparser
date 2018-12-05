@@ -7,6 +7,7 @@ import (
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 func TestParser_ParseReserved(t *testing.T) {
@@ -46,6 +47,13 @@ func TestParser_ParseReserved(t *testing.T) {
 						End:   "11",
 					},
 				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   1,
+						Column: 1,
+					},
+				},
 			},
 		},
 		{
@@ -55,6 +63,13 @@ func TestParser_ParseReserved(t *testing.T) {
 				FieldNames: []string{
 					`"foo"`,
 					`"bar"`,
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   1,
+						Column: 1,
+					},
 				},
 			},
 		},
@@ -66,6 +81,13 @@ func TestParser_ParseReserved(t *testing.T) {
 					{
 						Begin: "9",
 						End:   "max",
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   1,
+						Column: 1,
 					},
 				},
 			},

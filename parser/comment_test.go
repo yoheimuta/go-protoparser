@@ -8,6 +8,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
 	"github.com/yoheimuta/go-protoparser/internal/util_test"
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 func TestComment_IsCStyle(t *testing.T) {
@@ -111,6 +112,13 @@ func TestParser_ParseComments(t *testing.T) {
 			wantComments: []*parser.Comment{
 				{
 					Raw: `// comment`,
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 1,
+							Line:   1,
+							Column: 1,
+						},
+					},
 				},
 			},
 		},
@@ -122,9 +130,23 @@ func TestParser_ParseComments(t *testing.T) {
 			wantComments: []*parser.Comment{
 				{
 					Raw: `// comment`,
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 1,
+							Line:   1,
+							Column: 1,
+						},
+					},
 				},
 				{
 					Raw: `// comment2`,
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 12,
+							Line:   2,
+							Column: 1,
+						},
+					},
 				},
 			},
 		},
@@ -138,6 +160,13 @@ comment
 					Raw: `/*
 comment
 */`,
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 1,
+							Line:   1,
+							Column: 1,
+						},
+					},
 				},
 			},
 		},
@@ -154,11 +183,25 @@ comment2
 					Raw: `/*
 comment
 */`,
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 1,
+							Line:   1,
+							Column: 1,
+						},
+					},
 				},
 				{
 					Raw: `/*
 comment2
 */`,
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 15,
+							Line:   4,
+							Column: 1,
+						},
+					},
 				},
 			},
 		},
@@ -175,9 +218,23 @@ comment
 					Raw: `/*
 comment
 */`,
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 1,
+							Line:   1,
+							Column: 1,
+						},
+					},
 				},
 				{
 					Raw: `// comment2`,
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 16,
+							Line:   5,
+							Column: 1,
+						},
+					},
 				},
 			},
 		},

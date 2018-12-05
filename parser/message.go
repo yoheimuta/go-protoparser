@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 type parseMessageBodyStatementErr struct {
@@ -28,6 +29,8 @@ type Message struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // ParseMessage parses the message.
@@ -39,6 +42,7 @@ func (p *Parser) ParseMessage() (*Message, error) {
 	if p.lex.Token != scanner.TMESSAGE {
 		return nil, p.unexpected("message")
 	}
+	startPos := p.lex.Pos
 
 	p.lex.Next()
 	if p.lex.Token != scanner.TIDENT {
@@ -54,6 +58,7 @@ func (p *Parser) ParseMessage() (*Message, error) {
 	return &Message{
 		MessageName: messageName,
 		MessageBody: messageBody,
+		Meta:        meta.NewMeta(startPos),
 	}, nil
 }
 

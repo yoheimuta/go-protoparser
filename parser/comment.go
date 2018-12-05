@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 const (
@@ -16,6 +17,8 @@ const (
 type Comment struct {
 	// Raw includes a comment syntax like // and /* */.
 	Raw string
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // IsCStyle refers to /* ... */.
@@ -56,7 +59,8 @@ func (p *Parser) parseComment() (*Comment, error) {
 	p.lex.NextComment()
 	if p.lex.Token == scanner.TCOMMENT {
 		return &Comment{
-			Raw: p.lex.Text,
+			Raw:  p.lex.Text,
+			Meta: meta.NewMeta(p.lex.Pos),
 		}, nil
 	}
 	defer p.lex.UnNext()

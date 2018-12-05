@@ -6,7 +6,9 @@ import (
 	"testing"
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
+	"github.com/yoheimuta/go-protoparser/internal/util_test"
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 func TestParser_ParseOneof(t *testing.T) {
@@ -50,14 +52,35 @@ func TestParser_ParseOneof(t *testing.T) {
 						Type:        "string",
 						FieldName:   "name",
 						FieldNumber: "4",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 17,
+								Line:   2,
+								Column: 5,
+							},
+						},
 					},
 					{
 						Type:        "SubMessage",
 						FieldName:   "sub_message",
 						FieldNumber: "9",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 38,
+								Line:   3,
+								Column: 5,
+							},
+						},
 					},
 				},
 				OneofName: "foo",
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   1,
+						Column: 1,
+					},
+				},
 			},
 		},
 		{
@@ -74,14 +97,35 @@ func TestParser_ParseOneof(t *testing.T) {
 						Type:        "string",
 						FieldName:   "name",
 						FieldNumber: "4",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 17,
+								Line:   2,
+								Column: 5,
+							},
+						},
 					},
 					{
 						Type:        "SubMessage",
 						FieldName:   "sub_message",
 						FieldNumber: "9",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 44,
+								Line:   4,
+								Column: 5,
+							},
+						},
 					},
 				},
 				OneofName: "foo",
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   1,
+						Column: 1,
+					},
+				},
 			},
 		},
 		{
@@ -102,6 +146,20 @@ func TestParser_ParseOneof(t *testing.T) {
 						Comments: []*parser.Comment{
 							{
 								Raw: `// name`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 17,
+										Line:   2,
+										Column: 5,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 29,
+								Line:   3,
+								Column: 5,
 							},
 						},
 					},
@@ -112,11 +170,32 @@ func TestParser_ParseOneof(t *testing.T) {
 						Comments: []*parser.Comment{
 							{
 								Raw: `// sub_message`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 50,
+										Line:   4,
+										Column: 5,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 69,
+								Line:   5,
+								Column: 5,
 							},
 						},
 					},
 				},
 				OneofName: "foo",
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   1,
+						Column: 1,
+					},
+				},
 			},
 		},
 	}
@@ -138,7 +217,7 @@ func TestParser_ParseOneof(t *testing.T) {
 			}
 
 			if !reflect.DeepEqual(got, test.wantOneof) {
-				t.Errorf("got %v, but want %v", got, test.wantOneof)
+				t.Errorf("got %v, but want %v", util_test.PrettyFormat(got), util_test.PrettyFormat(test.wantOneof))
 			}
 
 			if !p.IsEOF() {

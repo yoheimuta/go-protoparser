@@ -1,6 +1,9 @@
 package parser
 
-import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+import (
+	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
+)
 
 // FieldOption is an option for the field.
 type FieldOption struct {
@@ -18,6 +21,8 @@ type Field struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // ParseField parses the field.
@@ -32,8 +37,9 @@ func (p *Parser) ParseField() (*Field, error) {
 	} else {
 		p.lex.UnNext()
 	}
+	startPos := p.lex.Pos
 
-	typeValue, err := p.parseType()
+	typeValue, _, err := p.parseType()
 	if err != nil {
 		return nil, p.unexpected("type")
 	}
@@ -70,6 +76,7 @@ func (p *Parser) ParseField() (*Field, error) {
 		FieldName:    fieldName,
 		FieldNumber:  fieldNumber,
 		FieldOptions: fieldOptions,
+		Meta:         meta.NewMeta(startPos),
 	}, nil
 }
 
@@ -148,7 +155,7 @@ func (p *Parser) parseFieldOption() (*FieldOption, error) {
 			return nil, err
 		}
 	default:
-		constant, err = p.lex.ReadConstant()
+		constant, _, err = p.lex.ReadConstant()
 		if err != nil {
 			return nil, err
 		}
@@ -182,7 +189,7 @@ func (p *Parser) parseGoProtoValidatorFieldOptionConstant() (string, error) {
 	}
 	ret += p.lex.Text
 
-	constant, err := p.lex.ReadConstant()
+	constant, _, err := p.lex.ReadConstant()
 	if err != nil {
 		return "", err
 	}
@@ -218,18 +225,18 @@ var typeConstants = map[string]struct{}{
 //      | "sint32" | "sint64" | "fixed32" | "fixed64" | "sfixed32" | "sfixed64"
 //      | "bool" | "string" | "bytes" | messageType | enumType
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#fields
-func (p *Parser) parseType() (string, error) {
+func (p *Parser) parseType() (string, scanner.Position, error) {
 	p.lex.Next()
 	if _, ok := typeConstants[p.lex.Text]; ok {
-		return p.lex.Text, nil
+		return p.lex.Text, p.lex.Pos, nil
 	}
 	p.lex.UnNext()
 
-	messageOrEnumType, err := p.lex.ReadMessageType()
+	messageOrEnumType, startPos, err := p.lex.ReadMessageType()
 	if err != nil {
-		return "", err
+		return "", scanner.Position{}, err
 	}
-	return messageOrEnumType, nil
+	return messageOrEnumType, startPos, nil
 }
 
 // fieldNumber = intLit;

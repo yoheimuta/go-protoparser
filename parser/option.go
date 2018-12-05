@@ -2,6 +2,7 @@ package parser
 
 import (
 	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 // Option can be used in proto files, messages, enums and services.
@@ -11,6 +12,8 @@ type Option struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // ParseOption parses the option.
@@ -22,6 +25,7 @@ func (p *Parser) ParseOption() (*Option, error) {
 	if p.lex.Token != scanner.TOPTION {
 		return nil, p.unexpected("option")
 	}
+	startPos := p.lex.Pos
 
 	optionName, err := p.parseOptionName()
 	if err != nil {
@@ -33,7 +37,7 @@ func (p *Parser) ParseOption() (*Option, error) {
 		return nil, p.unexpected("=")
 	}
 
-	constant, err := p.lex.ReadConstant()
+	constant, _, err := p.lex.ReadConstant()
 	if err != nil {
 		return nil, err
 	}
@@ -46,6 +50,7 @@ func (p *Parser) ParseOption() (*Option, error) {
 	return &Option{
 		OptionName: optionName,
 		Constant:   constant,
+		Meta:       meta.NewMeta(startPos),
 	}, nil
 }
 
@@ -59,7 +64,7 @@ func (p *Parser) parseOptionName() (string, error) {
 		optionName = p.lex.Text
 	case scanner.TLEFTPAREN:
 		optionName = p.lex.Text
-		fullIdent, err := p.lex.ReadFullIdent()
+		fullIdent, _, err := p.lex.ReadFullIdent()
 		if err != nil {
 			return "", err
 		}

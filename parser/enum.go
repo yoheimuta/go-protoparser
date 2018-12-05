@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 type parseEnumBodyStatementErr struct {
@@ -33,6 +34,8 @@ type EnumField struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // EmptyStatement represents ";".
@@ -47,6 +50,8 @@ type Enum struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // ParseEnum parses the enum.
@@ -58,6 +63,7 @@ func (p *Parser) ParseEnum() (*Enum, error) {
 	if p.lex.Token != scanner.TENUM {
 		return nil, p.unexpected("enum")
 	}
+	startPos := p.lex.Pos
 
 	p.lex.Next()
 	if p.lex.Token != scanner.TIDENT {
@@ -73,6 +79,7 @@ func (p *Parser) ParseEnum() (*Enum, error) {
 	return &Enum{
 		EnumName: enumName,
 		EnumBody: enumBody,
+		Meta:     meta.NewMeta(startPos),
 	}, nil
 }
 
@@ -137,6 +144,7 @@ func (p *Parser) parseEnumField() (*EnumField, error) {
 	if p.lex.Token != scanner.TIDENT {
 		return nil, p.unexpected("ident")
 	}
+	startPos := p.lex.Pos
 	ident := p.lex.Text
 
 	p.lex.Next()
@@ -164,6 +172,7 @@ func (p *Parser) parseEnumField() (*EnumField, error) {
 		Ident:            ident,
 		Number:           number,
 		EnumValueOptions: enumValueOptions,
+		Meta:             meta.NewMeta(startPos),
 	}, nil
 }
 
@@ -217,7 +226,7 @@ func (p *Parser) parseEnumValueOption() (*EnumValueOption, error) {
 		return nil, p.unexpected("=")
 	}
 
-	constant, err := p.lex.ReadConstant()
+	constant, _, err := p.lex.ReadConstant()
 	if err != nil {
 		return nil, err
 	}

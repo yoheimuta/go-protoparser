@@ -1,6 +1,9 @@
 package parser
 
-import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+import (
+	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
+)
 
 // ImportModifier is a modifier enum type for import behavior.
 type ImportModifier uint
@@ -19,6 +22,8 @@ type Import struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // ParseImport parses the import.
@@ -30,6 +35,7 @@ func (p *Parser) ParseImport() (*Import, error) {
 	if p.lex.Token != scanner.TIMPORT {
 		return nil, p.unexpected(`"import"`)
 	}
+	startPos := p.lex.Pos
 
 	var modifier ImportModifier
 	p.lex.NextKeywordOrStrLit()
@@ -57,5 +63,6 @@ func (p *Parser) ParseImport() (*Import, error) {
 	return &Import{
 		Modifier: modifier,
 		Location: location,
+		Meta:     meta.NewMeta(startPos),
 	}, nil
 }
