@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 // ServiceBody is unordered in nature, but each slice field preserves the original order.
@@ -19,6 +20,8 @@ type Service struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*parser.Comment
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // InterpretService interprets *parser.Service to *Service.
@@ -35,6 +38,7 @@ func InterpretService(src *parser.Service) (*Service, error) {
 		ServiceName: src.ServiceName,
 		ServiceBody: serviceBody,
 		Comments:    src.Comments,
+		Meta:        src.Meta,
 	}, nil
 }
 

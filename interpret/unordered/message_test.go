@@ -6,6 +6,7 @@ import (
 
 	"github.com/yoheimuta/go-protoparser/interpret/unordered"
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 func TestInterpretMessage(t *testing.T) {
@@ -49,6 +50,13 @@ func TestInterpretMessage(t *testing.T) {
 						Raw: "// message",
 					},
 				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 21,
+						Line:   3,
+						Column: 1,
+					},
+				},
 			},
 			wantMessage: &unordered.Message{
 				MessageName: "Outer",
@@ -85,6 +93,13 @@ func TestInterpretMessage(t *testing.T) {
 				Comments: []*parser.Comment{
 					{
 						Raw: "// message",
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 21,
+						Line:   3,
+						Column: 1,
 					},
 				},
 			},

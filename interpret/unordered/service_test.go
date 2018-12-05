@@ -6,6 +6,7 @@ import (
 
 	"github.com/yoheimuta/go-protoparser/interpret/unordered"
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 func TestInterpretService(t *testing.T) {
@@ -42,6 +43,13 @@ func TestInterpretService(t *testing.T) {
 						Raw: "// service",
 					},
 				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 21,
+						Line:   3,
+						Column: 1,
+					},
+				},
 			},
 			wantService: &unordered.Service{
 				ServiceName: "SearchService",
@@ -67,6 +75,13 @@ func TestInterpretService(t *testing.T) {
 				Comments: []*parser.Comment{
 					{
 						Raw: "// service",
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 21,
+						Line:   3,
+						Column: 1,
 					},
 				},
 			},
