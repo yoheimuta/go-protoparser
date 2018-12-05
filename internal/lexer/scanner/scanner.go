@@ -66,7 +66,7 @@ func (s *Scanner) peek() rune {
 	return ch
 }
 
-// UnScan put the specified text back to the read buffer.
+// UnScan put the last scanned text back to the read buffer.
 func (s *Scanner) UnScan() {
 	var reversedRunes []rune
 	for _, ch := range s.lastScanRaw {
