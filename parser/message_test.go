@@ -41,7 +41,7 @@ message Outer {
 						Constant:   "true",
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 20,
+								Offset: 19,
 								Line:   3,
 								Column: 3,
 							},
@@ -56,7 +56,7 @@ message Outer {
 								FieldNumber: "1",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 71,
+										Offset: 70,
 										Line:   5,
 										Column: 5,
 									},
@@ -65,7 +65,7 @@ message Outer {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 51,
+								Offset: 50,
 								Line:   4,
 								Column: 3,
 							},
@@ -78,7 +78,7 @@ message Outer {
 						FieldNumber: "2",
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 93,
+								Offset: 92,
 								Line:   7,
 								Column: 3,
 							},
@@ -87,7 +87,7 @@ message Outer {
 				},
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 2,
+						Offset: 1,
 						Line:   2,
 						Column: 1,
 					},
@@ -115,7 +115,7 @@ message outer {
 						Constant:   "true",
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 20,
+								Offset: 19,
 								Line:   3,
 								Column: 3,
 							},
@@ -130,7 +130,7 @@ message outer {
 								FieldNumber: "1",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 71,
+										Offset: 70,
 										Line:   5,
 										Column: 5,
 									},
@@ -139,7 +139,7 @@ message outer {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 51,
+								Offset: 50,
 								Line:   4,
 								Column: 3,
 							},
@@ -152,7 +152,7 @@ message outer {
 						FieldNumber: "2",
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 93,
+								Offset: 92,
 								Line:   7,
 								Column: 3,
 							},
@@ -164,7 +164,7 @@ message outer {
 						FieldNumber: "3",
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 129,
+								Offset: 128,
 								Line:   8,
 								Column: 3,
 							},
@@ -177,7 +177,7 @@ message outer {
 						FieldNumber: "4",
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 164,
+								Offset: 163,
 								Line:   9,
 								Column: 3,
 							},
@@ -186,7 +186,7 @@ message outer {
 				},
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 2,
+						Offset: 1,
 						Line:   2,
 						Column: 1,
 					},
@@ -203,7 +203,7 @@ message Outer {
 				MessageName: "Outer",
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 2,
+						Offset: 1,
 						Line:   2,
 						Column: 1,
 					},
@@ -249,7 +249,7 @@ message outer {
 								Raw: `// option`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 20,
+										Offset: 19,
 										Line:   3,
 										Column: 3,
 									},
@@ -258,7 +258,7 @@ message outer {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 32,
+								Offset: 31,
 								Line:   4,
 								Column: 3,
 							},
@@ -276,7 +276,7 @@ message outer {
 										Raw: `// Level 2`,
 										Meta: meta.Meta{
 											Pos: meta.Position{
-												Offset: 94,
+												Offset: 93,
 												Line:   6,
 												Column: 21,
 											},
@@ -285,7 +285,7 @@ message outer {
 								},
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 109,
+										Offset: 108,
 										Line:   7,
 										Column: 5,
 									},
@@ -297,7 +297,7 @@ message outer {
 								Raw: `// message`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 63,
+										Offset: 62,
 										Line:   5,
 										Column: 3,
 									},
@@ -306,7 +306,7 @@ message outer {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 76,
+								Offset: 75,
 								Line:   6,
 								Column: 3,
 							},
@@ -322,7 +322,7 @@ message outer {
 								Raw: `// field`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 131,
+										Offset: 130,
 										Line:   9,
 										Column: 3,
 									},
@@ -331,7 +331,7 @@ message outer {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 142,
+								Offset: 141,
 								Line:   10,
 								Column: 3,
 							},
@@ -345,7 +345,7 @@ message outer {
 								Constant:   "true",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 217,
+										Offset: 216,
 										Line:   13,
 										Column: 5,
 									},
@@ -357,7 +357,7 @@ message outer {
 								Raw: `// enum`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 178,
+										Offset: 177,
 										Line:   11,
 										Column: 3,
 									},
@@ -366,7 +366,7 @@ message outer {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 188,
+								Offset: 187,
 								Line:   12,
 								Column: 3,
 							},
@@ -378,7 +378,7 @@ message outer {
 						FieldNumber: "3",
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 250,
+								Offset: 249,
 								Line:   15,
 								Column: 3,
 							},
@@ -394,7 +394,7 @@ message outer {
 								Raw: `// map`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 285,
+										Offset: 284,
 										Line:   16,
 										Column: 3,
 									},
@@ -403,7 +403,7 @@ message outer {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 294,
+								Offset: 293,
 								Line:   17,
 								Column: 3,
 							},
@@ -417,7 +417,7 @@ message outer {
 								FieldNumber: "5",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 354,
+										Offset: 353,
 										Line:   20,
 										Column: 5,
 									},
@@ -429,7 +429,7 @@ message outer {
 								FieldNumber: "6",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 375,
+										Offset: 374,
 										Line:   21,
 										Column: 5,
 									},
@@ -442,7 +442,7 @@ message outer {
 								Raw: `// oneof`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 327,
+										Offset: 326,
 										Line:   18,
 										Column: 3,
 									},
@@ -451,7 +451,7 @@ message outer {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 338,
+								Offset: 337,
 								Line:   19,
 								Column: 3,
 							},
@@ -466,7 +466,7 @@ message outer {
 								Raw: `// reserved`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 409,
+										Offset: 408,
 										Line:   23,
 										Column: 3,
 									},
@@ -475,7 +475,7 @@ message outer {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 423,
+								Offset: 422,
 								Line:   24,
 								Column: 3,
 							},
@@ -484,7 +484,7 @@ message outer {
 				},
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 2,
+						Offset: 1,
 						Line:   2,
 						Column: 1,
 					},

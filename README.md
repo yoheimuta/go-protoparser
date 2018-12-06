@@ -2,7 +2,7 @@
 
 go-protoparser is a yet another Go package which parses a Protocol Buffer file (proto3).
 
-- Conforms to the exactly [official spec](https://developers.google.com/protocol-buffers/docs/reference/proto3-spec). 
+- Conforms to the exactly [official spec](https://developers.google.com/protocol-buffers/docs/reference/proto3-spec).
 - Undergone rigorous testing. The parser can parses all examples of the official spec well.
 - Easy to use the parser. You can just call the [Parse function](https://godoc.org/github.com/yoheimuta/go-protoparser#Parse) and receive the [Proto struct](https://godoc.org/github.com/yoheimuta/go-protoparser/parser#Proto).
 
@@ -49,7 +49,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
     "Comments": null,
     "Meta": {
       "Pos": {
-        "Offset": 1,
+        "Offset": 0,
         "Line": 1,
         "Column": 1
       }
@@ -63,7 +63,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Raw": "// An example of the official reference",
           "Meta": {
             "Pos": {
-              "Offset": 20,
+              "Offset": 19,
               "Line": 2,
               "Column": 1
             }
@@ -73,7 +73,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Raw": "// See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file",
           "Meta": {
             "Pos": {
-              "Offset": 60,
+              "Offset": 59,
               "Line": 3,
               "Column": 1
             }
@@ -82,7 +82,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
       ],
       "Meta": {
         "Pos": {
-          "Offset": 152,
+          "Offset": 151,
           "Line": 4,
           "Column": 1
         }
@@ -94,7 +94,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
       "Comments": null,
       "Meta": {
         "Pos": {
-          "Offset": 171,
+          "Offset": 170,
           "Line": 5,
           "Column": 1
         }
@@ -106,7 +106,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
       "Comments": null,
       "Meta": {
         "Pos": {
-          "Offset": 200,
+          "Offset": 199,
           "Line": 6,
           "Column": 1
         }
@@ -121,7 +121,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Comments": null,
           "Meta": {
             "Pos": {
-              "Offset": 270,
+              "Offset": 269,
               "Line": 8,
               "Column": 5
             }
@@ -134,7 +134,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Comments": null,
           "Meta": {
             "Pos": {
-              "Offset": 301,
+              "Offset": 300,
               "Line": 9,
               "Column": 5
             }
@@ -147,7 +147,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Comments": null,
           "Meta": {
             "Pos": {
-              "Offset": 318,
+              "Offset": 317,
               "Line": 10,
               "Column": 5
             }
@@ -165,7 +165,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Comments": null,
           "Meta": {
             "Pos": {
-              "Offset": 335,
+              "Offset": 334,
               "Line": 11,
               "Column": 5
             }
@@ -175,7 +175,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
       "Comments": null,
       "Meta": {
         "Pos": {
-          "Offset": 241,
+          "Offset": 240,
           "Line": 7,
           "Column": 1
         }
@@ -190,7 +190,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Comments": null,
           "Meta": {
             "Pos": {
-              "Offset": 404,
+              "Offset": 403,
               "Line": 14,
               "Column": 5
             }
@@ -210,7 +210,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
                   "Raw": "// Level 2",
                   "Meta": {
                     "Pos": {
-                      "Offset": 455,
+                      "Offset": 454,
                       "Line": 15,
                       "Column": 23
                     }
@@ -219,7 +219,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
               ],
               "Meta": {
                 "Pos": {
-                  "Offset": 472,
+                  "Offset": 471,
                   "Line": 16,
                   "Column": 7
                 }
@@ -229,7 +229,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Comments": null,
           "Meta": {
             "Pos": {
-              "Offset": 437,
+              "Offset": 436,
               "Line": 15,
               "Column": 5
             }
@@ -244,7 +244,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Comments": null,
           "Meta": {
             "Pos": {
-              "Offset": 498,
+              "Offset": 497,
               "Line": 18,
               "Column": 5
             }
@@ -259,7 +259,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Comments": null,
           "Meta": {
             "Pos": {
-              "Offset": 536,
+              "Offset": 535,
               "Line": 19,
               "Column": 5
             }
@@ -274,7 +274,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Comments": null,
           "Meta": {
             "Pos": {
-              "Offset": 573,
+              "Offset": 572,
               "Line": 20,
               "Column": 5
             }
@@ -284,7 +284,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
       "Comments": null,
       "Meta": {
         "Pos": {
-          "Offset": 384,
+          "Offset": 383,
           "Line": 13,
           "Column": 1
         }

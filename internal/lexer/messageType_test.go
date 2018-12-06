@@ -61,8 +61,8 @@ func TestLexer2_ReadMessageType(t *testing.T) {
 				t.Errorf("got %s, but want %s", got, test.wantText)
 			}
 
-			if pos.Offset != 1 {
-				t.Errorf("got %d, but want 1", pos.Offset)
+			if pos.Offset != 0 {
+				t.Errorf("got %d, but want 0", pos.Offset)
 			}
 			if pos.Line != 1 {
 				t.Errorf("got %d, but want 1", pos.Line)

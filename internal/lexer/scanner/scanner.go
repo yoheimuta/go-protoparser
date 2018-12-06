@@ -87,7 +87,6 @@ func (s *Scanner) scan() (Token, string, Position, error) {
 	ch := s.peek()
 
 	startPos := *s.pos
-	startPos.Advance(ch)
 
 	switch {
 	case unicode.IsSpace(ch):

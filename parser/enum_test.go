@@ -50,7 +50,7 @@ func TestParser_ParseEnum(t *testing.T) {
 						Constant:   "true",
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 28,
+								Offset: 27,
 								Line:   2,
 								Column: 3,
 							},
@@ -61,7 +61,7 @@ func TestParser_ParseEnum(t *testing.T) {
 						Number: "0",
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 57,
+								Offset: 56,
 								Line:   3,
 								Column: 3,
 							},
@@ -72,7 +72,7 @@ func TestParser_ParseEnum(t *testing.T) {
 						Number: "1",
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 72,
+								Offset: 71,
 								Line:   4,
 								Column: 3,
 							},
@@ -89,7 +89,7 @@ func TestParser_ParseEnum(t *testing.T) {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 87,
+								Offset: 86,
 								Line:   5,
 								Column: 3,
 							},
@@ -98,7 +98,7 @@ func TestParser_ParseEnum(t *testing.T) {
 				},
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},
@@ -129,7 +129,7 @@ func TestParser_ParseEnum(t *testing.T) {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 28,
+								Offset: 27,
 								Line:   2,
 								Column: 3,
 							},
@@ -138,7 +138,7 @@ func TestParser_ParseEnum(t *testing.T) {
 				},
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},
@@ -165,7 +165,7 @@ func TestParser_ParseEnum(t *testing.T) {
 								Raw: `// option`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 28,
+										Offset: 27,
 										Line:   2,
 										Column: 3,
 									},
@@ -174,7 +174,7 @@ func TestParser_ParseEnum(t *testing.T) {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 40,
+								Offset: 39,
 								Line:   3,
 								Column: 3,
 							},
@@ -188,7 +188,7 @@ func TestParser_ParseEnum(t *testing.T) {
 								Raw: `// UNKNOWN`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 69,
+										Offset: 68,
 										Line:   4,
 										Column: 3,
 									},
@@ -197,7 +197,7 @@ func TestParser_ParseEnum(t *testing.T) {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 82,
+								Offset: 81,
 								Line:   5,
 								Column: 3,
 							},
@@ -206,7 +206,7 @@ func TestParser_ParseEnum(t *testing.T) {
 				},
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},

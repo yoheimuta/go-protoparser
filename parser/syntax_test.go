@@ -28,7 +28,7 @@ func TestParser_ParseSyntax(t *testing.T) {
 				ProtobufVersion: "proto3",
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},

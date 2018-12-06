@@ -54,7 +54,7 @@ func TestParser_ParseOneof(t *testing.T) {
 						FieldNumber: "4",
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 17,
+								Offset: 16,
 								Line:   2,
 								Column: 5,
 							},
@@ -66,7 +66,7 @@ func TestParser_ParseOneof(t *testing.T) {
 						FieldNumber: "9",
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 38,
+								Offset: 37,
 								Line:   3,
 								Column: 5,
 							},
@@ -76,7 +76,7 @@ func TestParser_ParseOneof(t *testing.T) {
 				OneofName: "foo",
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},
@@ -99,7 +99,7 @@ func TestParser_ParseOneof(t *testing.T) {
 						FieldNumber: "4",
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 17,
+								Offset: 16,
 								Line:   2,
 								Column: 5,
 							},
@@ -111,7 +111,7 @@ func TestParser_ParseOneof(t *testing.T) {
 						FieldNumber: "9",
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 44,
+								Offset: 43,
 								Line:   4,
 								Column: 5,
 							},
@@ -121,7 +121,7 @@ func TestParser_ParseOneof(t *testing.T) {
 				OneofName: "foo",
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},
@@ -148,7 +148,7 @@ func TestParser_ParseOneof(t *testing.T) {
 								Raw: `// name`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 17,
+										Offset: 16,
 										Line:   2,
 										Column: 5,
 									},
@@ -157,7 +157,7 @@ func TestParser_ParseOneof(t *testing.T) {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 29,
+								Offset: 28,
 								Line:   3,
 								Column: 5,
 							},
@@ -172,7 +172,7 @@ func TestParser_ParseOneof(t *testing.T) {
 								Raw: `// sub_message`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 50,
+										Offset: 49,
 										Line:   4,
 										Column: 5,
 									},
@@ -181,7 +181,7 @@ func TestParser_ParseOneof(t *testing.T) {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 69,
+								Offset: 68,
 								Line:   5,
 								Column: 5,
 							},
@@ -191,7 +191,7 @@ func TestParser_ParseOneof(t *testing.T) {
 				OneofName: "foo",
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},

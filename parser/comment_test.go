@@ -114,7 +114,7 @@ func TestParser_ParseComments(t *testing.T) {
 					Raw: `// comment`,
 					Meta: meta.Meta{
 						Pos: meta.Position{
-							Offset: 1,
+							Offset: 0,
 							Line:   1,
 							Column: 1,
 						},
@@ -132,7 +132,7 @@ func TestParser_ParseComments(t *testing.T) {
 					Raw: `// comment`,
 					Meta: meta.Meta{
 						Pos: meta.Position{
-							Offset: 1,
+							Offset: 0,
 							Line:   1,
 							Column: 1,
 						},
@@ -142,7 +142,7 @@ func TestParser_ParseComments(t *testing.T) {
 					Raw: `// comment2`,
 					Meta: meta.Meta{
 						Pos: meta.Position{
-							Offset: 12,
+							Offset: 11,
 							Line:   2,
 							Column: 1,
 						},
@@ -162,7 +162,7 @@ comment
 */`,
 					Meta: meta.Meta{
 						Pos: meta.Position{
-							Offset: 1,
+							Offset: 0,
 							Line:   1,
 							Column: 1,
 						},
@@ -185,7 +185,7 @@ comment
 */`,
 					Meta: meta.Meta{
 						Pos: meta.Position{
-							Offset: 1,
+							Offset: 0,
 							Line:   1,
 							Column: 1,
 						},
@@ -197,7 +197,7 @@ comment2
 */`,
 					Meta: meta.Meta{
 						Pos: meta.Position{
-							Offset: 15,
+							Offset: 14,
 							Line:   4,
 							Column: 1,
 						},
@@ -220,7 +220,7 @@ comment
 */`,
 					Meta: meta.Meta{
 						Pos: meta.Position{
-							Offset: 1,
+							Offset: 0,
 							Line:   1,
 							Column: 1,
 						},
@@ -230,7 +230,7 @@ comment
 					Raw: `// comment2`,
 					Meta: meta.Meta{
 						Pos: meta.Position{
-							Offset: 16,
+							Offset: 15,
 							Line:   5,
 							Column: 1,
 						},

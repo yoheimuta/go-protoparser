@@ -21,7 +21,7 @@ func TestPosition_Advance(t *testing.T) {
 			},
 			wantOffset: 1,
 			wantLine:   1,
-			wantColumn: 1,
+			wantColumn: 2,
 		},
 		{
 			name: "advance ascii characters",
@@ -31,7 +31,7 @@ func TestPosition_Advance(t *testing.T) {
 			},
 			wantOffset: 2,
 			wantLine:   1,
-			wantColumn: 2,
+			wantColumn: 3,
 		},
 		{
 			name: "advance an ascii character and a new line",
@@ -41,7 +41,7 @@ func TestPosition_Advance(t *testing.T) {
 			},
 			wantOffset: 2,
 			wantLine:   2,
-			wantColumn: 0,
+			wantColumn: 1,
 		},
 		{
 			name: "advance utf8 characters and a new line",
@@ -52,7 +52,7 @@ func TestPosition_Advance(t *testing.T) {
 			},
 			wantOffset: 7,
 			wantLine:   2,
-			wantColumn: 1,
+			wantColumn: 2,
 		},
 	}
 
@@ -96,7 +96,7 @@ func TestPosition_Revert(t *testing.T) {
 			},
 			wantOffset: 0,
 			wantLine:   1,
-			wantColumn: 0,
+			wantColumn: 1,
 		},
 		{
 			name: "advance and revert ascii characters",
@@ -110,7 +110,7 @@ func TestPosition_Revert(t *testing.T) {
 			},
 			wantOffset: 0,
 			wantLine:   1,
-			wantColumn: 0,
+			wantColumn: 1,
 		},
 		{
 			name: "advance and revert an ascii character and a new line",
@@ -124,7 +124,7 @@ func TestPosition_Revert(t *testing.T) {
 			},
 			wantOffset: 0,
 			wantLine:   1,
-			wantColumn: 0,
+			wantColumn: 1,
 		},
 		{
 			name: "advance and revert utf8 characters and a new line",
@@ -140,7 +140,7 @@ func TestPosition_Revert(t *testing.T) {
 			},
 			wantOffset: 0,
 			wantLine:   1,
-			wantColumn: 0,
+			wantColumn: 1,
 		},
 	}
 

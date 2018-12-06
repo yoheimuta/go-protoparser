@@ -42,7 +42,7 @@ func TestParser_ParseField(t *testing.T) {
 				FieldNumber: "2",
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},
@@ -65,7 +65,7 @@ func TestParser_ParseField(t *testing.T) {
 				},
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},
@@ -92,7 +92,7 @@ func TestParser_ParseField(t *testing.T) {
 				},
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},
@@ -120,7 +120,7 @@ func TestParser_ParseField(t *testing.T) {
 				},
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},

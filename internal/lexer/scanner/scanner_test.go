@@ -36,7 +36,7 @@ func TestScanner_Scan(t *testing.T) {
 					token: scanner.TIDENT,
 					text:  "service",
 					pos: scanner.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},
@@ -45,7 +45,7 @@ func TestScanner_Scan(t *testing.T) {
 					token: scanner.TIDENT,
 					text:  "s1928",
 					pos: scanner.Position{
-						Offset: 9,
+						Offset: 8,
 						Line:   1,
 						Column: 9,
 					},
@@ -54,7 +54,7 @@ func TestScanner_Scan(t *testing.T) {
 					token: scanner.TIDENT,
 					text:  "s_a",
 					pos: scanner.Position{
-						Offset: 15,
+						Offset: 14,
 						Line:   1,
 						Column: 15,
 					},
@@ -63,7 +63,7 @@ func TestScanner_Scan(t *testing.T) {
 					token: scanner.TILLEGAL,
 					text:  "1",
 					pos: scanner.Position{
-						Offset: 19,
+						Offset: 18,
 						Line:   1,
 						Column: 19,
 					},
@@ -72,7 +72,7 @@ func TestScanner_Scan(t *testing.T) {
 					token: scanner.TIDENT,
 					text:  "ac",
 					pos: scanner.Position{
-						Offset: 20,
+						Offset: 19,
 						Line:   1,
 						Column: 20,
 					},
@@ -81,7 +81,7 @@ func TestScanner_Scan(t *testing.T) {
 					token: scanner.TILLEGAL,
 					text:  "-",
 					pos: scanner.Position{
-						Offset: 22,
+						Offset: 21,
 						Line:   1,
 						Column: 22,
 					},
@@ -97,7 +97,7 @@ func TestScanner_Scan(t *testing.T) {
 					token: scanner.TBOOLLIT,
 					text:  "true",
 					pos: scanner.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},
@@ -106,7 +106,7 @@ func TestScanner_Scan(t *testing.T) {
 					token: scanner.TDOT,
 					text:  ".",
 					pos: scanner.Position{
-						Offset: 5,
+						Offset: 4,
 						Line:   1,
 						Column: 5,
 					},
@@ -115,7 +115,7 @@ func TestScanner_Scan(t *testing.T) {
 					token: scanner.TBOOLLIT,
 					text:  "false",
 					pos: scanner.Position{
-						Offset: 6,
+						Offset: 5,
 						Line:   1,
 						Column: 6,
 					},
@@ -124,7 +124,7 @@ func TestScanner_Scan(t *testing.T) {
 					token: scanner.TCOMMA,
 					text:  ",",
 					pos: scanner.Position{
-						Offset: 11,
+						Offset: 10,
 						Line:   1,
 						Column: 11,
 					},
@@ -133,7 +133,7 @@ func TestScanner_Scan(t *testing.T) {
 					token: scanner.TIDENT,
 					text:  "talse",
 					pos: scanner.Position{
-						Offset: 12,
+						Offset: 11,
 						Line:   1,
 						Column: 12,
 					},
@@ -149,7 +149,7 @@ func TestScanner_Scan(t *testing.T) {
 					token: scanner.TIDENT,
 					text:  "true",
 					pos: scanner.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},
@@ -158,7 +158,7 @@ func TestScanner_Scan(t *testing.T) {
 					token: scanner.TSERVICE,
 					text:  "service",
 					pos: scanner.Position{
-						Offset: 6,
+						Offset: 5,
 						Line:   1,
 						Column: 6,
 					},
@@ -167,7 +167,7 @@ func TestScanner_Scan(t *testing.T) {
 					token: scanner.TRPC,
 					text:  "rpc",
 					pos: scanner.Position{
-						Offset: 14,
+						Offset: 13,
 						Line:   1,
 						Column: 14,
 					},
@@ -191,7 +191,7 @@ fugafuga
 					token: scanner.TCOMMENT,
 					text:  "// hogehoge",
 					pos: scanner.Position{
-						Offset: 2,
+						Offset: 1,
 						Line:   2,
 						Column: 1,
 					},
@@ -200,7 +200,7 @@ fugafuga
 					token: scanner.TIDENT,
 					text:  "hogehoge",
 					pos: scanner.Position{
-						Offset: 14,
+						Offset: 13,
 						Line:   3,
 						Column: 1,
 					},
@@ -209,7 +209,7 @@ fugafuga
 					token: scanner.TCOMMENT,
 					text:  "//",
 					pos: scanner.Position{
-						Offset: 23,
+						Offset: 22,
 						Line:   4,
 						Column: 1,
 					},
@@ -220,7 +220,7 @@ fugafuga
 fugafuga
 */`,
 					pos: scanner.Position{
-						Offset: 26,
+						Offset: 25,
 						Line:   5,
 						Column: 1,
 					},
@@ -229,7 +229,7 @@ fugafuga
 					token: scanner.TCOMMENT,
 					text:  "/**/",
 					pos: scanner.Position{
-						Offset: 41,
+						Offset: 40,
 						Line:   8,
 						Column: 1,
 					},
@@ -245,7 +245,7 @@ fugafuga
 					token: scanner.TSTRLIT,
 					text:  `""`,
 					pos: scanner.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},
@@ -254,7 +254,7 @@ fugafuga
 					token: scanner.TSTRLIT,
 					text:  `''`,
 					pos: scanner.Position{
-						Offset: 4,
+						Offset: 3,
 						Line:   1,
 						Column: 4,
 					},
@@ -263,7 +263,7 @@ fugafuga
 					token: scanner.TSTRLIT,
 					text:  `"abc"`,
 					pos: scanner.Position{
-						Offset: 7,
+						Offset: 6,
 						Line:   1,
 						Column: 7,
 					},
@@ -272,7 +272,7 @@ fugafuga
 					token: scanner.TSTRLIT,
 					text:  `'あいう'`,
 					pos: scanner.Position{
-						Offset: 13,
+						Offset: 12,
 						Line:   1,
 						Column: 13,
 					},
@@ -281,7 +281,7 @@ fugafuga
 					token: scanner.TSTRLIT,
 					text:  `"\x1fzz"`,
 					pos: scanner.Position{
-						Offset: 25,
+						Offset: 24,
 						Line:   1,
 						Column: 19,
 					},
@@ -290,7 +290,7 @@ fugafuga
 					token: scanner.TSTRLIT,
 					text:  `'\123\n\\'`,
 					pos: scanner.Position{
-						Offset: 34,
+						Offset: 33,
 						Line:   1,
 						Column: 28,
 					},
@@ -306,7 +306,7 @@ fugafuga
 					token: scanner.TINTLIT,
 					text:  "1",
 					pos: scanner.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},
@@ -315,7 +315,7 @@ fugafuga
 					token: scanner.TINTLIT,
 					text:  "10",
 					pos: scanner.Position{
-						Offset: 3,
+						Offset: 2,
 						Line:   1,
 						Column: 3,
 					},
@@ -324,7 +324,7 @@ fugafuga
 					token: scanner.TINTLIT,
 					text:  "9999",
 					pos: scanner.Position{
-						Offset: 6,
+						Offset: 5,
 						Line:   1,
 						Column: 6,
 					},
@@ -333,7 +333,7 @@ fugafuga
 					token: scanner.TINTLIT,
 					text:  "07",
 					pos: scanner.Position{
-						Offset: 11,
+						Offset: 10,
 						Line:   1,
 						Column: 11,
 					},
@@ -342,7 +342,7 @@ fugafuga
 					token: scanner.TINTLIT,
 					text:  "0123",
 					pos: scanner.Position{
-						Offset: 14,
+						Offset: 13,
 						Line:   1,
 						Column: 14,
 					},
@@ -351,7 +351,7 @@ fugafuga
 					token: scanner.TINTLIT,
 					text:  "0xf",
 					pos: scanner.Position{
-						Offset: 19,
+						Offset: 18,
 						Line:   1,
 						Column: 19,
 					},
@@ -360,7 +360,7 @@ fugafuga
 					token: scanner.TINTLIT,
 					text:  "0X123",
 					pos: scanner.Position{
-						Offset: 23,
+						Offset: 22,
 						Line:   1,
 						Column: 23,
 					},
@@ -376,7 +376,7 @@ fugafuga
 					token: scanner.TFLOATLIT,
 					text:  "1.0",
 					pos: scanner.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},
@@ -385,7 +385,7 @@ fugafuga
 					token: scanner.TFLOATLIT,
 					text:  "99.9",
 					pos: scanner.Position{
-						Offset: 5,
+						Offset: 4,
 						Line:   1,
 						Column: 5,
 					},
@@ -394,7 +394,7 @@ fugafuga
 					token: scanner.TFLOATLIT,
 					text:  "99.999",
 					pos: scanner.Position{
-						Offset: 10,
+						Offset: 9,
 						Line:   1,
 						Column: 10,
 					},
@@ -403,7 +403,7 @@ fugafuga
 					token: scanner.TFLOATLIT,
 					text:  "0.11",
 					pos: scanner.Position{
-						Offset: 17,
+						Offset: 16,
 						Line:   1,
 						Column: 17,
 					},
@@ -412,7 +412,7 @@ fugafuga
 					token: scanner.TFLOATLIT,
 					text:  ".101",
 					pos: scanner.Position{
-						Offset: 22,
+						Offset: 21,
 						Line:   1,
 						Column: 22,
 					},
@@ -421,7 +421,7 @@ fugafuga
 					token: scanner.TFLOATLIT,
 					text:  "1.234e5",
 					pos: scanner.Position{
-						Offset: 27,
+						Offset: 26,
 						Line:   1,
 						Column: 27,
 					},
@@ -430,7 +430,7 @@ fugafuga
 					token: scanner.TFLOATLIT,
 					text:  "1928e10",
 					pos: scanner.Position{
-						Offset: 35,
+						Offset: 34,
 						Line:   1,
 						Column: 35,
 					},
@@ -439,7 +439,7 @@ fugafuga
 					token: scanner.TFLOATLIT,
 					text:  "100.234E+15",
 					pos: scanner.Position{
-						Offset: 43,
+						Offset: 42,
 						Line:   1,
 						Column: 43,
 					},
@@ -448,7 +448,7 @@ fugafuga
 					token: scanner.TFLOATLIT,
 					text:  "1.234e-5",
 					pos: scanner.Position{
-						Offset: 55,
+						Offset: 54,
 						Line:   1,
 						Column: 55,
 					},
@@ -457,7 +457,7 @@ fugafuga
 					token: scanner.TFLOATLIT,
 					text:  "inf",
 					pos: scanner.Position{
-						Offset: 64,
+						Offset: 63,
 						Line:   1,
 						Column: 64,
 					},
@@ -466,7 +466,7 @@ fugafuga
 					token: scanner.TFLOATLIT,
 					text:  "nan",
 					pos: scanner.Position{
-						Offset: 68,
+						Offset: 67,
 						Line:   1,
 						Column: 68,
 					},

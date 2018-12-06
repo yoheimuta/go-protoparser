@@ -39,7 +39,7 @@ func TestParser_ParseImport(t *testing.T) {
 				Location: `"google/protobuf/timestamp.proto"`,
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},
@@ -54,7 +54,7 @@ func TestParser_ParseImport(t *testing.T) {
 				Location: `"other.proto"`,
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},
@@ -69,7 +69,7 @@ func TestParser_ParseImport(t *testing.T) {
 				Location: `"other.proto"`,
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},

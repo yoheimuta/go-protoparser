@@ -38,7 +38,7 @@ service SearchService {
 							MessageType: "SearchRequest",
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 39,
+									Offset: 38,
 									Line:   3,
 									Column: 14,
 								},
@@ -48,7 +48,7 @@ service SearchService {
 							MessageType: "SearchResponse",
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 63,
+									Offset: 62,
 									Line:   3,
 									Column: 38,
 								},
@@ -56,7 +56,7 @@ service SearchService {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 28,
+								Offset: 27,
 								Line:   3,
 								Column: 3,
 							},
@@ -65,7 +65,7 @@ service SearchService {
 				},
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 2,
+						Offset: 1,
 						Line:   2,
 						Column: 1,
 					},
@@ -88,7 +88,7 @@ service SearchService {
 							MessageType: "SearchRequest",
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 39,
+									Offset: 38,
 									Line:   3,
 									Column: 14,
 								},
@@ -98,7 +98,7 @@ service SearchService {
 							MessageType: "SearchResponse",
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 63,
+									Offset: 62,
 									Line:   3,
 									Column: 38,
 								},
@@ -110,7 +110,7 @@ service SearchService {
 								Constant:   "true",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 82,
+										Offset: 81,
 										Line:   3,
 										Column: 57,
 									},
@@ -119,7 +119,7 @@ service SearchService {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 28,
+								Offset: 27,
 								Line:   3,
 								Column: 3,
 							},
@@ -128,7 +128,7 @@ service SearchService {
 				},
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 2,
+						Offset: 1,
 						Line:   2,
 						Column: 1,
 					},
@@ -154,7 +154,7 @@ service SearchService {
 							MessageType: "SearchRequest",
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 39,
+									Offset: 38,
 									Line:   3,
 									Column: 14,
 								},
@@ -164,7 +164,7 @@ service SearchService {
 							MessageType: "SearchResponse",
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 63,
+									Offset: 62,
 									Line:   3,
 									Column: 38,
 								},
@@ -176,7 +176,7 @@ service SearchService {
 								Constant:   "true",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 84,
+										Offset: 83,
 										Line:   4,
 										Column: 2,
 									},
@@ -187,7 +187,7 @@ service SearchService {
 								Constant:   "false",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 115,
+										Offset: 114,
 										Line:   5,
 										Column: 2,
 									},
@@ -196,7 +196,7 @@ service SearchService {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 28,
+								Offset: 27,
 								Line:   3,
 								Column: 3,
 							},
@@ -205,7 +205,7 @@ service SearchService {
 				},
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 2,
+						Offset: 1,
 						Line:   2,
 						Column: 1,
 					},
@@ -233,7 +233,7 @@ service ItemService {
 							MessageType: "CreateUserItemRequest",
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 150,
+									Offset: 149,
 									Line:   5,
 									Column: 23,
 								},
@@ -243,7 +243,7 @@ service ItemService {
 							MessageType: "aggregatespb.UserItemAggregate",
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 182,
+									Offset: 181,
 									Line:   5,
 									Column: 55,
 								},
@@ -254,7 +254,7 @@ service ItemService {
 								Raw: "// CreateUserItem is a method to create a user's item.",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 73,
+										Offset: 72,
 										Line:   4,
 										Column: 5,
 									},
@@ -263,7 +263,7 @@ service ItemService {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 132,
+								Offset: 131,
 								Line:   5,
 								Column: 5,
 							},
@@ -275,7 +275,7 @@ service ItemService {
 							MessageType: "UpdateUserItemRequest",
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 300,
+									Offset: 299,
 									Line:   8,
 									Column: 23,
 								},
@@ -285,7 +285,7 @@ service ItemService {
 							MessageType: "entitiespb.UserItem",
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 332,
+									Offset: 331,
 									Line:   8,
 									Column: 55,
 								},
@@ -296,7 +296,7 @@ service ItemService {
 								Raw: "// UpdateUserItem is a method to update a user's item.",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 223,
+										Offset: 222,
 										Line:   7,
 										Column: 5,
 									},
@@ -305,7 +305,7 @@ service ItemService {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 282,
+								Offset: 281,
 								Line:   8,
 								Column: 5,
 							},
@@ -314,7 +314,7 @@ service ItemService {
 				},
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 47,
+						Offset: 46,
 						Line:   3,
 						Column: 1,
 					},

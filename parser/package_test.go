@@ -28,7 +28,7 @@ func TestParser_ParsePackage(t *testing.T) {
 				Name: "foo.bar",
 				Meta: meta.Meta{
 					Pos: meta.Position{
-						Offset: 1,
+						Offset: 0,
 						Line:   1,
 						Column: 1,
 					},

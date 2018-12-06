@@ -49,7 +49,7 @@ message outer {
 					ProtobufVersion: "proto3",
 					Meta: meta.Meta{
 						Pos: meta.Position{
-							Offset: 2,
+							Offset: 1,
 							Line:   2,
 							Column: 1,
 						},
@@ -61,7 +61,7 @@ message outer {
 						Location: `"other.proto"`,
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 21,
+								Offset: 20,
 								Line:   3,
 								Column: 1,
 							},
@@ -72,7 +72,7 @@ message outer {
 						Constant:   `"com.example.foo"`,
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 50,
+								Offset: 49,
 								Line:   4,
 								Column: 1,
 							},
@@ -86,7 +86,7 @@ message outer {
 								Constant:   "true",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 118,
+										Offset: 117,
 										Line:   6,
 										Column: 3,
 									},
@@ -97,7 +97,7 @@ message outer {
 								Number: "0",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 147,
+										Offset: 146,
 										Line:   7,
 										Column: 3,
 									},
@@ -108,7 +108,7 @@ message outer {
 								Number: "1",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 162,
+										Offset: 161,
 										Line:   8,
 										Column: 3,
 									},
@@ -125,7 +125,7 @@ message outer {
 								},
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 177,
+										Offset: 176,
 										Line:   9,
 										Column: 3,
 									},
@@ -134,7 +134,7 @@ message outer {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 91,
+								Offset: 90,
 								Line:   5,
 								Column: 1,
 							},
@@ -148,7 +148,7 @@ message outer {
 								Constant:   "true",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 244,
+										Offset: 243,
 										Line:   12,
 										Column: 3,
 									},
@@ -163,7 +163,7 @@ message outer {
 										FieldNumber: "1",
 										Meta: meta.Meta{
 											Pos: meta.Position{
-												Offset: 295,
+												Offset: 294,
 												Line:   14,
 												Column: 5,
 											},
@@ -172,7 +172,7 @@ message outer {
 								},
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 275,
+										Offset: 274,
 										Line:   13,
 										Column: 3,
 									},
@@ -185,7 +185,7 @@ message outer {
 								FieldNumber: "2",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 317,
+										Offset: 316,
 										Line:   16,
 										Column: 3,
 									},
@@ -197,7 +197,7 @@ message outer {
 								FieldNumber: "3",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 353,
+										Offset: 352,
 										Line:   17,
 										Column: 3,
 									},
@@ -210,7 +210,7 @@ message outer {
 								FieldNumber: "4",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 388,
+										Offset: 387,
 										Line:   18,
 										Column: 3,
 									},
@@ -219,7 +219,7 @@ message outer {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 226,
+								Offset: 225,
 								Line:   11,
 								Column: 1,
 							},
@@ -241,7 +241,7 @@ service SearchService {
 					ProtobufVersion: "proto3",
 					Meta: meta.Meta{
 						Pos: meta.Position{
-							Offset: 2,
+							Offset: 1,
 							Line:   2,
 							Column: 1,
 						},
@@ -257,7 +257,7 @@ service SearchService {
 									MessageType: "SearchRequest",
 									Meta: meta.Meta{
 										Pos: meta.Position{
-											Offset: 58,
+											Offset: 57,
 											Line:   4,
 											Column: 14,
 										},
@@ -267,7 +267,7 @@ service SearchService {
 									MessageType: "SearchResponse",
 									Meta: meta.Meta{
 										Pos: meta.Position{
-											Offset: 82,
+											Offset: 81,
 											Line:   4,
 											Column: 38,
 										},
@@ -275,7 +275,7 @@ service SearchService {
 								},
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 47,
+										Offset: 46,
 										Line:   4,
 										Column: 3,
 									},
@@ -284,7 +284,7 @@ service SearchService {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 21,
+								Offset: 20,
 								Line:   3,
 								Column: 1,
 							},
@@ -327,7 +327,7 @@ service SearchService {
 							Raw: `// syntax`,
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 2,
+									Offset: 1,
 									Line:   2,
 									Column: 1,
 								},
@@ -339,7 +339,7 @@ syntax2
 */`,
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 12,
+									Offset: 11,
 									Line:   3,
 									Column: 1,
 								},
@@ -348,7 +348,7 @@ syntax2
 					},
 					Meta: meta.Meta{
 						Pos: meta.Position{
-							Offset: 26,
+							Offset: 25,
 							Line:   6,
 							Column: 1,
 						},
@@ -363,7 +363,7 @@ syntax2
 								Raw: `// import`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 45,
+										Offset: 44,
 										Line:   7,
 										Column: 1,
 									},
@@ -372,7 +372,7 @@ syntax2
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 55,
+								Offset: 54,
 								Line:   8,
 								Column: 1,
 							},
@@ -385,7 +385,7 @@ syntax2
 								Raw: `/* package */`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 84,
+										Offset: 83,
 										Line:   9,
 										Column: 1,
 									},
@@ -394,7 +394,7 @@ syntax2
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 98,
+								Offset: 97,
 								Line:   10,
 								Column: 1,
 							},
@@ -408,7 +408,7 @@ syntax2
 								Raw: `// option`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 115,
+										Offset: 114,
 										Line:   11,
 										Column: 1,
 									},
@@ -417,7 +417,7 @@ syntax2
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 125,
+								Offset: 124,
 								Line:   12,
 								Column: 1,
 							},
@@ -430,7 +430,7 @@ syntax2
 								Raw: `// message`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 166,
+										Offset: 165,
 										Line:   13,
 										Column: 1,
 									},
@@ -439,7 +439,7 @@ syntax2
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 177,
+								Offset: 176,
 								Line:   14,
 								Column: 1,
 							},
@@ -453,7 +453,7 @@ syntax2
 								Constant:   "true",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 230,
+										Offset: 229,
 										Line:   18,
 										Column: 3,
 									},
@@ -465,7 +465,7 @@ syntax2
 								Raw: `// enum`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 195,
+										Offset: 194,
 										Line:   16,
 										Column: 1,
 									},
@@ -474,7 +474,7 @@ syntax2
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 203,
+								Offset: 202,
 								Line:   17,
 								Column: 1,
 							},
@@ -489,7 +489,7 @@ syntax2
 									MessageType: "SearchRequest",
 									Meta: meta.Meta{
 										Pos: meta.Position{
-											Offset: 307,
+											Offset: 306,
 											Line:   22,
 											Column: 14,
 										},
@@ -499,7 +499,7 @@ syntax2
 									MessageType: "SearchResponse",
 									Meta: meta.Meta{
 										Pos: meta.Position{
-											Offset: 331,
+											Offset: 330,
 											Line:   22,
 											Column: 38,
 										},
@@ -507,7 +507,7 @@ syntax2
 								},
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 296,
+										Offset: 295,
 										Line:   22,
 										Column: 3,
 									},
@@ -519,7 +519,7 @@ syntax2
 								Raw: `// service`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 259,
+										Offset: 258,
 										Line:   20,
 										Column: 1,
 									},
@@ -528,7 +528,7 @@ syntax2
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 270,
+								Offset: 269,
 								Line:   21,
 								Column: 1,
 							},

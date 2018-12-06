@@ -21,7 +21,9 @@ type Position struct {
 // NewPosition creates a new Position.
 func NewPosition() *Position {
 	return &Position{
+		Offset:  0,
 		Line:    1,
+		Column:  1,
 		columns: make(map[int]int),
 	}
 }
@@ -42,7 +44,7 @@ func (pos *Position) Advance(r rune) {
 		pos.columns[pos.Line] = pos.Column
 
 		pos.Line++
-		pos.Column = 0
+		pos.Column = 1
 	} else {
 		pos.Column++
 	}
