@@ -6,7 +6,9 @@ import (
 	"testing"
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
+	"github.com/yoheimuta/go-protoparser/internal/util_test"
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 func TestParser_ParseEnum(t *testing.T) {
@@ -46,14 +48,35 @@ func TestParser_ParseEnum(t *testing.T) {
 					&parser.Option{
 						OptionName: "allow_alias",
 						Constant:   "true",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 27,
+								Line:   2,
+								Column: 3,
+							},
+						},
 					},
 					&parser.EnumField{
 						Ident:  "UNKNOWN",
 						Number: "0",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 56,
+								Line:   3,
+								Column: 3,
+							},
+						},
 					},
 					&parser.EnumField{
 						Ident:  "STARTED",
 						Number: "1",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 71,
+								Line:   4,
+								Column: 3,
+							},
+						},
 					},
 					&parser.EnumField{
 						Ident:  "RUNNING",
@@ -64,6 +87,20 @@ func TestParser_ParseEnum(t *testing.T) {
 								Constant:   `"hello world"`,
 							},
 						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 86,
+								Line:   5,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
 					},
 				},
 			},
@@ -90,6 +127,20 @@ func TestParser_ParseEnum(t *testing.T) {
 								Constant:   `"hello world2"`,
 							},
 						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 27,
+								Line:   2,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
 					},
 				},
 			},
@@ -112,6 +163,20 @@ func TestParser_ParseEnum(t *testing.T) {
 						Comments: []*parser.Comment{
 							{
 								Raw: `// option`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 27,
+										Line:   2,
+										Column: 3,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 39,
+								Line:   3,
+								Column: 3,
 							},
 						},
 					},
@@ -121,8 +186,29 @@ func TestParser_ParseEnum(t *testing.T) {
 						Comments: []*parser.Comment{
 							{
 								Raw: `// UNKNOWN`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 68,
+										Line:   4,
+										Column: 3,
+									},
+								},
 							},
 						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 81,
+								Line:   5,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
 					},
 				},
 			},
@@ -146,7 +232,7 @@ func TestParser_ParseEnum(t *testing.T) {
 			}
 
 			if !reflect.DeepEqual(got, test.wantEnum) {
-				t.Errorf("got %v, but want %v", got, test.wantEnum)
+				t.Errorf("got %v, but want %v", util_test.PrettyFormat(got), util_test.PrettyFormat(test.wantEnum))
 			}
 
 			if !p.IsEOF() {

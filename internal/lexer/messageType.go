@@ -5,8 +5,9 @@ import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 // ReadMessageType reads a messageType.
 // messageType = [ "." ] { ident "." } messageName
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#identifiers
-func (lex *Lexer) ReadMessageType() (string, error) {
+func (lex *Lexer) ReadMessageType() (string, scanner.Position, error) {
 	lex.Next()
+	startPos := lex.Pos
 
 	var messageType string
 	if lex.Token == scanner.TDOT {
@@ -18,7 +19,7 @@ func (lex *Lexer) ReadMessageType() (string, error) {
 	lex.Next()
 	for !lex.IsEOF() {
 		if lex.Token != scanner.TIDENT {
-			return "", lex.unexpected(lex.Text, "ident")
+			return "", scanner.Position{}, lex.unexpected(lex.Text, "ident")
 		}
 		messageType += lex.Text
 
@@ -32,5 +33,5 @@ func (lex *Lexer) ReadMessageType() (string, error) {
 		lex.Next()
 	}
 
-	return messageType, nil
+	return messageType, startPos, nil
 }

@@ -1,6 +1,9 @@
 package parser
 
-import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+import (
+	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
+)
 
 // MapField is an associative map.
 type MapField struct {
@@ -12,6 +15,8 @@ type MapField struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // ParseMapField parses the mapField.
@@ -23,6 +28,7 @@ func (p *Parser) ParseMapField() (*MapField, error) {
 	if p.lex.Token != scanner.TMAP {
 		return nil, p.unexpected("map")
 	}
+	startPos := p.lex.Pos
 
 	p.lex.Next()
 	if p.lex.Token != scanner.TLESS {
@@ -39,7 +45,7 @@ func (p *Parser) ParseMapField() (*MapField, error) {
 		return nil, p.unexpected(",")
 	}
 
-	typeValue, err := p.parseType()
+	typeValue, _, err := p.parseType()
 	if err != nil {
 		return nil, p.unexpected("type")
 	}
@@ -81,6 +87,7 @@ func (p *Parser) ParseMapField() (*MapField, error) {
 		MapName:      mapName,
 		FieldNumber:  fieldNumber,
 		FieldOptions: fieldOptions,
+		Meta:         meta.NewMeta(startPos),
 	}, nil
 }
 

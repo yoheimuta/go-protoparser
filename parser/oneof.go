@@ -2,6 +2,7 @@ package parser
 
 import (
 	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 // OneofField is a constituent field of oneof.
@@ -13,6 +14,8 @@ type OneofField struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // Oneof consists of oneof fields and a oneof name.
@@ -22,6 +25,8 @@ type Oneof struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // ParseOneof parses the oneof.
@@ -33,6 +38,7 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 	if p.lex.Token != scanner.TONEOF {
 		return nil, p.unexpected("oneof")
 	}
+	startPos := p.lex.Pos
 
 	p.lex.Next()
 	if p.lex.Token != scanner.TIDENT {
@@ -72,13 +78,14 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 	return &Oneof{
 		OneofFields: oneofFields,
 		OneofName:   oneofName,
+		Meta:        meta.NewMeta(startPos),
 	}, nil
 }
 
 // oneofField = type fieldName "=" fieldNumber [ "[" fieldOptions "]" ] ";"
 // https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#oneof_and_oneof_field
 func (p *Parser) parseOneofField() (*OneofField, error) {
-	typeValue, err := p.parseType()
+	typeValue, startPos, err := p.parseType()
 	if err != nil {
 		return nil, p.unexpected("type")
 	}
@@ -114,5 +121,6 @@ func (p *Parser) parseOneofField() (*OneofField, error) {
 		FieldName:    fieldName,
 		FieldNumber:  fieldNumber,
 		FieldOptions: fieldOptions,
+		Meta:         meta.NewMeta(startPos),
 	}, nil
 }

@@ -6,6 +6,7 @@ import (
 
 	"github.com/yoheimuta/go-protoparser/interpret/unordered"
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 func TestInterpretEnum(t *testing.T) {
@@ -51,6 +52,13 @@ func TestInterpretEnum(t *testing.T) {
 						Raw: "// enum",
 					},
 				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 21,
+						Line:   3,
+						Column: 1,
+					},
+				},
 			},
 			wantEnum: &unordered.Enum{
 				EnumName: "EnumAllowingAlias",
@@ -85,6 +93,13 @@ func TestInterpretEnum(t *testing.T) {
 				Comments: []*parser.Comment{
 					{
 						Raw: "// enum",
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 21,
+						Line:   3,
+						Column: 1,
 					},
 				},
 			},

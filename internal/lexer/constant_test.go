@@ -89,7 +89,7 @@ func TestLexer2_ReadConstant(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			lex := lexer.NewLexer(strings.NewReader(test.input))
-			got, err := lex.ReadConstant()
+			got, pos, err := lex.ReadConstant()
 
 			switch {
 			case test.wantErr:
@@ -104,6 +104,16 @@ func TestLexer2_ReadConstant(t *testing.T) {
 
 			if got != test.wantText {
 				t.Errorf("got %s, but want %s", got, test.wantText)
+			}
+
+			if pos.Offset != 0 {
+				t.Errorf("got %d, but want 0", pos.Offset)
+			}
+			if pos.Line != 1 {
+				t.Errorf("got %d, but want 1", pos.Line)
+			}
+			if pos.Column != 1 {
+				t.Errorf("got %d, but want 1", pos.Column)
 			}
 
 			lex.Next()

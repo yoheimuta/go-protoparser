@@ -7,6 +7,7 @@ import (
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 func TestParser_ParsePackage(t *testing.T) {
@@ -25,6 +26,13 @@ func TestParser_ParsePackage(t *testing.T) {
 			input: `package foo.bar;`,
 			wantPackage: &parser.Package{
 				Name: "foo.bar",
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+				},
 			},
 		},
 	}

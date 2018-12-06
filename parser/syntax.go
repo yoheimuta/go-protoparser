@@ -1,6 +1,9 @@
 package parser
 
-import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+import (
+	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
+)
 
 // Syntax is used to define the protobuf version.
 type Syntax struct {
@@ -8,6 +11,8 @@ type Syntax struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // ParseSyntax parses the syntax.
@@ -19,6 +24,7 @@ func (p *Parser) ParseSyntax() (*Syntax, error) {
 	if p.lex.Token != scanner.TSYNTAX {
 		return nil, p.unexpected("syntax")
 	}
+	startPos := p.lex.Pos
 
 	p.lex.Next()
 	if p.lex.Token != scanner.TEQUALS {
@@ -47,5 +53,6 @@ func (p *Parser) ParseSyntax() (*Syntax, error) {
 
 	return &Syntax{
 		ProtobufVersion: "proto3",
+		Meta:            meta.NewMeta(startPos),
 	}, nil
 }

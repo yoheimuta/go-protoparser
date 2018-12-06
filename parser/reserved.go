@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 type parseReservedErr struct {
@@ -29,6 +30,8 @@ type Reserved struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // ParseReserved parses the reserved.
@@ -40,6 +43,7 @@ func (p *Parser) ParseReserved() (*Reserved, error) {
 	if p.lex.Token != scanner.TRESERVED {
 		return nil, p.unexpected("reserved")
 	}
+	startPos := p.lex.Pos
 
 	parse := func() ([]*Range, []string, error) {
 		ranges, err := p.parseRanges()
@@ -71,6 +75,7 @@ func (p *Parser) ParseReserved() (*Reserved, error) {
 	return &Reserved{
 		Ranges:     ranges,
 		FieldNames: fieldNames,
+		Meta:       meta.NewMeta(startPos),
 	}, nil
 }
 

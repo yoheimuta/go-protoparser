@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 // EnumBody is unordered in nature, but each slice field preserves the original order.
@@ -20,6 +21,8 @@ type Enum struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*parser.Comment
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // InterpretEnum interprets *parser.Enum to *Enum.
@@ -36,6 +39,7 @@ func InterpretEnum(src *parser.Enum) (*Enum, error) {
 		EnumName: src.EnumName,
 		EnumBody: enumBody,
 		Comments: src.Comments,
+		Meta:     src.Meta,
 	}, nil
 }
 

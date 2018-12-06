@@ -8,6 +8,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
 	"github.com/yoheimuta/go-protoparser/internal/util_test"
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 func TestParser_ParseProto(t *testing.T) {
@@ -46,15 +47,36 @@ message outer {
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
 					ProtobufVersion: "proto3",
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 1,
+							Line:   2,
+							Column: 1,
+						},
+					},
 				},
 				ProtoBody: []interface{}{
 					&parser.Import{
 						Modifier: parser.ImportModifierPublic,
 						Location: `"other.proto"`,
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 20,
+								Line:   3,
+								Column: 1,
+							},
+						},
 					},
 					&parser.Option{
 						OptionName: "java_package",
 						Constant:   `"com.example.foo"`,
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 49,
+								Line:   4,
+								Column: 1,
+							},
+						},
 					},
 					&parser.Enum{
 						EnumName: "EnumAllowingAlias",
@@ -62,14 +84,35 @@ message outer {
 							&parser.Option{
 								OptionName: "allow_alias",
 								Constant:   "true",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 117,
+										Line:   6,
+										Column: 3,
+									},
+								},
 							},
 							&parser.EnumField{
 								Ident:  "UNKNOWN",
 								Number: "0",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 146,
+										Line:   7,
+										Column: 3,
+									},
+								},
 							},
 							&parser.EnumField{
 								Ident:  "STARTED",
 								Number: "1",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 161,
+										Line:   8,
+										Column: 3,
+									},
+								},
 							},
 							&parser.EnumField{
 								Ident:  "RUNNING",
@@ -80,6 +123,20 @@ message outer {
 										Constant:   `"hello world"`,
 									},
 								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 176,
+										Line:   9,
+										Column: 3,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 90,
+								Line:   5,
+								Column: 1,
 							},
 						},
 					},
@@ -89,6 +146,13 @@ message outer {
 							&parser.Option{
 								OptionName: "(my_option).a",
 								Constant:   "true",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 243,
+										Line:   12,
+										Column: 3,
+									},
+								},
 							},
 							&parser.Message{
 								MessageName: "inner",
@@ -97,6 +161,20 @@ message outer {
 										Type:        "int64",
 										FieldName:   "ival",
 										FieldNumber: "1",
+										Meta: meta.Meta{
+											Pos: meta.Position{
+												Offset: 294,
+												Line:   14,
+												Column: 5,
+											},
+										},
+									},
+								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 274,
+										Line:   13,
+										Column: 3,
 									},
 								},
 							},
@@ -105,17 +183,45 @@ message outer {
 								Type:        "inner",
 								FieldName:   "inner_message",
 								FieldNumber: "2",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 316,
+										Line:   16,
+										Column: 3,
+									},
+								},
 							},
 							&parser.Field{
 								Type:        "EnumAllowingAlias",
 								FieldName:   "enum_field",
 								FieldNumber: "3",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 352,
+										Line:   17,
+										Column: 3,
+									},
+								},
 							},
 							&parser.MapField{
 								KeyType:     "int32",
 								Type:        "string",
 								MapName:     "my_map",
 								FieldNumber: "4",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 387,
+										Line:   18,
+										Column: 3,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 225,
+								Line:   11,
+								Column: 1,
 							},
 						},
 					},
@@ -133,6 +239,13 @@ service SearchService {
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
 					ProtobufVersion: "proto3",
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 1,
+							Line:   2,
+							Column: 1,
+						},
+					},
 				},
 				ProtoBody: []interface{}{
 					&parser.Service{
@@ -142,10 +255,38 @@ service SearchService {
 								RPCName: "Search",
 								RPCRequest: &parser.RPCRequest{
 									MessageType: "SearchRequest",
+									Meta: meta.Meta{
+										Pos: meta.Position{
+											Offset: 57,
+											Line:   4,
+											Column: 14,
+										},
+									},
 								},
 								RPCResponse: &parser.RPCResponse{
 									MessageType: "SearchResponse",
+									Meta: meta.Meta{
+										Pos: meta.Position{
+											Offset: 81,
+											Line:   4,
+											Column: 38,
+										},
+									},
 								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 46,
+										Line:   4,
+										Column: 3,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 20,
+								Line:   3,
+								Column: 1,
 							},
 						},
 					},
@@ -184,11 +325,32 @@ service SearchService {
 					Comments: []*parser.Comment{
 						{
 							Raw: `// syntax`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 1,
+									Line:   2,
+									Column: 1,
+								},
+							},
 						},
 						{
 							Raw: `/*
 syntax2
 */`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 11,
+									Line:   3,
+									Column: 1,
+								},
+							},
+						},
+					},
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 25,
+							Line:   6,
+							Column: 1,
 						},
 					},
 				},
@@ -199,6 +361,20 @@ syntax2
 						Comments: []*parser.Comment{
 							{
 								Raw: `// import`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 44,
+										Line:   7,
+										Column: 1,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 54,
+								Line:   8,
+								Column: 1,
 							},
 						},
 					},
@@ -207,6 +383,20 @@ syntax2
 						Comments: []*parser.Comment{
 							{
 								Raw: `/* package */`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 83,
+										Line:   9,
+										Column: 1,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 97,
+								Line:   10,
+								Column: 1,
 							},
 						},
 					},
@@ -216,6 +406,20 @@ syntax2
 						Comments: []*parser.Comment{
 							{
 								Raw: `// option`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 114,
+										Line:   11,
+										Column: 1,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 124,
+								Line:   12,
+								Column: 1,
 							},
 						},
 					},
@@ -224,6 +428,20 @@ syntax2
 						Comments: []*parser.Comment{
 							{
 								Raw: `// message`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 165,
+										Line:   13,
+										Column: 1,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 176,
+								Line:   14,
+								Column: 1,
 							},
 						},
 					},
@@ -233,11 +451,32 @@ syntax2
 							&parser.Option{
 								OptionName: "allow_alias",
 								Constant:   "true",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 229,
+										Line:   18,
+										Column: 3,
+									},
+								},
 							},
 						},
 						Comments: []*parser.Comment{
 							{
 								Raw: `// enum`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 194,
+										Line:   16,
+										Column: 1,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 202,
+								Line:   17,
+								Column: 1,
 							},
 						},
 					},
@@ -248,15 +487,50 @@ syntax2
 								RPCName: "Search",
 								RPCRequest: &parser.RPCRequest{
 									MessageType: "SearchRequest",
+									Meta: meta.Meta{
+										Pos: meta.Position{
+											Offset: 306,
+											Line:   22,
+											Column: 14,
+										},
+									},
 								},
 								RPCResponse: &parser.RPCResponse{
 									MessageType: "SearchResponse",
+									Meta: meta.Meta{
+										Pos: meta.Position{
+											Offset: 330,
+											Line:   22,
+											Column: 38,
+										},
+									},
+								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 295,
+										Line:   22,
+										Column: 3,
+									},
 								},
 							},
 						},
 						Comments: []*parser.Comment{
 							{
 								Raw: `// service`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 258,
+										Line:   20,
+										Column: 1,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 269,
+								Line:   21,
+								Column: 1,
 							},
 						},
 					},

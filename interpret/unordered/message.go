@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 // MessageBody is unordered in nature, but each slice field preserves the original order.
@@ -24,6 +25,8 @@ type Message struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*parser.Comment
+	// Meta is the meta information.
+	Meta meta.Meta
 }
 
 // InterpretMessage interprets *parser.Message to *Message.
@@ -40,6 +43,7 @@ func InterpretMessage(src *parser.Message) (*Message, error) {
 		MessageName: src.MessageName,
 		MessageBody: messageBody,
 		Comments:    src.Comments,
+		Meta:        src.Meta,
 	}, nil
 }
 
