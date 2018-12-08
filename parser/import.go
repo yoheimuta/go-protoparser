@@ -22,8 +22,15 @@ type Import struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// InlineComment is the optional one placed at the ending.
+	InlineComment *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
+}
+
+// SetInlineComment implements the HasInlineCommentSetter interface.
+func (i *Import) SetInlineComment(comment *Comment) {
+	i.InlineComment = comment
 }
 
 // ParseImport parses the import.

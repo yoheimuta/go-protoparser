@@ -14,8 +14,15 @@ type OneofField struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// InlineComment is the optional one placed at the ending.
+	InlineComment *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
+}
+
+// SetInlineComment implements the HasInlineCommentSetter interface.
+func (f *OneofField) SetInlineComment(comment *Comment) {
+	f.InlineComment = comment
 }
 
 // Oneof consists of oneof fields and a oneof name.
@@ -25,8 +32,17 @@ type Oneof struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// InlineComment is the optional one placed at the ending.
+	InlineComment *Comment
+	// InlineCommentBehindLeftCurly is the optional one placed behind a left curly.
+	InlineCommentBehindLeftCurly *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
+}
+
+// SetInlineComment implements the HasInlineCommentSetter interface.
+func (o *Oneof) SetInlineComment(comment *Comment) {
+	o.InlineComment = comment
 }
 
 // ParseOneof parses the oneof.
@@ -51,6 +67,8 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 		return nil, p.unexpected("{")
 	}
 
+	inlineLeftCurly := p.parseInlineComment()
+
 	var oneofFields []*OneofField
 	for {
 		comments := p.ParseComments()
@@ -65,6 +83,7 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 			return nil, err
 		}
 		oneofField.Comments = comments
+		p.MaybeScanInlineComment(oneofField)
 		oneofFields = append(oneofFields, oneofField)
 
 		p.lex.Next()
@@ -76,9 +95,10 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 	}
 
 	return &Oneof{
-		OneofFields: oneofFields,
-		OneofName:   oneofName,
-		Meta:        meta.NewMeta(startPos),
+		OneofFields:                  oneofFields,
+		OneofName:                    oneofName,
+		InlineCommentBehindLeftCurly: inlineLeftCurly,
+		Meta:                         meta.NewMeta(startPos),
 	}, nil
 }
 

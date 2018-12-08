@@ -271,18 +271,6 @@ message outer {
 								Type:        "int64",
 								FieldName:   "ival",
 								FieldNumber: "1",
-								Comments: []*parser.Comment{
-									{
-										Raw: `// Level 2`,
-										Meta: meta.Meta{
-											Pos: meta.Position{
-												Offset: 93,
-												Line:   6,
-												Column: 21,
-											},
-										},
-									},
-								},
 								Meta: meta.Meta{
 									Pos: meta.Position{
 										Offset: 108,
@@ -301,6 +289,16 @@ message outer {
 										Line:   5,
 										Column: 3,
 									},
+								},
+							},
+						},
+						InlineCommentBehindLeftCurly: &parser.Comment{
+							Raw: "// Level 2",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 93,
+									Line:   6,
+									Column: 21,
 								},
 							},
 						},
@@ -477,6 +475,120 @@ message outer {
 							Pos: meta.Position{
 								Offset: 422,
 								Line:   24,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+				},
+			},
+		},
+		{
+			name: "parsing inline comments",
+			input: `
+message SearchRequest {
+  string query = 1;
+  int32 page_number = 2;  // Which page number do we want?
+  int32 result_per_page = 3;  // Number of results to return per page.
+  enum EnumAllowingAlias {
+    option allow_alias = true;
+  } // Alias
+}
+`,
+			wantMessage: &parser.Message{
+				MessageName: "SearchRequest",
+				MessageBody: []interface{}{
+					&parser.Field{
+						Type:        "string",
+						FieldName:   "query",
+						FieldNumber: "1",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 27,
+								Line:   3,
+								Column: 3,
+							},
+						},
+					},
+					&parser.Field{
+						Type:        "int32",
+						FieldName:   "page_number",
+						FieldNumber: "2",
+						InlineComment: &parser.Comment{
+							Raw: `// Which page number do we want?`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 71,
+									Line:   4,
+									Column: 27,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 47,
+								Line:   4,
+								Column: 3,
+							},
+						},
+					},
+					&parser.Field{
+						Type:        "int32",
+						FieldName:   "result_per_page",
+						FieldNumber: "3",
+						InlineComment: &parser.Comment{
+							Raw: `// Number of results to return per page.`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 134,
+									Line:   5,
+									Column: 31,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 106,
+								Line:   5,
+								Column: 3,
+							},
+						},
+					},
+					&parser.Enum{
+						EnumName: "EnumAllowingAlias",
+						EnumBody: []interface{}{
+							&parser.Option{
+								OptionName: "allow_alias",
+								Constant:   "true",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 206,
+										Line:   7,
+										Column: 5,
+									},
+								},
+							},
+						},
+						InlineComment: &parser.Comment{
+							Raw: `// Alias`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 237,
+									Line:   8,
+									Column: 5,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 177,
+								Line:   6,
 								Column: 3,
 							},
 						},

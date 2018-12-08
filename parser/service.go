@@ -32,8 +32,15 @@ type RPC struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// InlineComment is the optional one placed at the ending.
+	InlineComment *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
+}
+
+// SetInlineComment implements the HasInlineCommentSetter interface.
+func (r *RPC) SetInlineComment(comment *Comment) {
+	r.InlineComment = comment
 }
 
 // Service consists of RPCs.
@@ -44,8 +51,17 @@ type Service struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// InlineComment is the optional one placed at the ending.
+	InlineComment *Comment
+	// InlineCommentBehindLeftCurly is the optional one placed behind a left curly.
+	InlineCommentBehindLeftCurly *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
+}
+
+// SetInlineComment implements the HasInlineCommentSetter interface.
+func (s *Service) SetInlineComment(comment *Comment) {
+	s.InlineComment = comment
 }
 
 // ParseService parses the service.
@@ -65,25 +81,28 @@ func (p *Parser) ParseService() (*Service, error) {
 	}
 	serviceName := p.lex.Text
 
-	serviceBody, err := p.parseServiceBody()
+	serviceBody, inlineLeftCurly, err := p.parseServiceBody()
 	if err != nil {
 		return nil, err
 	}
 
 	return &Service{
-		ServiceName: serviceName,
-		ServiceBody: serviceBody,
-		Meta:        meta.NewMeta(startPos),
+		ServiceName:                  serviceName,
+		ServiceBody:                  serviceBody,
+		InlineCommentBehindLeftCurly: inlineLeftCurly,
+		Meta:                         meta.NewMeta(startPos),
 	}, nil
 }
 
 // serviceBody = "{" { option | rpc | emptyStatement } "}"
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#service_definition
-func (p *Parser) parseServiceBody() ([]interface{}, error) {
+func (p *Parser) parseServiceBody() ([]interface{}, *Comment, error) {
 	p.lex.Next()
 	if p.lex.Token != scanner.TLEFTCURLY {
-		return nil, p.unexpected("{")
+		return nil, nil, p.unexpected("{")
 	}
+
+	inlineLeftCurly := p.parseInlineComment()
 
 	var stmts []interface{}
 	for {
@@ -93,31 +112,38 @@ func (p *Parser) parseServiceBody() ([]interface{}, error) {
 		token := p.lex.Token
 		p.lex.UnNext()
 
+		var stmt interface {
+			HasInlineCommentSetter
+		}
+
 		switch token {
 		case scanner.TOPTION:
 			option, err := p.ParseOption()
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			option.Comments = comments
-			stmts = append(stmts, option)
+			stmt = option
 		case scanner.TRPC:
 			rpc, err := p.parseRPC()
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			rpc.Comments = comments
-			stmts = append(stmts, rpc)
+			stmt = rpc
 		default:
 			err := p.lex.ReadEmptyStatement()
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 		}
 
+		p.MaybeScanInlineComment(stmt)
+		stmts = append(stmts, stmt)
+
 		p.lex.Next()
 		if p.lex.Token == scanner.TRIGHTCURLY {
-			return stmts, nil
+			return stmts, inlineLeftCurly, nil
 		}
 		p.lex.UnNext()
 	}

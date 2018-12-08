@@ -34,12 +34,16 @@ type EnumField struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// InlineComment is the optional one placed at the ending.
+	InlineComment *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
 }
 
-// EmptyStatement represents ";".
-type EmptyStatement struct{}
+// SetInlineComment implements the HasInlineCommentSetter interface.
+func (f *EnumField) SetInlineComment(comment *Comment) {
+	f.InlineComment = comment
+}
 
 // Enum consists of a name and an enum body.
 type Enum struct {
@@ -50,8 +54,17 @@ type Enum struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// InlineComment is the optional one placed at the ending.
+	InlineComment *Comment
+	// InlineCommentBehindLeftCurly is the optional one placed behind a left curly.
+	InlineCommentBehindLeftCurly *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
+}
+
+// SetInlineComment implements the HasInlineCommentSetter interface.
+func (e *Enum) SetInlineComment(comment *Comment) {
+	e.InlineComment = comment
 }
 
 // ParseEnum parses the enum.
@@ -71,25 +84,28 @@ func (p *Parser) ParseEnum() (*Enum, error) {
 	}
 	enumName := p.lex.Text
 
-	enumBody, err := p.parseEnumBody()
+	enumBody, inlineLeftCurly, err := p.parseEnumBody()
 	if err != nil {
 		return nil, err
 	}
 
 	return &Enum{
-		EnumName: enumName,
-		EnumBody: enumBody,
-		Meta:     meta.NewMeta(startPos),
+		EnumName:                     enumName,
+		EnumBody:                     enumBody,
+		InlineCommentBehindLeftCurly: inlineLeftCurly,
+		Meta:                         meta.NewMeta(startPos),
 	}, nil
 }
 
 // enumBody = "{" { option | enumField | emptyStatement } "}"
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#enum_definition
-func (p *Parser) parseEnumBody() ([]interface{}, error) {
+func (p *Parser) parseEnumBody() ([]interface{}, *Comment, error) {
 	p.lex.Next()
 	if p.lex.Token != scanner.TLEFTCURLY {
-		return nil, p.unexpected("{")
+		return nil, nil, p.unexpected("{")
 	}
+
+	inlineLeftCurly := p.parseInlineComment()
 
 	var stmts []interface{}
 
@@ -100,38 +116,45 @@ func (p *Parser) parseEnumBody() ([]interface{}, error) {
 		token := p.lex.Token
 		p.lex.UnNext()
 
+		var stmt interface {
+			HasInlineCommentSetter
+		}
+
 		switch token {
 		case scanner.TOPTION:
 			option, err := p.ParseOption()
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			option.Comments = comments
-			stmts = append(stmts, option)
+			stmt = option
 		default:
 			enumField, enumFieldErr := p.parseEnumField()
 			if enumFieldErr == nil {
 				enumField.Comments = comments
-				stmts = append(stmts, enumField)
+				stmt = enumField
 				break
 			}
 			p.lex.UnNext()
 
 			emptyErr := p.lex.ReadEmptyStatement()
 			if emptyErr == nil {
-				stmts = append(stmts, EmptyStatement{})
+				stmt = &EmptyStatement{}
 				break
 			}
 
-			return nil, &parseEnumBodyStatementErr{
+			return nil, nil, &parseEnumBodyStatementErr{
 				parseEnumFieldErr:      enumFieldErr,
 				parseEmptyStatementErr: emptyErr,
 			}
 		}
 
+		p.MaybeScanInlineComment(stmt)
+		stmts = append(stmts, stmt)
+
 		p.lex.Next()
 		if p.lex.Token == scanner.TRIGHTCURLY {
-			return stmts, nil
+			return stmts, inlineLeftCurly, nil
 		}
 		p.lex.UnNext()
 	}

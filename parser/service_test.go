@@ -321,6 +321,76 @@ service ItemService {
 				},
 			},
 		},
+		{
+			name: "parsing a inline comment",
+			input: `
+service SearchService { // TODO: Search is not implemented yet.
+  rpc Search (SearchRequest) returns (SearchResponse); // TODO: implementation
+}
+`,
+			wantService: &parser.Service{
+				ServiceName: "SearchService",
+				ServiceBody: []interface{}{
+					&parser.RPC{
+						RPCName: "Search",
+						RPCRequest: &parser.RPCRequest{
+							MessageType: "SearchRequest",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 78,
+									Line:   3,
+									Column: 14,
+								},
+							},
+						},
+						RPCResponse: &parser.RPCResponse{
+							MessageType: "SearchResponse",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 102,
+									Line:   3,
+									Column: 38,
+								},
+							},
+						},
+						InlineComment: &parser.Comment{
+							Raw: `// TODO: implementation`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 120,
+									Line:   3,
+									Column: 56,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 67,
+								Line:   3,
+								Column: 3,
+							},
+						},
+					},
+				},
+				InlineCommentBehindLeftCurly: &parser.Comment{
+					Raw: "// TODO: Search is not implemented yet.",
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 25,
+							Line:   2,
+							Column: 25,
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

@@ -47,6 +47,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
   "Syntax": {
     "ProtobufVersion": "proto3",
     "Comments": null,
+    "InlineComment": null,
     "Meta": {
       "Pos": {
         "Offset": 0,
@@ -80,6 +81,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           }
         }
       ],
+      "InlineComment": null,
       "Meta": {
         "Pos": {
           "Offset": 151,
@@ -92,6 +94,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
       "Modifier": 1,
       "Location": "\"other.proto\"",
       "Comments": null,
+      "InlineComment": null,
       "Meta": {
         "Pos": {
           "Offset": 170,
@@ -104,6 +107,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
       "OptionName": "java_package",
       "Constant": "\"com.example.foo\"",
       "Comments": null,
+      "InlineComment": null,
       "Meta": {
         "Pos": {
           "Offset": 199,
@@ -119,6 +123,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "OptionName": "allow_alias",
           "Constant": "true",
           "Comments": null,
+          "InlineComment": null,
           "Meta": {
             "Pos": {
               "Offset": 269,
@@ -132,6 +137,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Number": "0",
           "EnumValueOptions": null,
           "Comments": null,
+          "InlineComment": null,
           "Meta": {
             "Pos": {
               "Offset": 300,
@@ -145,6 +151,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Number": "1",
           "EnumValueOptions": null,
           "Comments": null,
+          "InlineComment": null,
           "Meta": {
             "Pos": {
               "Offset": 317,
@@ -163,6 +170,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
             }
           ],
           "Comments": null,
+          "InlineComment": null,
           "Meta": {
             "Pos": {
               "Offset": 334,
@@ -173,6 +181,8 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
         }
       ],
       "Comments": null,
+      "InlineComment": null,
+      "InlineCommentBehindLeftCurly": null,
       "Meta": {
         "Pos": {
           "Offset": 240,
@@ -188,6 +198,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "OptionName": "(my_option).a",
           "Constant": "true",
           "Comments": null,
+          "InlineComment": null,
           "Meta": {
             "Pos": {
               "Offset": 403,
@@ -205,18 +216,8 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
               "FieldName": "ival",
               "FieldNumber": "1",
               "FieldOptions": null,
-              "Comments": [
-                {
-                  "Raw": "// Level 2",
-                  "Meta": {
-                    "Pos": {
-                      "Offset": 454,
-                      "Line": 15,
-                      "Column": 23
-                    }
-                  }
-                }
-              ],
+              "Comments": null,
+              "InlineComment": null,
               "Meta": {
                 "Pos": {
                   "Offset": 471,
@@ -227,6 +228,17 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
             }
           ],
           "Comments": null,
+          "InlineComment": null,
+          "InlineCommentBehindLeftCurly": {
+            "Raw": "// Level 2",
+            "Meta": {
+              "Pos": {
+                "Offset": 454,
+                "Line": 15,
+                "Column": 23
+              }
+            }
+          },
           "Meta": {
             "Pos": {
               "Offset": 436,
@@ -242,6 +254,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "FieldNumber": "2",
           "FieldOptions": null,
           "Comments": null,
+          "InlineComment": null,
           "Meta": {
             "Pos": {
               "Offset": 497,
@@ -257,6 +270,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "FieldNumber": "3",
           "FieldOptions": null,
           "Comments": null,
+          "InlineComment": null,
           "Meta": {
             "Pos": {
               "Offset": 535,
@@ -272,6 +286,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "FieldNumber": "4",
           "FieldOptions": null,
           "Comments": null,
+          "InlineComment": null,
           "Meta": {
             "Pos": {
               "Offset": 572,
@@ -282,6 +297,8 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
         }
       ],
       "Comments": null,
+      "InlineComment": null,
+      "InlineCommentBehindLeftCurly": null,
       "Meta": {
         "Pos": {
           "Offset": 383,

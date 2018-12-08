@@ -198,6 +198,80 @@ func TestParser_ParseOneof(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "parsing inline comments",
+			input: `oneof foo { // TODO: implementation
+    string name = 4; // name
+    SubMessage sub_message = 9; // sub_message
+}
+`,
+			wantOneof: &parser.Oneof{
+				OneofFields: []*parser.OneofField{
+					{
+						Type:        "string",
+						FieldName:   "name",
+						FieldNumber: "4",
+						InlineComment: &parser.Comment{
+							Raw: `// name`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 57,
+									Line:   2,
+									Column: 22,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 40,
+								Line:   2,
+								Column: 5,
+							},
+						},
+					},
+					{
+						Type:        "SubMessage",
+						FieldName:   "sub_message",
+						FieldNumber: "9",
+						InlineComment: &parser.Comment{
+							Raw: `// sub_message`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 97,
+									Line:   3,
+									Column: 33,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 69,
+								Line:   3,
+								Column: 5,
+							},
+						},
+					},
+				},
+				OneofName: "foo",
+				InlineCommentBehindLeftCurly: &parser.Comment{
+					Raw: "// TODO: implementation",
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 12,
+							Line:   1,
+							Column: 13,
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
