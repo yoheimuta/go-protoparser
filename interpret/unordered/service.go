@@ -20,6 +20,10 @@ type Service struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*parser.Comment
+	// InlineComment is the optional one placed at the ending.
+	InlineComment *parser.Comment
+	// InlineCommentBehindLeftCurly is the optional one placed behind a left curly.
+	InlineCommentBehindLeftCurly *parser.Comment
 	// Meta is the meta information.
 	Meta meta.Meta
 }
@@ -35,10 +39,12 @@ func InterpretService(src *parser.Service) (*Service, error) {
 		return nil, err
 	}
 	return &Service{
-		ServiceName: src.ServiceName,
-		ServiceBody: serviceBody,
-		Comments:    src.Comments,
-		Meta:        src.Meta,
+		ServiceName:                  src.ServiceName,
+		ServiceBody:                  serviceBody,
+		Comments:                     src.Comments,
+		InlineComment:                src.InlineComment,
+		InlineCommentBehindLeftCurly: src.InlineCommentBehindLeftCurly,
+		Meta:                         src.Meta,
 	}, nil
 }
 

@@ -52,6 +52,26 @@ func TestInterpretEnum(t *testing.T) {
 						Raw: "// enum",
 					},
 				},
+				InlineComment: &parser.Comment{
+					Raw: "// TODO: implementation",
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 25,
+							Line:   2,
+							Column: 26,
+						},
+					},
+				},
+				InlineCommentBehindLeftCurly: &parser.Comment{
+					Raw: "// TODO: implementation2",
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 25,
+							Line:   1,
+							Column: 26,
+						},
+					},
+				},
 				Meta: meta.Meta{
 					Pos: meta.Position{
 						Offset: 21,
@@ -93,6 +113,26 @@ func TestInterpretEnum(t *testing.T) {
 				Comments: []*parser.Comment{
 					{
 						Raw: "// enum",
+					},
+				},
+				InlineComment: &parser.Comment{
+					Raw: "// TODO: implementation",
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 25,
+							Line:   2,
+							Column: 26,
+						},
+					},
+				},
+				InlineCommentBehindLeftCurly: &parser.Comment{
+					Raw: "// TODO: implementation2",
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 25,
+							Line:   1,
+							Column: 26,
+						},
 					},
 				},
 				Meta: meta.Meta{
