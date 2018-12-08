@@ -271,18 +271,6 @@ message outer {
 								Type:        "int64",
 								FieldName:   "ival",
 								FieldNumber: "1",
-								Comments: []*parser.Comment{
-									{
-										Raw: `// Level 2`,
-										Meta: meta.Meta{
-											Pos: meta.Position{
-												Offset: 93,
-												Line:   6,
-												Column: 21,
-											},
-										},
-									},
-								},
 								Meta: meta.Meta{
 									Pos: meta.Position{
 										Offset: 108,
@@ -301,6 +289,16 @@ message outer {
 										Line:   5,
 										Column: 3,
 									},
+								},
+							},
+						},
+						InlineCommentBehindLeftCurly: &parser.Comment{
+							Raw: "// Level 2",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 93,
+									Line:   6,
+									Column: 21,
 								},
 							},
 						},

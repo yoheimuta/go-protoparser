@@ -34,6 +34,8 @@ type Oneof struct {
 	Comments []*Comment
 	// InlineComment is the optional one placed at the ending.
 	InlineComment *Comment
+	// InlineCommentBehindLeftCurly is the optional one placed behind a left curly.
+	InlineCommentBehindLeftCurly *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
 }
@@ -65,6 +67,8 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 		return nil, p.unexpected("{")
 	}
 
+	inlineLeftCurly := p.parseInlineComment()
+
 	var oneofFields []*OneofField
 	for {
 		comments := p.ParseComments()
@@ -91,9 +95,10 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 	}
 
 	return &Oneof{
-		OneofFields: oneofFields,
-		OneofName:   oneofName,
-		Meta:        meta.NewMeta(startPos),
+		OneofFields:                  oneofFields,
+		OneofName:                    oneofName,
+		InlineCommentBehindLeftCurly: inlineLeftCurly,
+		Meta:                         meta.NewMeta(startPos),
 	}, nil
 }
 

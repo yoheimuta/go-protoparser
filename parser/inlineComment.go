@@ -9,19 +9,25 @@ type HasInlineCommentSetter interface {
 func (p *Parser) MaybeScanInlineComment(
 	hasSetter HasInlineCommentSetter,
 ) {
+	inlineComment := p.parseInlineComment()
+	if inlineComment == nil {
+		return
+	}
+	hasSetter.SetInlineComment(inlineComment)
+}
+
+func (p *Parser) parseInlineComment() *Comment {
 	currentPos := p.lex.Pos
 
 	comment, err := p.parseComment()
 	if err != nil {
-		return
+		return nil
 	}
 
-	firstCommentPos := comment.Meta.Pos
-	if currentPos.Line != firstCommentPos.Line {
+	if currentPos.Line != comment.Meta.Pos.Line {
 		p.lex.UnNext()
-		return
+		return nil
 	}
 
-	hasSetter.SetInlineComment(comment)
-	return
+	return comment
 }

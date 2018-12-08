@@ -215,7 +215,7 @@ func TestParser_ParseEnum(t *testing.T) {
 		},
 		{
 			name: "parsing inline comments",
-			input: `enum EnumAllowingAlias {
+			input: `enum EnumAllowingAlias { // TODO: implementation
   option allow_alias = true; // option
   UNKNOWN = 0; // UNKNOWN
 }
@@ -230,7 +230,7 @@ func TestParser_ParseEnum(t *testing.T) {
 							Raw: `// option`,
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 54,
+									Offset: 78,
 									Line:   2,
 									Column: 30,
 								},
@@ -238,7 +238,7 @@ func TestParser_ParseEnum(t *testing.T) {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 27,
+								Offset: 51,
 								Line:   2,
 								Column: 3,
 							},
@@ -251,7 +251,7 @@ func TestParser_ParseEnum(t *testing.T) {
 							Raw: `// UNKNOWN`,
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 79,
+									Offset: 103,
 									Line:   3,
 									Column: 16,
 								},
@@ -259,10 +259,20 @@ func TestParser_ParseEnum(t *testing.T) {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 66,
+								Offset: 90,
 								Line:   3,
 								Column: 3,
 							},
+						},
+					},
+				},
+				InlineCommentBehindLeftCurly: &parser.Comment{
+					Raw: "// TODO: implementation",
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 25,
+							Line:   1,
+							Column: 26,
 						},
 					},
 				},

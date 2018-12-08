@@ -324,7 +324,7 @@ service ItemService {
 		{
 			name: "parsing a inline comment",
 			input: `
-service SearchService {
+service SearchService { // TODO: Search is not implemented yet.
   rpc Search (SearchRequest) returns (SearchResponse); // TODO: implementation
 }
 `,
@@ -337,7 +337,7 @@ service SearchService {
 							MessageType: "SearchRequest",
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 38,
+									Offset: 78,
 									Line:   3,
 									Column: 14,
 								},
@@ -347,7 +347,7 @@ service SearchService {
 							MessageType: "SearchResponse",
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 62,
+									Offset: 102,
 									Line:   3,
 									Column: 38,
 								},
@@ -357,7 +357,7 @@ service SearchService {
 							Raw: `// TODO: implementation`,
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 80,
+									Offset: 120,
 									Line:   3,
 									Column: 56,
 								},
@@ -365,10 +365,20 @@ service SearchService {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 27,
+								Offset: 67,
 								Line:   3,
 								Column: 3,
 							},
+						},
+					},
+				},
+				InlineCommentBehindLeftCurly: &parser.Comment{
+					Raw: "// TODO: Search is not implemented yet.",
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 25,
+							Line:   2,
+							Column: 25,
 						},
 					},
 				},

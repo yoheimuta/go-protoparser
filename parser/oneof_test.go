@@ -200,7 +200,7 @@ func TestParser_ParseOneof(t *testing.T) {
 		},
 		{
 			name: "parsing inline comments",
-			input: `oneof foo {
+			input: `oneof foo { // TODO: implementation
     string name = 4; // name
     SubMessage sub_message = 9; // sub_message
 }
@@ -215,7 +215,7 @@ func TestParser_ParseOneof(t *testing.T) {
 							Raw: `// name`,
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 33,
+									Offset: 57,
 									Line:   2,
 									Column: 22,
 								},
@@ -223,7 +223,7 @@ func TestParser_ParseOneof(t *testing.T) {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 16,
+								Offset: 40,
 								Line:   2,
 								Column: 5,
 							},
@@ -237,7 +237,7 @@ func TestParser_ParseOneof(t *testing.T) {
 							Raw: `// sub_message`,
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 73,
+									Offset: 97,
 									Line:   3,
 									Column: 33,
 								},
@@ -245,7 +245,7 @@ func TestParser_ParseOneof(t *testing.T) {
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 45,
+								Offset: 69,
 								Line:   3,
 								Column: 5,
 							},
@@ -253,6 +253,16 @@ func TestParser_ParseOneof(t *testing.T) {
 					},
 				},
 				OneofName: "foo",
+				InlineCommentBehindLeftCurly: &parser.Comment{
+					Raw: "// TODO: implementation",
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 12,
+							Line:   1,
+							Column: 13,
+						},
+					},
+				},
 				Meta: meta.Meta{
 					Pos: meta.Position{
 						Offset: 0,

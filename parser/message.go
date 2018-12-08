@@ -31,6 +31,8 @@ type Message struct {
 	Comments []*Comment
 	// InlineComment is the optional one placed at the ending.
 	InlineComment *Comment
+	// InlineCommentBehindLeftCurly is the optional one placed behind a left curly.
+	InlineCommentBehindLeftCurly *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
 }
@@ -57,30 +59,33 @@ func (p *Parser) ParseMessage() (*Message, error) {
 	}
 	messageName := p.lex.Text
 
-	messageBody, err := p.parseMessageBody()
+	messageBody, inlineLeftCurly, err := p.parseMessageBody()
 	if err != nil {
 		return nil, err
 	}
 
 	return &Message{
-		MessageName: messageName,
-		MessageBody: messageBody,
-		Meta:        meta.NewMeta(startPos),
+		MessageName:                  messageName,
+		MessageBody:                  messageBody,
+		InlineCommentBehindLeftCurly: inlineLeftCurly,
+		Meta:                         meta.NewMeta(startPos),
 	}, nil
 }
 
 // messageBody = "{" { field | enum | message | option | oneof | mapField | reserved | emptyStatement } "}"
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#message_definition
-func (p *Parser) parseMessageBody() ([]interface{}, error) {
+func (p *Parser) parseMessageBody() ([]interface{}, *Comment, error) {
 	p.lex.Next()
 	if p.lex.Token != scanner.TLEFTCURLY {
-		return nil, p.unexpected("{")
+		return nil, nil, p.unexpected("{")
 	}
+
+	inlineLeftCurly := p.parseInlineComment()
 
 	// Parses emptyBody. This spec is not documented, but allowed in general. {
 	p.lex.Next()
 	if p.lex.Token == scanner.TRIGHTCURLY {
-		return nil, nil
+		return nil, nil, nil
 	}
 	p.lex.UnNext()
 	// }
@@ -102,42 +107,42 @@ func (p *Parser) parseMessageBody() ([]interface{}, error) {
 		case scanner.TENUM:
 			enum, err := p.ParseEnum()
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			enum.Comments = comments
 			stmt = enum
 		case scanner.TMESSAGE:
 			message, err := p.ParseMessage()
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			message.Comments = comments
 			stmt = message
 		case scanner.TOPTION:
 			option, err := p.ParseOption()
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			option.Comments = comments
 			stmt = option
 		case scanner.TONEOF:
 			oneof, err := p.ParseOneof()
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			oneof.Comments = comments
 			stmt = oneof
 		case scanner.TMAP:
 			mapField, err := p.ParseMapField()
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			mapField.Comments = comments
 			stmt = mapField
 		case scanner.TRESERVED:
 			reserved, err := p.ParseReserved()
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			reserved.Comments = comments
 			stmt = reserved
@@ -156,7 +161,7 @@ func (p *Parser) parseMessageBody() ([]interface{}, error) {
 				break
 			}
 
-			return nil, &parseMessageBodyStatementErr{
+			return nil, nil, &parseMessageBodyStatementErr{
 				parseFieldErr:          fieldErr,
 				parseEmptyStatementErr: emptyErr,
 			}
@@ -167,7 +172,7 @@ func (p *Parser) parseMessageBody() ([]interface{}, error) {
 
 		p.lex.Next()
 		if p.lex.Token == scanner.TRIGHTCURLY {
-			return stmts, nil
+			return stmts, inlineLeftCurly, nil
 		}
 		p.lex.UnNext()
 	}

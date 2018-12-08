@@ -56,6 +56,8 @@ type Enum struct {
 	Comments []*Comment
 	// InlineComment is the optional one placed at the ending.
 	InlineComment *Comment
+	// InlineCommentBehindLeftCurly is the optional one placed behind a left curly.
+	InlineCommentBehindLeftCurly *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
 }
@@ -82,25 +84,28 @@ func (p *Parser) ParseEnum() (*Enum, error) {
 	}
 	enumName := p.lex.Text
 
-	enumBody, err := p.parseEnumBody()
+	enumBody, inlineLeftCurly, err := p.parseEnumBody()
 	if err != nil {
 		return nil, err
 	}
 
 	return &Enum{
-		EnumName: enumName,
-		EnumBody: enumBody,
-		Meta:     meta.NewMeta(startPos),
+		EnumName:                     enumName,
+		EnumBody:                     enumBody,
+		InlineCommentBehindLeftCurly: inlineLeftCurly,
+		Meta:                         meta.NewMeta(startPos),
 	}, nil
 }
 
 // enumBody = "{" { option | enumField | emptyStatement } "}"
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#enum_definition
-func (p *Parser) parseEnumBody() ([]interface{}, error) {
+func (p *Parser) parseEnumBody() ([]interface{}, *Comment, error) {
 	p.lex.Next()
 	if p.lex.Token != scanner.TLEFTCURLY {
-		return nil, p.unexpected("{")
+		return nil, nil, p.unexpected("{")
 	}
+
+	inlineLeftCurly := p.parseInlineComment()
 
 	var stmts []interface{}
 
@@ -119,7 +124,7 @@ func (p *Parser) parseEnumBody() ([]interface{}, error) {
 		case scanner.TOPTION:
 			option, err := p.ParseOption()
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			option.Comments = comments
 			stmt = option
@@ -138,7 +143,7 @@ func (p *Parser) parseEnumBody() ([]interface{}, error) {
 				break
 			}
 
-			return nil, &parseEnumBodyStatementErr{
+			return nil, nil, &parseEnumBodyStatementErr{
 				parseEnumFieldErr:      enumFieldErr,
 				parseEmptyStatementErr: emptyErr,
 			}
@@ -149,7 +154,7 @@ func (p *Parser) parseEnumBody() ([]interface{}, error) {
 
 		p.lex.Next()
 		if p.lex.Token == scanner.TRIGHTCURLY {
-			return stmts, nil
+			return stmts, inlineLeftCurly, nil
 		}
 		p.lex.UnNext()
 	}

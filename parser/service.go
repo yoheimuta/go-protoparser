@@ -53,6 +53,8 @@ type Service struct {
 	Comments []*Comment
 	// InlineComment is the optional one placed at the ending.
 	InlineComment *Comment
+	// InlineCommentBehindLeftCurly is the optional one placed behind a left curly.
+	InlineCommentBehindLeftCurly *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
 }
@@ -79,25 +81,28 @@ func (p *Parser) ParseService() (*Service, error) {
 	}
 	serviceName := p.lex.Text
 
-	serviceBody, err := p.parseServiceBody()
+	serviceBody, inlineLeftCurly, err := p.parseServiceBody()
 	if err != nil {
 		return nil, err
 	}
 
 	return &Service{
-		ServiceName: serviceName,
-		ServiceBody: serviceBody,
-		Meta:        meta.NewMeta(startPos),
+		ServiceName:                  serviceName,
+		ServiceBody:                  serviceBody,
+		InlineCommentBehindLeftCurly: inlineLeftCurly,
+		Meta:                         meta.NewMeta(startPos),
 	}, nil
 }
 
 // serviceBody = "{" { option | rpc | emptyStatement } "}"
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#service_definition
-func (p *Parser) parseServiceBody() ([]interface{}, error) {
+func (p *Parser) parseServiceBody() ([]interface{}, *Comment, error) {
 	p.lex.Next()
 	if p.lex.Token != scanner.TLEFTCURLY {
-		return nil, p.unexpected("{")
+		return nil, nil, p.unexpected("{")
 	}
+
+	inlineLeftCurly := p.parseInlineComment()
 
 	var stmts []interface{}
 	for {
@@ -115,21 +120,21 @@ func (p *Parser) parseServiceBody() ([]interface{}, error) {
 		case scanner.TOPTION:
 			option, err := p.ParseOption()
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			option.Comments = comments
 			stmt = option
 		case scanner.TRPC:
 			rpc, err := p.parseRPC()
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			rpc.Comments = comments
 			stmt = rpc
 		default:
 			err := p.lex.ReadEmptyStatement()
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 		}
 
@@ -138,7 +143,7 @@ func (p *Parser) parseServiceBody() ([]interface{}, error) {
 
 		p.lex.Next()
 		if p.lex.Token == scanner.TRIGHTCURLY {
-			return stmts, nil
+			return stmts, inlineLeftCurly, nil
 		}
 		p.lex.UnNext()
 	}
