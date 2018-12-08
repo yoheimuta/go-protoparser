@@ -14,8 +14,15 @@ type OneofField struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// InlineComment is the optional one placed at the ending.
+	InlineComment *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
+}
+
+// SetInlineComment implements the HasInlineCommentSetter interface.
+func (f *OneofField) SetInlineComment(comment *Comment) {
+	f.InlineComment = comment
 }
 
 // Oneof consists of oneof fields and a oneof name.
@@ -72,6 +79,7 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 			return nil, err
 		}
 		oneofField.Comments = comments
+		p.MaybeScanInlineComment(oneofField)
 		oneofFields = append(oneofFields, oneofField)
 
 		p.lex.Next()

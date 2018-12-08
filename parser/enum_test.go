@@ -213,6 +213,68 @@ func TestParser_ParseEnum(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "parsing inline comments",
+			input: `enum EnumAllowingAlias {
+  option allow_alias = true; // option
+  UNKNOWN = 0; // UNKNOWN
+}
+`,
+			wantEnum: &parser.Enum{
+				EnumName: "EnumAllowingAlias",
+				EnumBody: []interface{}{
+					&parser.Option{
+						OptionName: "allow_alias",
+						Constant:   "true",
+						InlineComment: &parser.Comment{
+							Raw: `// option`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 54,
+									Line:   2,
+									Column: 30,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 27,
+								Line:   2,
+								Column: 3,
+							},
+						},
+					},
+					&parser.EnumField{
+						Ident:  "UNKNOWN",
+						Number: "0",
+						InlineComment: &parser.Comment{
+							Raw: `// UNKNOWN`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 79,
+									Line:   3,
+									Column: 16,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 66,
+								Line:   3,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

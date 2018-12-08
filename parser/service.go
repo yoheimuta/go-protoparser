@@ -32,8 +32,15 @@ type RPC struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// InlineComment is the optional one placed at the ending.
+	InlineComment *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
+}
+
+// SetInlineComment implements the HasInlineCommentSetter interface.
+func (r *RPC) SetInlineComment(comment *Comment) {
+	r.InlineComment = comment
 }
 
 // Service consists of RPCs.
@@ -44,8 +51,15 @@ type Service struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// InlineComment is the optional one placed at the ending.
+	InlineComment *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
+}
+
+// SetInlineComment implements the HasInlineCommentSetter interface.
+func (s *Service) SetInlineComment(comment *Comment) {
+	s.InlineComment = comment
 }
 
 // ParseService parses the service.
@@ -93,6 +107,10 @@ func (p *Parser) parseServiceBody() ([]interface{}, error) {
 		token := p.lex.Token
 		p.lex.UnNext()
 
+		var stmt interface {
+			HasInlineCommentSetter
+		}
+
 		switch token {
 		case scanner.TOPTION:
 			option, err := p.ParseOption()
@@ -100,20 +118,23 @@ func (p *Parser) parseServiceBody() ([]interface{}, error) {
 				return nil, err
 			}
 			option.Comments = comments
-			stmts = append(stmts, option)
+			stmt = option
 		case scanner.TRPC:
 			rpc, err := p.parseRPC()
 			if err != nil {
 				return nil, err
 			}
 			rpc.Comments = comments
-			stmts = append(stmts, rpc)
+			stmt = rpc
 		default:
 			err := p.lex.ReadEmptyStatement()
 			if err != nil {
 				return nil, err
 			}
 		}
+
+		p.MaybeScanInlineComment(stmt)
+		stmts = append(stmts, stmt)
 
 		p.lex.Next()
 		if p.lex.Token == scanner.TRIGHTCURLY {

@@ -11,8 +11,15 @@ type Package struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// InlineComment is the optional one placed at the ending.
+	InlineComment *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
+}
+
+// SetInlineComment implements the HasInlineCommentSetter interface.
+func (p *Package) SetInlineComment(comment *Comment) {
+	p.InlineComment = comment
 }
 
 // ParsePackage parses the package.

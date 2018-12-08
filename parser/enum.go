@@ -34,8 +34,15 @@ type EnumField struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// InlineComment is the optional one placed at the ending.
+	InlineComment *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
+}
+
+// SetInlineComment implements the HasInlineCommentSetter interface.
+func (f *EnumField) SetInlineComment(comment *Comment) {
+	f.InlineComment = comment
 }
 
 // Enum consists of a name and an enum body.
@@ -104,6 +111,10 @@ func (p *Parser) parseEnumBody() ([]interface{}, error) {
 		token := p.lex.Token
 		p.lex.UnNext()
 
+		var stmt interface {
+			HasInlineCommentSetter
+		}
+
 		switch token {
 		case scanner.TOPTION:
 			option, err := p.ParseOption()
@@ -111,19 +122,19 @@ func (p *Parser) parseEnumBody() ([]interface{}, error) {
 				return nil, err
 			}
 			option.Comments = comments
-			stmts = append(stmts, option)
+			stmt = option
 		default:
 			enumField, enumFieldErr := p.parseEnumField()
 			if enumFieldErr == nil {
 				enumField.Comments = comments
-				stmts = append(stmts, enumField)
+				stmt = enumField
 				break
 			}
 			p.lex.UnNext()
 
 			emptyErr := p.lex.ReadEmptyStatement()
 			if emptyErr == nil {
-				stmts = append(stmts, EmptyStatement{})
+				stmt = &EmptyStatement{}
 				break
 			}
 
@@ -132,6 +143,9 @@ func (p *Parser) parseEnumBody() ([]interface{}, error) {
 				parseEmptyStatementErr: emptyErr,
 			}
 		}
+
+		p.MaybeScanInlineComment(stmt)
+		stmts = append(stmts, stmt)
 
 		p.lex.Next()
 		if p.lex.Token == scanner.TRIGHTCURLY {

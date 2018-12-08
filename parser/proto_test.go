@@ -537,6 +537,214 @@ syntax2
 				},
 			},
 		},
+		{
+			name: "parsing inline comments",
+			input: `
+syntax = "proto3"; // syntax
+import public "other.proto"; // import
+package foo.bar; /* package */
+option java_package = "com.example.foo"; // option
+message outer {
+} // message
+enum EnumAllowingAlias {
+  option allow_alias = true;
+} // enum
+service SearchService {
+  rpc Search (SearchRequest) returns (SearchResponse);
+} // service
+`,
+			wantProto: &parser.Proto{
+				Syntax: &parser.Syntax{
+					ProtobufVersion: "proto3",
+					InlineComment: &parser.Comment{
+						Raw: `// syntax`,
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 20,
+								Line:   2,
+								Column: 20,
+							},
+						},
+					},
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 1,
+							Line:   2,
+							Column: 1,
+						},
+					},
+				},
+				ProtoBody: []interface{}{
+					&parser.Import{
+						Modifier: parser.ImportModifierPublic,
+						Location: `"other.proto"`,
+						InlineComment: &parser.Comment{
+							Raw: `// import`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 59,
+									Line:   3,
+									Column: 30,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 30,
+								Line:   3,
+								Column: 1,
+							},
+						},
+					},
+					&parser.Package{
+						Name: `foo.bar`,
+						InlineComment: &parser.Comment{
+							Raw: `/* package */`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 86,
+									Line:   4,
+									Column: 18,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 69,
+								Line:   4,
+								Column: 1,
+							},
+						},
+					},
+					&parser.Option{
+						OptionName: "java_package",
+						Constant:   `"com.example.foo"`,
+						InlineComment: &parser.Comment{
+							Raw: `// option`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 141,
+									Line:   5,
+									Column: 42,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 100,
+								Line:   5,
+								Column: 1,
+							},
+						},
+					},
+					&parser.Message{
+						MessageName: "outer",
+						InlineComment: &parser.Comment{
+							Raw: `// message`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 169,
+									Line:   7,
+									Column: 3,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 151,
+								Line:   6,
+								Column: 1,
+							},
+						},
+					},
+					&parser.Enum{
+						EnumName: "EnumAllowingAlias",
+						EnumBody: []interface{}{
+							&parser.Option{
+								OptionName: "allow_alias",
+								Constant:   "true",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 207,
+										Line:   9,
+										Column: 3,
+									},
+								},
+							},
+						},
+						InlineComment: &parser.Comment{
+							Raw: `// enum`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 236,
+									Line:   10,
+									Column: 3,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 180,
+								Line:   8,
+								Column: 1,
+							},
+						},
+					},
+					&parser.Service{
+						ServiceName: "SearchService",
+						ServiceBody: []interface{}{
+							&parser.RPC{
+								RPCName: "Search",
+								RPCRequest: &parser.RPCRequest{
+									MessageType: "SearchRequest",
+									Meta: meta.Meta{
+										Pos: meta.Position{
+											Offset: 281,
+											Line:   12,
+											Column: 14,
+										},
+									},
+								},
+								RPCResponse: &parser.RPCResponse{
+									MessageType: "SearchResponse",
+									Meta: meta.Meta{
+										Pos: meta.Position{
+											Offset: 305,
+											Line:   12,
+											Column: 38,
+										},
+									},
+								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 270,
+										Line:   12,
+										Column: 3,
+									},
+								},
+							},
+						},
+						InlineComment: &parser.Comment{
+							Raw: `// service`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 325,
+									Line:   13,
+									Column: 3,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 244,
+								Line:   11,
+								Column: 1,
+							},
+						},
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

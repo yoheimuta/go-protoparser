@@ -20,6 +20,7 @@ func (p *Parser) ParseProto() (*Proto, error) {
 		return nil, err
 	}
 	syntax.Comments = syntaxComments
+	p.MaybeScanInlineComment(syntax)
 
 	protoBody, err := p.parseProtoBody()
 	if err != nil {
@@ -49,6 +50,10 @@ func (p *Parser) parseProtoBody() ([]interface{}, error) {
 		token := p.lex.Token
 		p.lex.UnNext()
 
+		var stmt interface {
+			HasInlineCommentSetter
+		}
+
 		switch token {
 		case scanner.TIMPORT:
 			importValue, err := p.ParseImport()
@@ -56,42 +61,42 @@ func (p *Parser) parseProtoBody() ([]interface{}, error) {
 				return nil, err
 			}
 			importValue.Comments = comments
-			protoBody = append(protoBody, importValue)
+			stmt = importValue
 		case scanner.TPACKAGE:
 			packageValue, err := p.ParsePackage()
 			if err != nil {
 				return nil, err
 			}
 			packageValue.Comments = comments
-			protoBody = append(protoBody, packageValue)
+			stmt = packageValue
 		case scanner.TOPTION:
 			option, err := p.ParseOption()
 			if err != nil {
 				return nil, err
 			}
 			option.Comments = comments
-			protoBody = append(protoBody, option)
+			stmt = option
 		case scanner.TMESSAGE:
 			message, err := p.ParseMessage()
 			if err != nil {
 				return nil, err
 			}
 			message.Comments = comments
-			protoBody = append(protoBody, message)
+			stmt = message
 		case scanner.TENUM:
 			enum, err := p.ParseEnum()
 			if err != nil {
 				return nil, err
 			}
 			enum.Comments = comments
-			protoBody = append(protoBody, enum)
+			stmt = enum
 		case scanner.TSERVICE:
 			service, err := p.ParseService()
 			if err != nil {
 				return nil, err
 			}
 			service.Comments = comments
-			protoBody = append(protoBody, service)
+			stmt = service
 		default:
 			err := p.lex.ReadEmptyStatement()
 			if err != nil {
@@ -99,5 +104,8 @@ func (p *Parser) parseProtoBody() ([]interface{}, error) {
 			}
 			protoBody = append(protoBody, &EmptyStatement{})
 		}
+
+		p.MaybeScanInlineComment(stmt)
+		protoBody = append(protoBody, stmt)
 	}
 }
