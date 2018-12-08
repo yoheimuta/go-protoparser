@@ -25,6 +25,10 @@ type Message struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*parser.Comment
+	// InlineComment is the optional one placed at the ending.
+	InlineComment *parser.Comment
+	// InlineCommentBehindLeftCurly is the optional one placed behind a left curly.
+	InlineCommentBehindLeftCurly *parser.Comment
 	// Meta is the meta information.
 	Meta meta.Meta
 }
@@ -40,10 +44,12 @@ func InterpretMessage(src *parser.Message) (*Message, error) {
 		return nil, err
 	}
 	return &Message{
-		MessageName: src.MessageName,
-		MessageBody: messageBody,
-		Comments:    src.Comments,
-		Meta:        src.Meta,
+		MessageName:                  src.MessageName,
+		MessageBody:                  messageBody,
+		Comments:                     src.Comments,
+		InlineComment:                src.InlineComment,
+		InlineCommentBehindLeftCurly: src.InlineCommentBehindLeftCurly,
+		Meta:                         src.Meta,
 	}, nil
 }
 

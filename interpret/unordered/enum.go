@@ -21,6 +21,10 @@ type Enum struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*parser.Comment
+	// InlineComment is the optional one placed at the ending.
+	InlineComment *parser.Comment
+	// InlineCommentBehindLeftCurly is the optional one placed behind a left curly.
+	InlineCommentBehindLeftCurly *parser.Comment
 	// Meta is the meta information.
 	Meta meta.Meta
 }
@@ -36,10 +40,12 @@ func InterpretEnum(src *parser.Enum) (*Enum, error) {
 		return nil, err
 	}
 	return &Enum{
-		EnumName: src.EnumName,
-		EnumBody: enumBody,
-		Comments: src.Comments,
-		Meta:     src.Meta,
+		EnumName:                     src.EnumName,
+		EnumBody:                     enumBody,
+		Comments:                     src.Comments,
+		InlineComment:                src.InlineComment,
+		InlineCommentBehindLeftCurly: src.InlineCommentBehindLeftCurly,
+		Meta:                         src.Meta,
 	}, nil
 }
 
