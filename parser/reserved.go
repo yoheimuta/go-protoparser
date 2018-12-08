@@ -30,8 +30,15 @@ type Reserved struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// InlineComment is the optional one placed at the ending.
+	InlineComment *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
+}
+
+// SetInlineComment implements the HasInlineCommentSetter interface.
+func (r *Reserved) SetInlineComment(comment *Comment) {
+	r.InlineComment = comment
 }
 
 // ParseReserved parses the reserved.

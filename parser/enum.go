@@ -38,9 +38,6 @@ type EnumField struct {
 	Meta meta.Meta
 }
 
-// EmptyStatement represents ";".
-type EmptyStatement struct{}
-
 // Enum consists of a name and an enum body.
 type Enum struct {
 	EnumName string
@@ -50,8 +47,15 @@ type Enum struct {
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
+	// InlineComment is the optional one placed at the ending.
+	InlineComment *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
+}
+
+// SetInlineComment implements the HasInlineCommentSetter interface.
+func (e *Enum) SetInlineComment(comment *Comment) {
+	e.InlineComment = comment
 }
 
 // ParseEnum parses the enum.
