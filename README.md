@@ -5,6 +5,7 @@ go-protoparser is a yet another Go package which parses a Protocol Buffer file (
 - Conforms to the exactly [official spec](https://developers.google.com/protocol-buffers/docs/reference/proto3-spec).
 - Undergone rigorous testing. The parser can parses all examples of the official spec well.
 - Easy to use the parser. You can just call the [Parse function](https://godoc.org/github.com/yoheimuta/go-protoparser#Parse) and receive the [Proto struct](https://godoc.org/github.com/yoheimuta/go-protoparser/parser#Proto).
+  - If you don't care about the order of body elements, consider to use the [unordered.Proto struct](https://godoc.org/github.com/yoheimuta/go-protoparser/interpret/unordered#Proto).
 
 ### Installation
 
