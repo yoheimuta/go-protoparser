@@ -33,7 +33,9 @@ func WithPermissive(permissive bool) Option {
 
 // Parse parses a Protocol Buffer file.
 func Parse(input io.Reader, options ...Option) (*parser.Proto, error) {
-	config := &ParseConfig{}
+	config := &ParseConfig{
+		permissive: true,
+	}
 	for _, opt := range options {
 		opt(config)
 	}
