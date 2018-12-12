@@ -35,7 +35,7 @@ message Outer {
 `,
 			wantMessage: &parser.Message{
 				MessageName: "Outer",
-				MessageBody: []interface{}{
+				MessageBody: []parser.Visitee{
 					&parser.Option{
 						OptionName: "(my_option).a",
 						Constant:   "true",
@@ -49,7 +49,7 @@ message Outer {
 					},
 					&parser.Message{
 						MessageName: "Inner",
-						MessageBody: []interface{}{
+						MessageBody: []parser.Visitee{
 							&parser.Field{
 								Type:        "int64",
 								FieldName:   "ival",
@@ -109,7 +109,7 @@ message outer {
 `,
 			wantMessage: &parser.Message{
 				MessageName: "outer",
-				MessageBody: []interface{}{
+				MessageBody: []parser.Visitee{
 					&parser.Option{
 						OptionName: "(my_option).a",
 						Constant:   "true",
@@ -123,7 +123,7 @@ message outer {
 					},
 					&parser.Message{
 						MessageName: "inner",
-						MessageBody: []interface{}{
+						MessageBody: []parser.Visitee{
 							&parser.Field{
 								Type:        "int64",
 								FieldName:   "ival",
@@ -240,7 +240,7 @@ message outer {
 `,
 			wantMessage: &parser.Message{
 				MessageName: "outer",
-				MessageBody: []interface{}{
+				MessageBody: []parser.Visitee{
 					&parser.Option{
 						OptionName: "(my_option).a",
 						Constant:   "true",
@@ -266,7 +266,7 @@ message outer {
 					},
 					&parser.Message{
 						MessageName: "inner",
-						MessageBody: []interface{}{
+						MessageBody: []parser.Visitee{
 							&parser.Field{
 								Type:        "int64",
 								FieldName:   "ival",
@@ -337,7 +337,7 @@ message outer {
 					},
 					&parser.Enum{
 						EnumName: "EnumAllowingAlias",
-						EnumBody: []interface{}{
+						EnumBody: []parser.Visitee{
 							&parser.Option{
 								OptionName: "allow_alias",
 								Constant:   "true",
@@ -503,7 +503,7 @@ message SearchRequest {
 `,
 			wantMessage: &parser.Message{
 				MessageName: "SearchRequest",
-				MessageBody: []interface{}{
+				MessageBody: []parser.Visitee{
 					&parser.Field{
 						Type:        "string",
 						FieldName:   "query",
@@ -562,7 +562,7 @@ message SearchRequest {
 					},
 					&parser.Enum{
 						EnumName: "EnumAllowingAlias",
-						EnumBody: []interface{}{
+						EnumBody: []parser.Visitee{
 							&parser.Option{
 								OptionName: "allow_alias",
 								Constant:   "true",

@@ -24,7 +24,7 @@ func TestInterpretProto(t *testing.T) {
 				Syntax: &parser.Syntax{
 					ProtobufVersion: "proto3",
 				},
-				ProtoBody: []interface{}{
+				ProtoBody: []parser.Visitee{
 					&parser.Import{
 						Modifier: parser.ImportModifierPublic,
 						Location: `"other.proto"`,
@@ -35,7 +35,7 @@ func TestInterpretProto(t *testing.T) {
 					},
 					&parser.Enum{
 						EnumName: "EnumAllowingAlias",
-						EnumBody: []interface{}{
+						EnumBody: []parser.Visitee{
 							&parser.Option{
 								OptionName: "allow_alias",
 								Constant:   "true",
@@ -62,14 +62,14 @@ func TestInterpretProto(t *testing.T) {
 					},
 					&parser.Message{
 						MessageName: "outer",
-						MessageBody: []interface{}{
+						MessageBody: []parser.Visitee{
 							&parser.Option{
 								OptionName: "(my_option).a",
 								Constant:   "true",
 							},
 							&parser.Message{
 								MessageName: "inner",
-								MessageBody: []interface{}{
+								MessageBody: []parser.Visitee{
 									&parser.Field{
 										Type:        "int64",
 										FieldName:   "ival",

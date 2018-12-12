@@ -23,7 +23,7 @@ func TestInterpretEnum(t *testing.T) {
 			name: "interpreting an excerpt from the official reference with comments",
 			inputEnum: &parser.Enum{
 				EnumName: "EnumAllowingAlias",
-				EnumBody: []interface{}{
+				EnumBody: []parser.Visitee{
 					&parser.Option{
 						OptionName: "allow_alias",
 						Constant:   "true",

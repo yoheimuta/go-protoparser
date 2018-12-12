@@ -39,7 +39,7 @@ func InterpretProto(src *parser.Proto) (*Proto, error) {
 	}, nil
 }
 
-func interpretProtoBody(src []interface{}) (
+func interpretProtoBody(src []parser.Visitee) (
 	*ProtoBody,
 	error,
 ) {

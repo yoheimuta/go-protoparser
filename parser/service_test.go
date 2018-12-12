@@ -31,7 +31,7 @@ service SearchService {
 `,
 			wantService: &parser.Service{
 				ServiceName: "SearchService",
-				ServiceBody: []interface{}{
+				ServiceBody: []parser.Visitee{
 					&parser.RPC{
 						RPCName: "Search",
 						RPCRequest: &parser.RPCRequest{
@@ -81,7 +81,7 @@ service SearchService {
 `,
 			wantService: &parser.Service{
 				ServiceName: "SearchService",
-				ServiceBody: []interface{}{
+				ServiceBody: []parser.Visitee{
 					&parser.RPC{
 						RPCName: "Search",
 						RPCRequest: &parser.RPCRequest{
@@ -147,7 +147,7 @@ service SearchService {
 `,
 			wantService: &parser.Service{
 				ServiceName: "SearchService",
-				ServiceBody: []interface{}{
+				ServiceBody: []parser.Visitee{
 					&parser.RPC{
 						RPCName: "Search",
 						RPCRequest: &parser.RPCRequest{
@@ -226,7 +226,7 @@ service ItemService {
 `,
 			wantService: &parser.Service{
 				ServiceName: "ItemService",
-				ServiceBody: []interface{}{
+				ServiceBody: []parser.Visitee{
 					&parser.RPC{
 						RPCName: "CreateUserItem",
 						RPCRequest: &parser.RPCRequest{
@@ -330,7 +330,7 @@ service SearchService { // TODO: Search is not implemented yet.
 `,
 			wantService: &parser.Service{
 				ServiceName: "SearchService",
-				ServiceBody: []interface{}{
+				ServiceBody: []parser.Visitee{
 					&parser.RPC{
 						RPCName: "Search",
 						RPCRequest: &parser.RPCRequest{

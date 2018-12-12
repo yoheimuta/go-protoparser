@@ -53,7 +53,7 @@ func InterpretMessage(src *parser.Message) (*Message, error) {
 	}, nil
 }
 
-func interpretMessageBody(src []interface{}) (
+func interpretMessageBody(src []parser.Visitee) (
 	*MessageBody,
 	error,
 ) {

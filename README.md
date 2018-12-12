@@ -6,6 +6,7 @@ go-protoparser is a yet another Go package which parses a Protocol Buffer file (
 - Undergone rigorous testing. The parser can parses all examples of the official spec well.
 - Easy to use the parser. You can just call the [Parse function](https://godoc.org/github.com/yoheimuta/go-protoparser#Parse) and receive the [Proto struct](https://godoc.org/github.com/yoheimuta/go-protoparser/parser#Proto).
   - If you don't care about the order of body elements, consider to use the [unordered.Proto struct](https://godoc.org/github.com/yoheimuta/go-protoparser/interpret/unordered#Proto).
+  - Or if you want to use the visitor pattern, use the [Visitor struct](https://godoc.org/github.com/yoheimuta/go-protoparser/parser#Visitor).
 
 ### Installation
 

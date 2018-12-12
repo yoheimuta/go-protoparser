@@ -43,11 +43,25 @@ func (r *RPC) SetInlineComment(comment *Comment) {
 	r.InlineComment = comment
 }
 
+// Accept dispatches the call to the visitor.
+func (r *RPC) Accept(v Visitor) {
+	if !v.VisitRPC(r) {
+		return
+	}
+
+	for _, comment := range r.Comments {
+		comment.Accept(v)
+	}
+	if r.InlineComment != nil {
+		r.InlineComment.Accept(v)
+	}
+}
+
 // Service consists of RPCs.
 type Service struct {
 	ServiceName string
 	// ServiceBody can have options and rpcs.
-	ServiceBody []interface{}
+	ServiceBody []Visitee
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
@@ -62,6 +76,26 @@ type Service struct {
 // SetInlineComment implements the HasInlineCommentSetter interface.
 func (s *Service) SetInlineComment(comment *Comment) {
 	s.InlineComment = comment
+}
+
+// Accept dispatches the call to the visitor.
+func (s *Service) Accept(v Visitor) {
+	if !v.VisitService(s) {
+		return
+	}
+
+	for _, body := range s.ServiceBody {
+		body.Accept(v)
+	}
+	for _, comment := range s.Comments {
+		comment.Accept(v)
+	}
+	if s.InlineComment != nil {
+		s.InlineComment.Accept(v)
+	}
+	if s.InlineCommentBehindLeftCurly != nil {
+		s.InlineCommentBehindLeftCurly.Accept(v)
+	}
 }
 
 // ParseService parses the service.
@@ -96,7 +130,7 @@ func (p *Parser) ParseService() (*Service, error) {
 
 // serviceBody = "{" { option | rpc | emptyStatement } "}"
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#service_definition
-func (p *Parser) parseServiceBody() ([]interface{}, *Comment, error) {
+func (p *Parser) parseServiceBody() ([]Visitee, *Comment, error) {
 	p.lex.Next()
 	if p.lex.Token != scanner.TLEFTCURLY {
 		return nil, nil, p.unexpected("{")
@@ -104,7 +138,7 @@ func (p *Parser) parseServiceBody() ([]interface{}, *Comment, error) {
 
 	inlineLeftCurly := p.parseInlineComment()
 
-	var stmts []interface{}
+	var stmts []Visitee
 	for {
 		comments := p.ParseComments()
 
@@ -114,6 +148,7 @@ func (p *Parser) parseServiceBody() ([]interface{}, *Comment, error) {
 
 		var stmt interface {
 			HasInlineCommentSetter
+			Visitee
 		}
 
 		switch token {

@@ -48,7 +48,7 @@ func InterpretService(src *parser.Service) (*Service, error) {
 	}, nil
 }
 
-func interpretServiceBody(src []interface{}) (
+func interpretServiceBody(src []parser.Visitee) (
 	*ServiceBody,
 	error,
 ) {

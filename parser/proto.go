@@ -6,7 +6,18 @@ import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 type Proto struct {
 	Syntax *Syntax
 	// ProtoBody is a slice of sum type consisted of *Import, *Package, *Option, *Message, *Enum, *Service and *EmptyStatement.
-	ProtoBody []interface{}
+	ProtoBody []Visitee
+}
+
+// Accept dispatches the call to the visitor.
+func (p *Proto) Accept(v Visitor) {
+	if p.Syntax != nil {
+		p.Syntax.Accept(v)
+	}
+
+	for _, body := range p.ProtoBody {
+		body.Accept(v)
+	}
 }
 
 // ParseProto parses the proto.
@@ -36,8 +47,8 @@ func (p *Parser) ParseProto() (*Proto, error) {
 // protoBody = { import | package | option | topLevelDef | emptyStatement }
 // topLevelDef = message | enum | service
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file
-func (p *Parser) parseProtoBody() ([]interface{}, error) {
-	var protoBody []interface{}
+func (p *Parser) parseProtoBody() ([]Visitee, error) {
+	var protoBody []Visitee
 
 	for {
 		comments := p.ParseComments()
@@ -52,6 +63,7 @@ func (p *Parser) parseProtoBody() ([]interface{}, error) {
 
 		var stmt interface {
 			HasInlineCommentSetter
+			Visitee
 		}
 
 		switch token {

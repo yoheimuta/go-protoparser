@@ -49,7 +49,7 @@ func InterpretEnum(src *parser.Enum) (*Enum, error) {
 	}, nil
 }
 
-func interpretEnumBody(src []interface{}) (
+func interpretEnumBody(src []parser.Visitee) (
 	*EnumBody,
 	error,
 ) {

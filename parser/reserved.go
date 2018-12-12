@@ -41,6 +41,20 @@ func (r *Reserved) SetInlineComment(comment *Comment) {
 	r.InlineComment = comment
 }
 
+// Accept dispatches the call to the visitor.
+func (r *Reserved) Accept(v Visitor) {
+	if !v.VisitReserved(r) {
+		return
+	}
+
+	for _, comment := range r.Comments {
+		comment.Accept(v)
+	}
+	if r.InlineComment != nil {
+		r.InlineComment.Accept(v)
+	}
+}
+
 // ParseReserved parses the reserved.
 //  reserved = "reserved" ( ranges | fieldNames ) ";"
 //

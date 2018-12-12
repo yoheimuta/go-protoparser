@@ -23,14 +23,14 @@ func TestInterpretMessage(t *testing.T) {
 			name: "interpreting an excerpt from the official reference with comments",
 			inputMessage: &parser.Message{
 				MessageName: "Outer",
-				MessageBody: []interface{}{
+				MessageBody: []parser.Visitee{
 					&parser.Option{
 						OptionName: "(my_option).a",
 						Constant:   "true",
 					},
 					&parser.Message{
 						MessageName: "Inner",
-						MessageBody: []interface{}{
+						MessageBody: []parser.Visitee{
 							&parser.Field{
 								Type:        "int64",
 								FieldName:   "ival",

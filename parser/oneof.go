@@ -25,6 +25,20 @@ func (f *OneofField) SetInlineComment(comment *Comment) {
 	f.InlineComment = comment
 }
 
+// Accept dispatches the call to the visitor.
+func (f *OneofField) Accept(v Visitor) {
+	if !v.VisitOneofField(f) {
+		return
+	}
+
+	for _, comment := range f.Comments {
+		comment.Accept(v)
+	}
+	if f.InlineComment != nil {
+		f.InlineComment.Accept(v)
+	}
+}
+
 // Oneof consists of oneof fields and a oneof name.
 type Oneof struct {
 	OneofFields []*OneofField
@@ -43,6 +57,23 @@ type Oneof struct {
 // SetInlineComment implements the HasInlineCommentSetter interface.
 func (o *Oneof) SetInlineComment(comment *Comment) {
 	o.InlineComment = comment
+}
+
+// Accept dispatches the call to the visitor.
+func (o *Oneof) Accept(v Visitor) {
+	if !v.VisitOneof(o) {
+		return
+	}
+
+	for _, field := range o.OneofFields {
+		field.Accept(v)
+	}
+	for _, comment := range o.Comments {
+		comment.Accept(v)
+	}
+	if o.InlineComment != nil {
+		o.InlineComment.Accept(v)
+	}
 }
 
 // ParseOneof parses the oneof.
