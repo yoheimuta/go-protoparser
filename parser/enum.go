@@ -45,12 +45,26 @@ func (f *EnumField) SetInlineComment(comment *Comment) {
 	f.InlineComment = comment
 }
 
+// Accept dispatches the call to the visitor.
+func (f *EnumField) Accept(v Visitor) {
+	if !v.VisitEnumField(f) {
+		return
+	}
+
+	for _, comment := range f.Comments {
+		comment.Accept(v)
+	}
+	if f.InlineComment != nil {
+		f.InlineComment.Accept(v)
+	}
+}
+
 // Enum consists of a name and an enum body.
 type Enum struct {
 	EnumName string
 	// EnumBody can have options and enum fields.
 	// The element of this is the union of an option, enumField and emptyStatement.
-	EnumBody []interface{}
+	EnumBody []Visitee
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
@@ -65,6 +79,26 @@ type Enum struct {
 // SetInlineComment implements the HasInlineCommentSetter interface.
 func (e *Enum) SetInlineComment(comment *Comment) {
 	e.InlineComment = comment
+}
+
+// Accept dispatches the call to the visitor.
+func (e *Enum) Accept(v Visitor) {
+	if !v.VisitEnum(e) {
+		return
+	}
+
+	for _, body := range e.EnumBody {
+		body.Accept(v)
+	}
+	for _, comment := range e.Comments {
+		comment.Accept(v)
+	}
+	if e.InlineComment != nil {
+		e.InlineComment.Accept(v)
+	}
+	if e.InlineCommentBehindLeftCurly != nil {
+		e.InlineCommentBehindLeftCurly.Accept(v)
+	}
 }
 
 // ParseEnum parses the enum.
@@ -99,7 +133,7 @@ func (p *Parser) ParseEnum() (*Enum, error) {
 
 // enumBody = "{" { option | enumField | emptyStatement } "}"
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#enum_definition
-func (p *Parser) parseEnumBody() ([]interface{}, *Comment, error) {
+func (p *Parser) parseEnumBody() ([]Visitee, *Comment, error) {
 	p.lex.Next()
 	if p.lex.Token != scanner.TLEFTCURLY {
 		return nil, nil, p.unexpected("{")
@@ -107,7 +141,7 @@ func (p *Parser) parseEnumBody() ([]interface{}, *Comment, error) {
 
 	inlineLeftCurly := p.parseInlineComment()
 
-	var stmts []interface{}
+	var stmts []Visitee
 
 	for {
 		comments := p.ParseComments()
@@ -118,6 +152,7 @@ func (p *Parser) parseEnumBody() ([]interface{}, *Comment, error) {
 
 		var stmt interface {
 			HasInlineCommentSetter
+			Visitee
 		}
 
 		switch token {

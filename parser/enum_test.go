@@ -44,7 +44,7 @@ func TestParser_ParseEnum(t *testing.T) {
 `,
 			wantEnum: &parser.Enum{
 				EnumName: "EnumAllowingAlias",
-				EnumBody: []interface{}{
+				EnumBody: []parser.Visitee{
 					&parser.Option{
 						OptionName: "allow_alias",
 						Constant:   "true",
@@ -113,7 +113,7 @@ func TestParser_ParseEnum(t *testing.T) {
 `,
 			wantEnum: &parser.Enum{
 				EnumName: "EnumAllowingAlias",
-				EnumBody: []interface{}{
+				EnumBody: []parser.Visitee{
 					&parser.EnumField{
 						Ident:  "RUNNING",
 						Number: "0",
@@ -156,7 +156,7 @@ func TestParser_ParseEnum(t *testing.T) {
 `,
 			wantEnum: &parser.Enum{
 				EnumName: "EnumAllowingAlias",
-				EnumBody: []interface{}{
+				EnumBody: []parser.Visitee{
 					&parser.Option{
 						OptionName: "allow_alias",
 						Constant:   "true",
@@ -222,7 +222,7 @@ func TestParser_ParseEnum(t *testing.T) {
 `,
 			wantEnum: &parser.Enum{
 				EnumName: "EnumAllowingAlias",
-				EnumBody: []interface{}{
+				EnumBody: []parser.Visitee{
 					&parser.Option{
 						OptionName: "allow_alias",
 						Constant:   "true",

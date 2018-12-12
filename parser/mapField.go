@@ -26,6 +26,20 @@ func (m *MapField) SetInlineComment(comment *Comment) {
 	m.InlineComment = comment
 }
 
+// Accept dispatches the call to the visitor.
+func (m *MapField) Accept(v Visitor) {
+	if !v.VisitMapField(m) {
+		return
+	}
+
+	for _, comment := range m.Comments {
+		comment.Accept(v)
+	}
+	if m.InlineComment != nil {
+		m.InlineComment.Accept(v)
+	}
+}
+
 // ParseMapField parses the mapField.
 //  mapField = "map" "<" keyType "," type ">" mapName "=" fieldNumber [ "[" fieldOptions "]" ] ";"
 //

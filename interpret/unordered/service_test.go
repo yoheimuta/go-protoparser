@@ -23,7 +23,7 @@ func TestInterpretService(t *testing.T) {
 			name: "interpreting an excerpt from the official reference with a option and comments",
 			inputService: &parser.Service{
 				ServiceName: "SearchService",
-				ServiceBody: []interface{}{
+				ServiceBody: []parser.Visitee{
 					&parser.Option{
 						OptionName: "case-sensitive",
 						Constant:   "true",

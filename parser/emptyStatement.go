@@ -10,3 +10,14 @@ type EmptyStatement struct {
 func (e *EmptyStatement) SetInlineComment(comment *Comment) {
 	e.InlineComment = comment
 }
+
+// Accept dispatches the call to the visitor.
+func (e *EmptyStatement) Accept(v Visitor) {
+	if !v.VisitEmptyStatement(e) {
+		return
+	}
+
+	if e.InlineComment != nil {
+		e.InlineComment.Accept(v)
+	}
+}

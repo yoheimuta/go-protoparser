@@ -55,7 +55,7 @@ message outer {
 						},
 					},
 				},
-				ProtoBody: []interface{}{
+				ProtoBody: []parser.Visitee{
 					&parser.Import{
 						Modifier: parser.ImportModifierPublic,
 						Location: `"other.proto"`,
@@ -80,7 +80,7 @@ message outer {
 					},
 					&parser.Enum{
 						EnumName: "EnumAllowingAlias",
-						EnumBody: []interface{}{
+						EnumBody: []parser.Visitee{
 							&parser.Option{
 								OptionName: "allow_alias",
 								Constant:   "true",
@@ -142,7 +142,7 @@ message outer {
 					},
 					&parser.Message{
 						MessageName: "outer",
-						MessageBody: []interface{}{
+						MessageBody: []parser.Visitee{
 							&parser.Option{
 								OptionName: "(my_option).a",
 								Constant:   "true",
@@ -156,7 +156,7 @@ message outer {
 							},
 							&parser.Message{
 								MessageName: "inner",
-								MessageBody: []interface{}{
+								MessageBody: []parser.Visitee{
 									&parser.Field{
 										Type:        "int64",
 										FieldName:   "ival",
@@ -247,10 +247,10 @@ service SearchService {
 						},
 					},
 				},
-				ProtoBody: []interface{}{
+				ProtoBody: []parser.Visitee{
 					&parser.Service{
 						ServiceName: "SearchService",
-						ServiceBody: []interface{}{
+						ServiceBody: []parser.Visitee{
 							&parser.RPC{
 								RPCName: "Search",
 								RPCRequest: &parser.RPCRequest{
@@ -354,7 +354,7 @@ syntax2
 						},
 					},
 				},
-				ProtoBody: []interface{}{
+				ProtoBody: []parser.Visitee{
 					&parser.Import{
 						Modifier: parser.ImportModifierPublic,
 						Location: `"other.proto"`,
@@ -447,7 +447,7 @@ syntax2
 					},
 					&parser.Enum{
 						EnumName: "EnumAllowingAlias",
-						EnumBody: []interface{}{
+						EnumBody: []parser.Visitee{
 							&parser.Option{
 								OptionName: "allow_alias",
 								Constant:   "true",
@@ -482,7 +482,7 @@ syntax2
 					},
 					&parser.Service{
 						ServiceName: "SearchService",
-						ServiceBody: []interface{}{
+						ServiceBody: []parser.Visitee{
 							&parser.RPC{
 								RPCName: "Search",
 								RPCRequest: &parser.RPCRequest{
@@ -574,7 +574,7 @@ service SearchService {
 						},
 					},
 				},
-				ProtoBody: []interface{}{
+				ProtoBody: []parser.Visitee{
 					&parser.Import{
 						Modifier: parser.ImportModifierPublic,
 						Location: `"other.proto"`,
@@ -659,7 +659,7 @@ service SearchService {
 					},
 					&parser.Enum{
 						EnumName: "EnumAllowingAlias",
-						EnumBody: []interface{}{
+						EnumBody: []parser.Visitee{
 							&parser.Option{
 								OptionName: "allow_alias",
 								Constant:   "true",
@@ -692,7 +692,7 @@ service SearchService {
 					},
 					&parser.Service{
 						ServiceName: "SearchService",
-						ServiceBody: []interface{}{
+						ServiceBody: []parser.Visitee{
 							&parser.RPC{
 								RPCName: "Search",
 								RPCRequest: &parser.RPCRequest{

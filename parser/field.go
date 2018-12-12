@@ -32,6 +32,20 @@ func (f *Field) SetInlineComment(comment *Comment) {
 	f.InlineComment = comment
 }
 
+// Accept dispatches the call to the visitor.
+func (f *Field) Accept(v Visitor) {
+	if !v.VisitField(f) {
+		return
+	}
+
+	for _, comment := range f.Comments {
+		comment.Accept(v)
+	}
+	if f.InlineComment != nil {
+		f.InlineComment.Accept(v)
+	}
+}
+
 // ParseField parses the field.
 //  field = [ "repeated" ] type fieldName "=" fieldNumber [ "[" fieldOptions "]" ] ";"
 //

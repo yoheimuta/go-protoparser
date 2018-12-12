@@ -22,6 +22,20 @@ func (p *Package) SetInlineComment(comment *Comment) {
 	p.InlineComment = comment
 }
 
+// Accept dispatches the call to the visitor.
+func (p *Package) Accept(v Visitor) {
+	if !v.VisitPackage(p) {
+		return
+	}
+
+	for _, comment := range p.Comments {
+		comment.Accept(v)
+	}
+	if p.InlineComment != nil {
+		p.InlineComment.Accept(v)
+	}
+}
+
 // ParsePackage parses the package.
 //  package = "package" fullIdent ";"
 //

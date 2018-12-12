@@ -23,6 +23,20 @@ func (o *Option) SetInlineComment(comment *Comment) {
 	o.InlineComment = comment
 }
 
+// Accept dispatches the call to the visitor.
+func (o *Option) Accept(v Visitor) {
+	if !v.VisitOption(o) {
+		return
+	}
+
+	for _, comment := range o.Comments {
+		comment.Accept(v)
+	}
+	if o.InlineComment != nil {
+		o.InlineComment.Accept(v)
+	}
+}
+
 // ParseOption parses the option.
 //  option = "option" optionName  "=" constant ";"
 //

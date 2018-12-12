@@ -33,6 +33,20 @@ func (i *Import) SetInlineComment(comment *Comment) {
 	i.InlineComment = comment
 }
 
+// Accept dispatches the call to the visitor.
+func (i *Import) Accept(v Visitor) {
+	if !v.VisitImport(i) {
+		return
+	}
+
+	for _, comment := range i.Comments {
+		comment.Accept(v)
+	}
+	if i.InlineComment != nil {
+		i.InlineComment.Accept(v)
+	}
+}
+
 // ParseImport parses the import.
 //  import = "import" [ "weak" | "public" ] strLit ";"
 //

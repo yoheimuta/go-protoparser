@@ -25,7 +25,7 @@ type Message struct {
 	MessageName string
 	// MessageBody can have fields, nested enum definitions, nested message definitions,
 	// options, oneofs, map fields, and reserved statements.
-	MessageBody []interface{}
+	MessageBody []Visitee
 
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
@@ -40,6 +40,26 @@ type Message struct {
 // SetInlineComment implements the HasInlineCommentSetter interface.
 func (m *Message) SetInlineComment(comment *Comment) {
 	m.InlineComment = comment
+}
+
+// Accept dispatches the call to the visitor.
+func (m *Message) Accept(v Visitor) {
+	if !v.VisitMessage(m) {
+		return
+	}
+
+	for _, body := range m.MessageBody {
+		body.Accept(v)
+	}
+	for _, comment := range m.Comments {
+		comment.Accept(v)
+	}
+	if m.InlineComment != nil {
+		m.InlineComment.Accept(v)
+	}
+	if m.InlineCommentBehindLeftCurly != nil {
+		m.InlineCommentBehindLeftCurly.Accept(v)
+	}
 }
 
 // ParseMessage parses the message.
@@ -74,7 +94,7 @@ func (p *Parser) ParseMessage() (*Message, error) {
 
 // messageBody = "{" { field | enum | message | option | oneof | mapField | reserved | emptyStatement } "}"
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#message_definition
-func (p *Parser) parseMessageBody() ([]interface{}, *Comment, error) {
+func (p *Parser) parseMessageBody() ([]Visitee, *Comment, error) {
 	p.lex.Next()
 	if p.lex.Token != scanner.TLEFTCURLY {
 		return nil, nil, p.unexpected("{")
@@ -90,7 +110,7 @@ func (p *Parser) parseMessageBody() ([]interface{}, *Comment, error) {
 	p.lex.UnNext()
 	// }
 
-	var stmts []interface{}
+	var stmts []Visitee
 
 	for {
 		comments := p.ParseComments()
@@ -101,6 +121,7 @@ func (p *Parser) parseMessageBody() ([]interface{}, *Comment, error) {
 
 		var stmt interface {
 			HasInlineCommentSetter
+			Visitee
 		}
 
 		switch token {

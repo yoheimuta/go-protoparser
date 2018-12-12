@@ -22,6 +22,20 @@ func (s *Syntax) SetInlineComment(comment *Comment) {
 	s.InlineComment = comment
 }
 
+// Accept dispatches the call to the visitor.
+func (s *Syntax) Accept(v Visitor) {
+	if !v.VisitSyntax(s) {
+		return
+	}
+
+	for _, comment := range s.Comments {
+		comment.Accept(v)
+	}
+	if s.InlineComment != nil {
+		s.InlineComment.Accept(v)
+	}
+}
+
 // ParseSyntax parses the syntax.
 //  syntax = "syntax" "=" quote "proto3" quote ";"
 //

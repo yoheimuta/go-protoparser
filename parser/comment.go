@@ -38,6 +38,11 @@ func (c *Comment) Lines() []string {
 	return strings.Split(raw, "\n")
 }
 
+// Accept dispatches the call to the visitor.
+func (c *Comment) Accept(v Visitor) {
+	v.VisitComment(c)
+}
+
 // ParseComments parsers a sequence of comments.
 //  comments = { comment }
 //
