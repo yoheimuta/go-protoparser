@@ -24,9 +24,10 @@ type Lexer struct {
 	// function is set, the error is reported to os.Stderr.
 	Error func(lexer *Lexer, err error)
 
-	scanner *scanner.Scanner
-	scanErr error
-	debug   bool
+	scanner     *scanner.Scanner
+	scannerOpts []scanner.Option
+	scanErr     error
+	debug       bool
 }
 
 // Option is an option for lexer.NewLexer.
@@ -36,6 +37,13 @@ type Option func(*Lexer)
 func WithDebug(debug bool) Option {
 	return func(l *Lexer) {
 		l.debug = debug
+	}
+}
+
+// WithFilename is an option for scanner.Option.
+func WithFilename(filename string) Option {
+	return func(l *Lexer) {
+		l.scannerOpts = append(l.scannerOpts, scanner.WithFilename(filename))
 	}
 }
 
@@ -49,7 +57,7 @@ func NewLexer(input io.Reader, opts ...Option) *Lexer {
 	lex.Error = func(_ *Lexer, err error) {
 		log.Printf(`Lexer encountered the error "%v"`, err)
 	}
-	lex.scanner = scanner.NewScanner(input)
+	lex.scanner = scanner.NewScanner(input, lex.scannerOpts...)
 	return lex
 }
 

@@ -21,12 +21,26 @@ type Scanner struct {
 	Mode Mode
 }
 
+// Option is an option for scanner.NewScanner.
+type Option func(*Scanner)
+
+// WithFilename is an option to set filename to the pos.
+func WithFilename(filename string) Option {
+	return func(l *Scanner) {
+		l.pos.Filename = filename
+	}
+}
+
 // NewScanner returns a new instance of Scanner.
-func NewScanner(r io.Reader) *Scanner {
-	return &Scanner{
+func NewScanner(r io.Reader, opts ...Option) *Scanner {
+	s := &Scanner{
 		r:   bufio.NewReader(r),
 		pos: NewPosition(),
 	}
+	for _, opt := range opts {
+		opt(s)
+	}
+	return s
 }
 
 func (s *Scanner) read() (r rune) {

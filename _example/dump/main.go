@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"os"
 
+	"path/filepath"
+
 	protoparser "github.com/yoheimuta/go-protoparser"
 )
 
@@ -26,7 +28,12 @@ func run() int {
 	}
 	defer reader.Close()
 
-	got, err := protoparser.Parse(reader, protoparser.WithDebug(*debug), protoparser.WithPermissive(*permissive))
+	got, err := protoparser.Parse(
+		reader,
+		protoparser.WithDebug(*debug),
+		protoparser.WithPermissive(*permissive),
+		protoparser.WithFilename(filepath.Base(*proto)),
+	)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to parse, err %v\n", err)
 		return 1

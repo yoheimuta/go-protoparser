@@ -15,6 +15,7 @@ func TestParser_ParseProto(t *testing.T) {
 	tests := []struct {
 		name      string
 		input     string
+		filename  string
 		wantProto *parser.Proto
 		wantErr   bool
 	}{
@@ -44,14 +45,16 @@ message outer {
   map<int32, string> my_map = 4;
 }
 `,
+			filename: "official.proto",
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
 					ProtobufVersion: "proto3",
 					Meta: meta.Meta{
 						Pos: meta.Position{
-							Offset: 1,
-							Line:   2,
-							Column: 1,
+							Filename: "official.proto",
+							Offset:   1,
+							Line:     2,
+							Column:   1,
 						},
 					},
 				},
@@ -61,9 +64,10 @@ message outer {
 						Location: `"other.proto"`,
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 20,
-								Line:   3,
-								Column: 1,
+								Filename: "official.proto",
+								Offset:   20,
+								Line:     3,
+								Column:   1,
 							},
 						},
 					},
@@ -72,9 +76,10 @@ message outer {
 						Constant:   `"com.example.foo"`,
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 49,
-								Line:   4,
-								Column: 1,
+								Filename: "official.proto",
+								Offset:   49,
+								Line:     4,
+								Column:   1,
 							},
 						},
 					},
@@ -86,9 +91,10 @@ message outer {
 								Constant:   "true",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 117,
-										Line:   6,
-										Column: 3,
+										Filename: "official.proto",
+										Offset:   117,
+										Line:     6,
+										Column:   3,
 									},
 								},
 							},
@@ -97,9 +103,10 @@ message outer {
 								Number: "0",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 146,
-										Line:   7,
-										Column: 3,
+										Filename: "official.proto",
+										Offset:   146,
+										Line:     7,
+										Column:   3,
 									},
 								},
 							},
@@ -108,9 +115,10 @@ message outer {
 								Number: "1",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 161,
-										Line:   8,
-										Column: 3,
+										Filename: "official.proto",
+										Offset:   161,
+										Line:     8,
+										Column:   3,
 									},
 								},
 							},
@@ -125,18 +133,20 @@ message outer {
 								},
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 176,
-										Line:   9,
-										Column: 3,
+										Filename: "official.proto",
+										Offset:   176,
+										Line:     9,
+										Column:   3,
 									},
 								},
 							},
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 90,
-								Line:   5,
-								Column: 1,
+								Filename: "official.proto",
+								Offset:   90,
+								Line:     5,
+								Column:   1,
 							},
 						},
 					},
@@ -148,9 +158,10 @@ message outer {
 								Constant:   "true",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 243,
-										Line:   12,
-										Column: 3,
+										Filename: "official.proto",
+										Offset:   243,
+										Line:     12,
+										Column:   3,
 									},
 								},
 							},
@@ -163,18 +174,20 @@ message outer {
 										FieldNumber: "1",
 										Meta: meta.Meta{
 											Pos: meta.Position{
-												Offset: 294,
-												Line:   14,
-												Column: 5,
+												Filename: "official.proto",
+												Offset:   294,
+												Line:     14,
+												Column:   5,
 											},
 										},
 									},
 								},
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 274,
-										Line:   13,
-										Column: 3,
+										Filename: "official.proto",
+										Offset:   274,
+										Line:     13,
+										Column:   3,
 									},
 								},
 							},
@@ -185,9 +198,10 @@ message outer {
 								FieldNumber: "2",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 316,
-										Line:   16,
-										Column: 3,
+										Filename: "official.proto",
+										Offset:   316,
+										Line:     16,
+										Column:   3,
 									},
 								},
 							},
@@ -197,9 +211,10 @@ message outer {
 								FieldNumber: "3",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 352,
-										Line:   17,
-										Column: 3,
+										Filename: "official.proto",
+										Offset:   352,
+										Line:     17,
+										Column:   3,
 									},
 								},
 							},
@@ -210,21 +225,26 @@ message outer {
 								FieldNumber: "4",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 387,
-										Line:   18,
-										Column: 3,
+										Filename: "official.proto",
+										Offset:   387,
+										Line:     18,
+										Column:   3,
 									},
 								},
 							},
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 225,
-								Line:   11,
-								Column: 1,
+								Filename: "official.proto",
+								Offset:   225,
+								Line:     11,
+								Column:   1,
 							},
 						},
 					},
+				},
+				Meta: &parser.ProtoMeta{
+					Filename: "official.proto",
 				},
 			},
 		},
@@ -236,14 +256,16 @@ service SearchService {
   rpc Search (SearchRequest) returns (SearchResponse);
 }
 `,
+			filename: "service.proto",
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
 					ProtobufVersion: "proto3",
 					Meta: meta.Meta{
 						Pos: meta.Position{
-							Offset: 1,
-							Line:   2,
-							Column: 1,
+							Filename: "service.proto",
+							Offset:   1,
+							Line:     2,
+							Column:   1,
 						},
 					},
 				},
@@ -257,9 +279,10 @@ service SearchService {
 									MessageType: "SearchRequest",
 									Meta: meta.Meta{
 										Pos: meta.Position{
-											Offset: 57,
-											Line:   4,
-											Column: 14,
+											Filename: "service.proto",
+											Offset:   57,
+											Line:     4,
+											Column:   14,
 										},
 									},
 								},
@@ -267,29 +290,35 @@ service SearchService {
 									MessageType: "SearchResponse",
 									Meta: meta.Meta{
 										Pos: meta.Position{
-											Offset: 81,
-											Line:   4,
-											Column: 38,
+											Filename: "service.proto",
+											Offset:   81,
+											Line:     4,
+											Column:   38,
 										},
 									},
 								},
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 46,
-										Line:   4,
-										Column: 3,
+										Filename: "service.proto",
+										Offset:   46,
+										Line:     4,
+										Column:   3,
 									},
 								},
 							},
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 20,
-								Line:   3,
-								Column: 1,
+								Filename: "service.proto",
+								Offset:   20,
+								Line:     3,
+								Column:   1,
 							},
 						},
 					},
+				},
+				Meta: &parser.ProtoMeta{
+					Filename: "service.proto",
 				},
 			},
 		},
@@ -319,6 +348,7 @@ service SearchService {
   rpc Search (SearchRequest) returns (SearchResponse);
 }
 `,
+			filename: "comments.proto",
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
 					ProtobufVersion: "proto3",
@@ -327,9 +357,10 @@ service SearchService {
 							Raw: `// syntax`,
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 1,
-									Line:   2,
-									Column: 1,
+									Filename: "comments.proto",
+									Offset:   1,
+									Line:     2,
+									Column:   1,
 								},
 							},
 						},
@@ -339,18 +370,20 @@ syntax2
 */`,
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 11,
-									Line:   3,
-									Column: 1,
+									Filename: "comments.proto",
+									Offset:   11,
+									Line:     3,
+									Column:   1,
 								},
 							},
 						},
 					},
 					Meta: meta.Meta{
 						Pos: meta.Position{
-							Offset: 25,
-							Line:   6,
-							Column: 1,
+							Filename: "comments.proto",
+							Offset:   25,
+							Line:     6,
+							Column:   1,
 						},
 					},
 				},
@@ -363,18 +396,20 @@ syntax2
 								Raw: `// import`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 44,
-										Line:   7,
-										Column: 1,
+										Filename: "comments.proto",
+										Offset:   44,
+										Line:     7,
+										Column:   1,
 									},
 								},
 							},
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 54,
-								Line:   8,
-								Column: 1,
+								Filename: "comments.proto",
+								Offset:   54,
+								Line:     8,
+								Column:   1,
 							},
 						},
 					},
@@ -385,18 +420,20 @@ syntax2
 								Raw: `/* package */`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 83,
-										Line:   9,
-										Column: 1,
+										Filename: "comments.proto",
+										Offset:   83,
+										Line:     9,
+										Column:   1,
 									},
 								},
 							},
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 97,
-								Line:   10,
-								Column: 1,
+								Filename: "comments.proto",
+								Offset:   97,
+								Line:     10,
+								Column:   1,
 							},
 						},
 					},
@@ -408,18 +445,20 @@ syntax2
 								Raw: `// option`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 114,
-										Line:   11,
-										Column: 1,
+										Filename: "comments.proto",
+										Offset:   114,
+										Line:     11,
+										Column:   1,
 									},
 								},
 							},
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 124,
-								Line:   12,
-								Column: 1,
+								Filename: "comments.proto",
+								Offset:   124,
+								Line:     12,
+								Column:   1,
 							},
 						},
 					},
@@ -430,18 +469,20 @@ syntax2
 								Raw: `// message`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 165,
-										Line:   13,
-										Column: 1,
+										Filename: "comments.proto",
+										Offset:   165,
+										Line:     13,
+										Column:   1,
 									},
 								},
 							},
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 176,
-								Line:   14,
-								Column: 1,
+								Filename: "comments.proto",
+								Offset:   176,
+								Line:     14,
+								Column:   1,
 							},
 						},
 					},
@@ -453,9 +494,10 @@ syntax2
 								Constant:   "true",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 229,
-										Line:   18,
-										Column: 3,
+										Filename: "comments.proto",
+										Offset:   229,
+										Line:     18,
+										Column:   3,
 									},
 								},
 							},
@@ -465,18 +507,20 @@ syntax2
 								Raw: `// enum`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 194,
-										Line:   16,
-										Column: 1,
+										Filename: "comments.proto",
+										Offset:   194,
+										Line:     16,
+										Column:   1,
 									},
 								},
 							},
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 202,
-								Line:   17,
-								Column: 1,
+								Filename: "comments.proto",
+								Offset:   202,
+								Line:     17,
+								Column:   1,
 							},
 						},
 					},
@@ -489,9 +533,10 @@ syntax2
 									MessageType: "SearchRequest",
 									Meta: meta.Meta{
 										Pos: meta.Position{
-											Offset: 306,
-											Line:   22,
-											Column: 14,
+											Filename: "comments.proto",
+											Offset:   306,
+											Line:     22,
+											Column:   14,
 										},
 									},
 								},
@@ -499,17 +544,19 @@ syntax2
 									MessageType: "SearchResponse",
 									Meta: meta.Meta{
 										Pos: meta.Position{
-											Offset: 330,
-											Line:   22,
-											Column: 38,
+											Filename: "comments.proto",
+											Offset:   330,
+											Line:     22,
+											Column:   38,
 										},
 									},
 								},
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 295,
-										Line:   22,
-										Column: 3,
+										Filename: "comments.proto",
+										Offset:   295,
+										Line:     22,
+										Column:   3,
 									},
 								},
 							},
@@ -519,21 +566,26 @@ syntax2
 								Raw: `// service`,
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 258,
-										Line:   20,
-										Column: 1,
+										Filename: "comments.proto",
+										Offset:   258,
+										Line:     20,
+										Column:   1,
 									},
 								},
 							},
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 269,
-								Line:   21,
-								Column: 1,
+								Filename: "comments.proto",
+								Offset:   269,
+								Line:     21,
+								Column:   1,
 							},
 						},
 					},
+				},
+				Meta: &parser.ProtoMeta{
+					Filename: "comments.proto",
 				},
 			},
 		},
@@ -553,6 +605,7 @@ service SearchService {
   rpc Search (SearchRequest) returns (SearchResponse);
 } // service
 `,
+			filename: "inlineComments.proto",
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
 					ProtobufVersion: "proto3",
@@ -560,17 +613,19 @@ service SearchService {
 						Raw: `// syntax`,
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 20,
-								Line:   2,
-								Column: 20,
+								Filename: "inlineComments.proto",
+								Offset:   20,
+								Line:     2,
+								Column:   20,
 							},
 						},
 					},
 					Meta: meta.Meta{
 						Pos: meta.Position{
-							Offset: 1,
-							Line:   2,
-							Column: 1,
+							Filename: "inlineComments.proto",
+							Offset:   1,
+							Line:     2,
+							Column:   1,
 						},
 					},
 				},
@@ -582,17 +637,19 @@ service SearchService {
 							Raw: `// import`,
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 59,
-									Line:   3,
-									Column: 30,
+									Filename: "inlineComments.proto",
+									Offset:   59,
+									Line:     3,
+									Column:   30,
 								},
 							},
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 30,
-								Line:   3,
-								Column: 1,
+								Filename: "inlineComments.proto",
+								Offset:   30,
+								Line:     3,
+								Column:   1,
 							},
 						},
 					},
@@ -602,17 +659,19 @@ service SearchService {
 							Raw: `/* package */`,
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 86,
-									Line:   4,
-									Column: 18,
+									Filename: "inlineComments.proto",
+									Offset:   86,
+									Line:     4,
+									Column:   18,
 								},
 							},
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 69,
-								Line:   4,
-								Column: 1,
+								Filename: "inlineComments.proto",
+								Offset:   69,
+								Line:     4,
+								Column:   1,
 							},
 						},
 					},
@@ -623,17 +682,19 @@ service SearchService {
 							Raw: `// option`,
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 141,
-									Line:   5,
-									Column: 42,
+									Filename: "inlineComments.proto",
+									Offset:   141,
+									Line:     5,
+									Column:   42,
 								},
 							},
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 100,
-								Line:   5,
-								Column: 1,
+								Filename: "inlineComments.proto",
+								Offset:   100,
+								Line:     5,
+								Column:   1,
 							},
 						},
 					},
@@ -643,17 +704,19 @@ service SearchService {
 							Raw: `// message`,
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 169,
-									Line:   7,
-									Column: 3,
+									Filename: "inlineComments.proto",
+									Offset:   169,
+									Line:     7,
+									Column:   3,
 								},
 							},
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 151,
-								Line:   6,
-								Column: 1,
+								Filename: "inlineComments.proto",
+								Offset:   151,
+								Line:     6,
+								Column:   1,
 							},
 						},
 					},
@@ -665,9 +728,10 @@ service SearchService {
 								Constant:   "true",
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 207,
-										Line:   9,
-										Column: 3,
+										Filename: "inlineComments.proto",
+										Offset:   207,
+										Line:     9,
+										Column:   3,
 									},
 								},
 							},
@@ -676,17 +740,19 @@ service SearchService {
 							Raw: `// enum`,
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 236,
-									Line:   10,
-									Column: 3,
+									Filename: "inlineComments.proto",
+									Offset:   236,
+									Line:     10,
+									Column:   3,
 								},
 							},
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 180,
-								Line:   8,
-								Column: 1,
+								Filename: "inlineComments.proto",
+								Offset:   180,
+								Line:     8,
+								Column:   1,
 							},
 						},
 					},
@@ -699,9 +765,10 @@ service SearchService {
 									MessageType: "SearchRequest",
 									Meta: meta.Meta{
 										Pos: meta.Position{
-											Offset: 281,
-											Line:   12,
-											Column: 14,
+											Filename: "inlineComments.proto",
+											Offset:   281,
+											Line:     12,
+											Column:   14,
 										},
 									},
 								},
@@ -709,17 +776,19 @@ service SearchService {
 									MessageType: "SearchResponse",
 									Meta: meta.Meta{
 										Pos: meta.Position{
-											Offset: 305,
-											Line:   12,
-											Column: 38,
+											Filename: "inlineComments.proto",
+											Offset:   305,
+											Line:     12,
+											Column:   38,
 										},
 									},
 								},
 								Meta: meta.Meta{
 									Pos: meta.Position{
-										Offset: 270,
-										Line:   12,
-										Column: 3,
+										Filename: "inlineComments.proto",
+										Offset:   270,
+										Line:     12,
+										Column:   3,
 									},
 								},
 							},
@@ -728,20 +797,25 @@ service SearchService {
 							Raw: `// service`,
 							Meta: meta.Meta{
 								Pos: meta.Position{
-									Offset: 325,
-									Line:   13,
-									Column: 3,
+									Filename: "inlineComments.proto",
+									Offset:   325,
+									Line:     13,
+									Column:   3,
 								},
 							},
 						},
 						Meta: meta.Meta{
 							Pos: meta.Position{
-								Offset: 244,
-								Line:   11,
-								Column: 1,
+								Filename: "inlineComments.proto",
+								Offset:   244,
+								Line:     11,
+								Column:   1,
 							},
 						},
 					},
+				},
+				Meta: &parser.ProtoMeta{
+					Filename: "inlineComments.proto",
 				},
 			},
 		},
@@ -750,7 +824,12 @@ service SearchService {
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			p := parser.NewParser(lexer.NewLexer(strings.NewReader(test.input)))
+			p := parser.NewParser(
+				lexer.NewLexer(
+					strings.NewReader(test.input),
+					lexer.WithFilename(test.filename),
+				),
+			)
 			got, err := p.ParseProto()
 			switch {
 			case test.wantErr:
