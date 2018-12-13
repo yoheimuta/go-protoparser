@@ -2,11 +2,18 @@ package parser
 
 import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 
+// ProtoMeta represents a meta information about the Proto.
+type ProtoMeta struct {
+	// Filename is a name of file, if any.
+	Filename string
+}
+
 // Proto represents a protocol buffer definition.
 type Proto struct {
 	Syntax *Syntax
 	// ProtoBody is a slice of sum type consisted of *Import, *Package, *Option, *Message, *Enum, *Service and *EmptyStatement.
 	ProtoBody []Visitee
+	Meta      *ProtoMeta
 }
 
 // Accept dispatches the call to the visitor.
@@ -41,6 +48,9 @@ func (p *Parser) ParseProto() (*Proto, error) {
 	return &Proto{
 		Syntax:    syntax,
 		ProtoBody: protoBody,
+		Meta: &ProtoMeta{
+			Filename: p.lex.Pos.Filename,
+		},
 	}, nil
 }
 

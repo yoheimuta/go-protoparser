@@ -12,6 +12,7 @@ import (
 type ParseConfig struct {
 	debug      bool
 	permissive bool
+	filename   string
 }
 
 // Option is an option for ParseConfig.
@@ -19,15 +20,22 @@ type Option func(*ParseConfig)
 
 // WithDebug is an option to enable the debug mode.
 func WithDebug(debug bool) Option {
-	return func(l *ParseConfig) {
-		l.debug = debug
+	return func(c *ParseConfig) {
+		c.debug = debug
 	}
 }
 
 // WithPermissive is an option to allow the permissive parsing rather than the just documented spec.
 func WithPermissive(permissive bool) Option {
-	return func(l *ParseConfig) {
-		l.permissive = permissive
+	return func(c *ParseConfig) {
+		c.permissive = permissive
+	}
+}
+
+// WithFilename is an option to set filename to the Position.
+func WithFilename(filename string) Option {
+	return func(c *ParseConfig) {
+		c.filename = filename
 	}
 }
 
@@ -40,7 +48,14 @@ func Parse(input io.Reader, options ...Option) (*parser.Proto, error) {
 		opt(config)
 	}
 
-	p := parser.NewParser(lexer.NewLexer(input, lexer.WithDebug(config.debug)), parser.WithPermissive(config.permissive))
+	p := parser.NewParser(
+		lexer.NewLexer(
+			input,
+			lexer.WithDebug(config.debug),
+			lexer.WithFilename(config.filename),
+		),
+		parser.WithPermissive(config.permissive),
+	)
 	return p.ParseProto()
 }
 
