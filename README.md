@@ -52,6 +52,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
     "InlineComment": null,
     "Meta": {
       "Pos": {
+        "Filename": "simple.proto",
         "Offset": 0,
         "Line": 1,
         "Column": 1
@@ -66,6 +67,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Raw": "// An example of the official reference",
           "Meta": {
             "Pos": {
+              "Filename": "simple.proto",
               "Offset": 19,
               "Line": 2,
               "Column": 1
@@ -76,6 +78,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Raw": "// See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file",
           "Meta": {
             "Pos": {
+              "Filename": "simple.proto",
               "Offset": 59,
               "Line": 3,
               "Column": 1
@@ -86,6 +89,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
       "InlineComment": null,
       "Meta": {
         "Pos": {
+          "Filename": "simple.proto",
           "Offset": 151,
           "Line": 4,
           "Column": 1
@@ -99,6 +103,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
       "InlineComment": null,
       "Meta": {
         "Pos": {
+          "Filename": "simple.proto",
           "Offset": 170,
           "Line": 5,
           "Column": 1
@@ -112,6 +117,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
       "InlineComment": null,
       "Meta": {
         "Pos": {
+          "Filename": "simple.proto",
           "Offset": 199,
           "Line": 6,
           "Column": 1
@@ -128,6 +134,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "InlineComment": null,
           "Meta": {
             "Pos": {
+              "Filename": "simple.proto",
               "Offset": 269,
               "Line": 8,
               "Column": 5
@@ -142,6 +149,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "InlineComment": null,
           "Meta": {
             "Pos": {
+              "Filename": "simple.proto",
               "Offset": 300,
               "Line": 9,
               "Column": 5
@@ -156,6 +164,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "InlineComment": null,
           "Meta": {
             "Pos": {
+              "Filename": "simple.proto",
               "Offset": 317,
               "Line": 10,
               "Column": 5
@@ -175,6 +184,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "InlineComment": null,
           "Meta": {
             "Pos": {
+              "Filename": "simple.proto",
               "Offset": 334,
               "Line": 11,
               "Column": 5
@@ -187,6 +197,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
       "InlineCommentBehindLeftCurly": null,
       "Meta": {
         "Pos": {
+          "Filename": "simple.proto",
           "Offset": 240,
           "Line": 7,
           "Column": 1
@@ -203,6 +214,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "InlineComment": null,
           "Meta": {
             "Pos": {
+              "Filename": "simple.proto",
               "Offset": 403,
               "Line": 14,
               "Column": 5
@@ -222,6 +234,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
               "InlineComment": null,
               "Meta": {
                 "Pos": {
+                  "Filename": "simple.proto",
                   "Offset": 471,
                   "Line": 16,
                   "Column": 7
@@ -235,6 +248,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
             "Raw": "// Level 2",
             "Meta": {
               "Pos": {
+                "Filename": "simple.proto",
                 "Offset": 454,
                 "Line": 15,
                 "Column": 23
@@ -243,6 +257,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           },
           "Meta": {
             "Pos": {
+              "Filename": "simple.proto",
               "Offset": 436,
               "Line": 15,
               "Column": 5
@@ -259,6 +274,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "InlineComment": null,
           "Meta": {
             "Pos": {
+              "Filename": "simple.proto",
               "Offset": 497,
               "Line": 18,
               "Column": 5
@@ -275,6 +291,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "InlineComment": null,
           "Meta": {
             "Pos": {
+              "Filename": "simple.proto",
               "Offset": 535,
               "Line": 19,
               "Column": 5
@@ -291,6 +308,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "InlineComment": null,
           "Meta": {
             "Pos": {
+              "Filename": "simple.proto",
               "Offset": 572,
               "Line": 20,
               "Column": 5
@@ -303,13 +321,17 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
       "InlineCommentBehindLeftCurly": null,
       "Meta": {
         "Pos": {
+          "Filename": "simple.proto",
           "Offset": 383,
           "Line": 13,
           "Column": 1
         }
       }
     }
-  ]
+  ],
+  "Meta": {
+    "Filename": "simple.proto"
+  }
 }
 ```
 
