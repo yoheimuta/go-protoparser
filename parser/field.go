@@ -188,7 +188,7 @@ func (p *Parser) parseFieldOption() (*FieldOption, error) {
 	}, nil
 }
 
-// goProtoValidatorFieldOptionConstant = "{" ident ":" constant "}"
+// goProtoValidatorFieldOptionConstant = "{" ident ":" constant { , ident ":" constant } "}"
 func (p *Parser) parseGoProtoValidatorFieldOptionConstant() (string, error) {
 	var ret string
 
@@ -198,30 +198,36 @@ func (p *Parser) parseGoProtoValidatorFieldOptionConstant() (string, error) {
 	}
 	ret += p.lex.Text
 
-	p.lex.Next()
-	if p.lex.Token != scanner.TIDENT {
-		return "", p.unexpected("ident")
-	}
-	ret += p.lex.Text
+	for {
+		p.lex.Next()
+		if p.lex.Token != scanner.TIDENT {
+			return "", p.unexpected("ident")
+		}
+		ret += p.lex.Text
 
-	p.lex.Next()
-	if p.lex.Token != scanner.TCOLON {
-		return "", p.unexpected(":")
-	}
-	ret += p.lex.Text
+		p.lex.Next()
+		if p.lex.Token != scanner.TCOLON {
+			return "", p.unexpected(":")
+		}
+		ret += p.lex.Text
 
-	constant, _, err := p.lex.ReadConstant()
-	if err != nil {
-		return "", err
-	}
-	ret += constant
+		constant, _, err := p.lex.ReadConstant()
+		if err != nil {
+			return "", err
+		}
+		ret += constant
 
-	p.lex.Next()
-	if p.lex.Token != scanner.TRIGHTCURLY {
-		return "", p.unexpected("}")
+		p.lex.Next()
+		switch {
+		case p.lex.Token == scanner.TCOMMA:
+			ret += p.lex.Text
+		case p.lex.Token == scanner.TRIGHTCURLY:
+			ret += p.lex.Text
+			return ret, nil
+		default:
+			return "", p.unexpected("}")
+		}
 	}
-	ret += p.lex.Text
-	return ret, nil
 }
 
 var typeConstants = map[string]struct{}{
