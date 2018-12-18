@@ -127,6 +127,33 @@ func TestParser_ParseField(t *testing.T) {
 				},
 			},
 		},
+		{
+			name:       "parsing fieldOption constant with { and , by permissive mode. Required by go-proto-validators",
+			input:      `string email = 2 [(validator.field) = {length_gt: 0, length_lt: 1025},(validator.field) = {regex: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"}];`,
+			permissive: true,
+			wantField: &parser.Field{
+				Type:        "string",
+				FieldName:   "email",
+				FieldNumber: "2",
+				FieldOptions: []*parser.FieldOption{
+					{
+						OptionName: "(validator.field)",
+						Constant:   "{length_gt:0,length_lt:1025}",
+					},
+					{
+						OptionName: "(validator.field)",
+						Constant:   `{regex:"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"}`,
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
