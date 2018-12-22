@@ -369,6 +369,10 @@ func main() {
 }
 ```
 
+### Users
+
+- [protolint](https://github.com/yoheimuta/protolint)
+
 ### Motivation
 
 There exists the similar protobuf parser packages in Go.
