@@ -1,4 +1,4 @@
-# go-protoparser [![GoDoc](https://godoc.org/github.com/yoheimuta/go-protoparser?status.svg)](https://godoc.org/github.com/yoheimuta/go-protoparser)[![CircleCI](https://circleci.com/gh/yoheimuta/go-protoparser/tree/master.svg?style=svg)](https://circleci.com/gh/yoheimuta/go-protoparser/tree/master)[![Go Report Card](https://goreportcard.com/badge/github.com/emicklei/proto)](https://goreportcard.com/report/github.com/yoheimuta/go-protoparser)
+# go-protoparser [![GoDoc](https://godoc.org/github.com/yoheimuta/go-protoparser?status.svg)](https://godoc.org/github.com/yoheimuta/go-protoparser)[![CircleCI](https://circleci.com/gh/yoheimuta/go-protoparser/tree/master.svg?style=svg)](https://circleci.com/gh/yoheimuta/go-protoparser/tree/master)[![Go Report Card](https://goreportcard.com/badge/github.com/yoheimuta/go-protoparser)](https://goreportcard.com/report/github.com/yoheimuta/go-protoparser)
 
 go-protoparser is a yet another Go package which parses a Protocol Buffer file (proto3).
 
@@ -368,6 +368,10 @@ func main() {
 	os.Exit(run())
 }
 ```
+
+### Users
+
+- [protolint](https://github.com/yoheimuta/protolint)
 
 ### Motivation
 
