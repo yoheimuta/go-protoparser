@@ -381,3 +381,9 @@ But I could not find the parser which just return a parsing result well-typed va
 A parser which supports a visitor pattern is useful to implement like linter, but it may be difficult to use.
 It can be sufficient for most parsing situations to just return a parsing result well-typed value.
 This is easier to use.
+
+### Acknowledgement
+
+Thank you to the proto package: https://github.com/emicklei/proto
+
+I referred to the package for the good proven design, interface and some source code.
