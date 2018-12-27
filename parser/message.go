@@ -125,6 +125,14 @@ func (p *Parser) parseMessageBody() ([]Visitee, *Comment, error) {
 		}
 
 		switch token {
+		case scanner.TRIGHTCURLY:
+			if p.bodyIncludingComments {
+				for _, comment := range comments {
+					stmts = append(stmts, Visitee(comment))
+				}
+			}
+			p.lex.Next()
+			return stmts, inlineLeftCurly, nil
 		case scanner.TENUM:
 			enum, err := p.ParseEnum()
 			if err != nil {
@@ -190,11 +198,5 @@ func (p *Parser) parseMessageBody() ([]Visitee, *Comment, error) {
 
 		p.MaybeScanInlineComment(stmt)
 		stmts = append(stmts, stmt)
-
-		p.lex.Next()
-		if p.lex.Token == scanner.TRIGHTCURLY {
-			return stmts, inlineLeftCurly, nil
-		}
-		p.lex.UnNext()
 	}
 }

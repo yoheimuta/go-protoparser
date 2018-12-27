@@ -10,9 +10,10 @@ import (
 
 // ParseConfig is a config for parser.
 type ParseConfig struct {
-	debug      bool
-	permissive bool
-	filename   string
+	debug                 bool
+	permissive            bool
+	bodyIncludingComments bool
+	filename              string
 }
 
 // Option is an option for ParseConfig.
@@ -29,6 +30,14 @@ func WithDebug(debug bool) Option {
 func WithPermissive(permissive bool) Option {
 	return func(c *ParseConfig) {
 		c.permissive = permissive
+	}
+}
+
+// WithBodyIncludingComments is an option to allow to include comments into each element's body.
+// The comments are remaining of other elements'Comments and InlineComment.
+func WithBodyIncludingComments(bodyIncludingComments bool) Option {
+	return func(c *ParseConfig) {
+		c.bodyIncludingComments = bodyIncludingComments
 	}
 }
 
@@ -55,6 +64,7 @@ func Parse(input io.Reader, options ...Option) (*parser.Proto, error) {
 			lexer.WithFilename(config.filename),
 		),
 		parser.WithPermissive(config.permissive),
+		parser.WithBodyIncludingComments(config.bodyIncludingComments),
 	)
 	return p.ParseProto()
 }
