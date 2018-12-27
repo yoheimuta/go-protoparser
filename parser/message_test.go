@@ -13,10 +13,11 @@ import (
 
 func TestParser_ParseMessage(t *testing.T) {
 	tests := []struct {
-		name        string
-		input       string
-		wantMessage *parser.Message
-		wantErr     bool
+		name                       string
+		input                      string
+		inputBodyIncludingComments bool
+		wantMessage                *parser.Message
+		wantErr                    bool
 	}{
 		{
 			name:    "parsing an empty",
@@ -603,12 +604,103 @@ message SearchRequest {
 				},
 			},
 		},
+		{
+			name: "skipping a last comment",
+			input: `
+message SearchRequest {
+  string query = 1;
+  // last comment
+}
+`,
+			wantMessage: &parser.Message{
+				MessageName: "SearchRequest",
+				MessageBody: []parser.Visitee{
+					&parser.Field{
+						Type:        "string",
+						FieldName:   "query",
+						FieldNumber: "1",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 27,
+								Line:   3,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+				},
+			},
+		},
+		{
+			name: "parsing last comments",
+			input: `
+message SearchRequest {
+  string query = 1;
+  // last first comment
+  /* last second comment */
+}
+`,
+			inputBodyIncludingComments: true,
+			wantMessage: &parser.Message{
+				MessageName: "SearchRequest",
+				MessageBody: []parser.Visitee{
+					&parser.Field{
+						Type:        "string",
+						FieldName:   "query",
+						FieldNumber: "1",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 27,
+								Line:   3,
+								Column: 3,
+							},
+						},
+					},
+					&parser.Comment{
+						Raw: `// last first comment`,
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 47,
+								Line:   4,
+								Column: 3,
+							},
+						},
+					},
+					&parser.Comment{
+						Raw: `/* last second comment */`,
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 71,
+								Line:   5,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			p := parser.NewParser(lexer.NewLexer(strings.NewReader(test.input)))
+			p := parser.NewParser(
+				lexer.NewLexer(strings.NewReader(test.input)),
+				parser.WithBodyIncludingComments(test.inputBodyIncludingComments),
+			)
 			got, err := p.ParseMessage()
 			switch {
 			case test.wantErr:

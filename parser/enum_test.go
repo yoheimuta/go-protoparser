@@ -13,10 +13,11 @@ import (
 
 func TestParser_ParseEnum(t *testing.T) {
 	tests := []struct {
-		name     string
-		input    string
-		wantEnum *parser.Enum
-		wantErr  bool
+		name                       string
+		input                      string
+		inputBodyIncludingComments bool
+		wantEnum                   *parser.Enum
+		wantErr                    bool
 	}{
 		{
 			name:    "parsing an empty",
@@ -285,12 +286,99 @@ func TestParser_ParseEnum(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "skipping a last comment",
+			input: `enum EnumAllowingAlias {
+  option allow_alias = true;
+  // last line
+}
+`,
+			wantEnum: &parser.Enum{
+				EnumName: "EnumAllowingAlias",
+				EnumBody: []parser.Visitee{
+					&parser.Option{
+						OptionName: "allow_alias",
+						Constant:   "true",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 27,
+								Line:   2,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+				},
+			},
+		},
+		{
+			name: "parsing last comments",
+			input: `enum EnumAllowingAlias {
+  option allow_alias = true;
+  // last first comment
+  /* last second comment */
+}
+`,
+			inputBodyIncludingComments: true,
+			wantEnum: &parser.Enum{
+				EnumName: "EnumAllowingAlias",
+				EnumBody: []parser.Visitee{
+					&parser.Option{
+						OptionName: "allow_alias",
+						Constant:   "true",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 27,
+								Line:   2,
+								Column: 3,
+							},
+						},
+					},
+					&parser.Comment{
+						Raw: `// last first comment`,
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 56,
+								Line:   3,
+								Column: 3,
+							},
+						},
+					},
+					&parser.Comment{
+						Raw: `/* last second comment */`,
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 80,
+								Line:   4,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			p := parser.NewParser(lexer.NewLexer(strings.NewReader(test.input)))
+			p := parser.NewParser(
+				lexer.NewLexer(strings.NewReader(test.input)),
+				parser.WithBodyIncludingComments(test.inputBodyIncludingComments),
+			)
 			got, err := p.ParseEnum()
 			switch {
 			case test.wantErr:

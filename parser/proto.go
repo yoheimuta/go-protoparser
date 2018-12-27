@@ -64,6 +64,11 @@ func (p *Parser) parseProtoBody() ([]Visitee, error) {
 		comments := p.ParseComments()
 
 		if p.IsEOF() {
+			if p.bodyIncludingComments {
+				for _, comment := range comments {
+					protoBody = append(protoBody, Visitee(comment))
+				}
+			}
 			return protoBody, nil
 		}
 

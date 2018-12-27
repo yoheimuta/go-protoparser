@@ -13,11 +13,12 @@ import (
 
 func TestParser_ParseProto(t *testing.T) {
 	tests := []struct {
-		name      string
-		input     string
-		filename  string
-		wantProto *parser.Proto
-		wantErr   bool
+		name                       string
+		input                      string
+		filename                   string
+		inputBodyIncludingComments bool
+		wantProto                  *parser.Proto
+		wantErr                    bool
 	}{
 		{
 			name:    "parsing an empty",
@@ -819,6 +820,180 @@ service SearchService {
 				},
 			},
 		},
+		{
+			name: "skipping a last comment",
+			input: `
+syntax = "proto3";
+service SearchService {
+  rpc Search (SearchRequest) returns (SearchResponse);
+}
+// last comment
+`,
+			filename: "service.proto",
+			wantProto: &parser.Proto{
+				Syntax: &parser.Syntax{
+					ProtobufVersion: "proto3",
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Filename: "service.proto",
+							Offset:   1,
+							Line:     2,
+							Column:   1,
+						},
+					},
+				},
+				ProtoBody: []parser.Visitee{
+					&parser.Service{
+						ServiceName: "SearchService",
+						ServiceBody: []parser.Visitee{
+							&parser.RPC{
+								RPCName: "Search",
+								RPCRequest: &parser.RPCRequest{
+									MessageType: "SearchRequest",
+									Meta: meta.Meta{
+										Pos: meta.Position{
+											Filename: "service.proto",
+											Offset:   57,
+											Line:     4,
+											Column:   14,
+										},
+									},
+								},
+								RPCResponse: &parser.RPCResponse{
+									MessageType: "SearchResponse",
+									Meta: meta.Meta{
+										Pos: meta.Position{
+											Filename: "service.proto",
+											Offset:   81,
+											Line:     4,
+											Column:   38,
+										},
+									},
+								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "service.proto",
+										Offset:   46,
+										Line:     4,
+										Column:   3,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "service.proto",
+								Offset:   20,
+								Line:     3,
+								Column:   1,
+							},
+						},
+					},
+				},
+				Meta: &parser.ProtoMeta{
+					Filename: "service.proto",
+				},
+			},
+		},
+		{
+			name: "parsing last comments",
+			input: `
+syntax = "proto3";
+service SearchService {
+  rpc Search (SearchRequest) returns (SearchResponse);
+}
+// last first comment
+/* last second comment */
+`,
+			inputBodyIncludingComments: true,
+			filename:                   "service.proto",
+			wantProto: &parser.Proto{
+				Syntax: &parser.Syntax{
+					ProtobufVersion: "proto3",
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Filename: "service.proto",
+							Offset:   1,
+							Line:     2,
+							Column:   1,
+						},
+					},
+				},
+				ProtoBody: []parser.Visitee{
+					&parser.Service{
+						ServiceName: "SearchService",
+						ServiceBody: []parser.Visitee{
+							&parser.RPC{
+								RPCName: "Search",
+								RPCRequest: &parser.RPCRequest{
+									MessageType: "SearchRequest",
+									Meta: meta.Meta{
+										Pos: meta.Position{
+											Filename: "service.proto",
+											Offset:   57,
+											Line:     4,
+											Column:   14,
+										},
+									},
+								},
+								RPCResponse: &parser.RPCResponse{
+									MessageType: "SearchResponse",
+									Meta: meta.Meta{
+										Pos: meta.Position{
+											Filename: "service.proto",
+											Offset:   81,
+											Line:     4,
+											Column:   38,
+										},
+									},
+								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "service.proto",
+										Offset:   46,
+										Line:     4,
+										Column:   3,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "service.proto",
+								Offset:   20,
+								Line:     3,
+								Column:   1,
+							},
+						},
+					},
+					&parser.Comment{
+						Raw: `// last first comment`,
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "service.proto",
+								Offset:   101,
+								Line:     6,
+								Column:   1,
+							},
+						},
+					},
+					&parser.Comment{
+						Raw: `/* last second comment */`,
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "service.proto",
+								Offset:   123,
+								Line:     7,
+								Column:   1,
+							},
+						},
+					},
+				},
+				Meta: &parser.ProtoMeta{
+					Filename: "service.proto",
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
@@ -829,6 +1004,7 @@ service SearchService {
 					strings.NewReader(test.input),
 					lexer.WithFilename(test.filename),
 				),
+				parser.WithBodyIncludingComments(test.inputBodyIncludingComments),
 			)
 			got, err := p.ParseProto()
 			switch {

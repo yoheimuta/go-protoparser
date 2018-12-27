@@ -6,7 +6,8 @@ import "github.com/yoheimuta/go-protoparser/internal/lexer"
 type Parser struct {
 	lex *lexer.Lexer
 
-	permissive bool
+	permissive            bool
+	bodyIncludingComments bool
 }
 
 // ConfigOption is an option for Parser.
@@ -16,6 +17,14 @@ type ConfigOption func(*Parser)
 func WithPermissive(permissive bool) ConfigOption {
 	return func(p *Parser) {
 		p.permissive = permissive
+	}
+}
+
+// WithBodyIncludingComments is an option to allow to include comments into each element's body.
+// The comments are remaining of other elements'Comments and InlineComment.
+func WithBodyIncludingComments(bodyIncludingComments bool) ConfigOption {
+	return func(p *Parser) {
+		p.bodyIncludingComments = bodyIncludingComments
 	}
 }
 

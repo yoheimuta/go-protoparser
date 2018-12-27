@@ -13,10 +13,11 @@ import (
 
 func TestParser_ParseService(t *testing.T) {
 	tests := []struct {
-		name        string
-		input       string
-		wantService *parser.Service
-		wantErr     bool
+		name                       string
+		input                      string
+		inputBodyIncludingComments bool
+		wantService                *parser.Service
+		wantErr                    bool
 	}{
 		{
 			name:    "parsing an empty",
@@ -391,12 +392,139 @@ service SearchService { // TODO: Search is not implemented yet.
 				},
 			},
 		},
+		{
+			name: "skipping a last comment",
+			input: `
+service SearchService {
+  rpc Search (SearchRequest) returns (SearchResponse);
+  // last comment
+}
+`,
+			wantService: &parser.Service{
+				ServiceName: "SearchService",
+				ServiceBody: []parser.Visitee{
+					&parser.RPC{
+						RPCName: "Search",
+						RPCRequest: &parser.RPCRequest{
+							MessageType: "SearchRequest",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 38,
+									Line:   3,
+									Column: 14,
+								},
+							},
+						},
+						RPCResponse: &parser.RPCResponse{
+							MessageType: "SearchResponse",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 62,
+									Line:   3,
+									Column: 38,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 27,
+								Line:   3,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+				},
+			},
+		},
+		{
+			name: "parsing last comments",
+			input: `
+service SearchService {
+  rpc Search (SearchRequest) returns (SearchResponse);
+  // last first comment
+  /* last second comment */
+}
+`,
+			inputBodyIncludingComments: true,
+			wantService: &parser.Service{
+				ServiceName: "SearchService",
+				ServiceBody: []parser.Visitee{
+					&parser.RPC{
+						RPCName: "Search",
+						RPCRequest: &parser.RPCRequest{
+							MessageType: "SearchRequest",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 38,
+									Line:   3,
+									Column: 14,
+								},
+							},
+						},
+						RPCResponse: &parser.RPCResponse{
+							MessageType: "SearchResponse",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 62,
+									Line:   3,
+									Column: 38,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 27,
+								Line:   3,
+								Column: 3,
+							},
+						},
+					},
+					&parser.Comment{
+						Raw: `// last first comment`,
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 82,
+								Line:   4,
+								Column: 3,
+							},
+						},
+					},
+					&parser.Comment{
+						Raw: `/* last second comment */`,
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 106,
+								Line:   5,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			p := parser.NewParser(lexer.NewLexer(strings.NewReader(test.input)))
+			p := parser.NewParser(
+				lexer.NewLexer(strings.NewReader(test.input)),
+				parser.WithBodyIncludingComments(test.inputBodyIncludingComments),
+			)
 			got, err := p.ParseService()
 			switch {
 			case test.wantErr:

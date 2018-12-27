@@ -152,6 +152,14 @@ func (p *Parser) parseServiceBody() ([]Visitee, *Comment, error) {
 		}
 
 		switch token {
+		case scanner.TRIGHTCURLY:
+			if p.bodyIncludingComments {
+				for _, comment := range comments {
+					stmts = append(stmts, Visitee(comment))
+				}
+			}
+			p.lex.Next()
+			return stmts, inlineLeftCurly, nil
 		case scanner.TOPTION:
 			option, err := p.ParseOption()
 			if err != nil {
@@ -175,12 +183,6 @@ func (p *Parser) parseServiceBody() ([]Visitee, *Comment, error) {
 
 		p.MaybeScanInlineComment(stmt)
 		stmts = append(stmts, stmt)
-
-		p.lex.Next()
-		if p.lex.Token == scanner.TRIGHTCURLY {
-			return stmts, inlineLeftCurly, nil
-		}
-		p.lex.UnNext()
 	}
 }
 
