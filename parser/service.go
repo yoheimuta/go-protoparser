@@ -243,7 +243,7 @@ func (p *Parser) parseRPC() (*RPC, error) {
 		RPCRequest:  rpcRequest,
 		RPCResponse: rpcResponse,
 		Options:     opts,
-		Meta:        meta.NewMeta(startPos),
+		Meta:        meta.NewMetaWithLastPos(startPos, p.lex.Pos),
 	}, nil
 }
 
