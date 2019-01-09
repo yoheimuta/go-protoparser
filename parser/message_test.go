@@ -70,6 +70,11 @@ message Outer {
 								Line:   4,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 88,
+								Line:   6,
+								Column: 3,
+							},
 						},
 					},
 					&parser.MapField{
@@ -90,6 +95,11 @@ message Outer {
 					Pos: meta.Position{
 						Offset: 1,
 						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 123,
+						Line:   8,
 						Column: 1,
 					},
 				},
@@ -144,6 +154,11 @@ message outer {
 								Line:   4,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 88,
+								Line:   6,
+								Column: 3,
+							},
 						},
 					},
 					&parser.Field{
@@ -191,6 +206,11 @@ message outer {
 						Line:   2,
 						Column: 1,
 					},
+					LastPos: meta.Position{
+						Offset: 194,
+						Line:   10,
+						Column: 1,
+					},
 				},
 			},
 		},
@@ -206,6 +226,11 @@ message Outer {
 					Pos: meta.Position{
 						Offset: 1,
 						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 17,
+						Line:   3,
 						Column: 1,
 					},
 				},
@@ -307,6 +332,11 @@ message outer {
 							Pos: meta.Position{
 								Offset: 75,
 								Line:   6,
+								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 126,
+								Line:   8,
 								Column: 3,
 							},
 						},
@@ -497,6 +527,11 @@ message outer {
 						Line:   2,
 						Column: 1,
 					},
+					LastPos: meta.Position{
+						Offset: 438,
+						Line:   25,
+						Column: 1,
+					},
 				},
 			},
 		},
@@ -616,6 +651,11 @@ message SearchRequest {
 						Line:   2,
 						Column: 1,
 					},
+					LastPos: meta.Position{
+						Offset: 246,
+						Line:   9,
+						Column: 1,
+					},
 				},
 			},
 		},
@@ -647,6 +687,11 @@ message SearchRequest {
 					Pos: meta.Position{
 						Offset: 1,
 						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 63,
+						Line:   5,
 						Column: 1,
 					},
 				},
@@ -702,6 +747,11 @@ message SearchRequest {
 					Pos: meta.Position{
 						Offset: 1,
 						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 97,
+						Line:   6,
 						Column: 1,
 					},
 				},

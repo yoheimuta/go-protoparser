@@ -196,6 +196,12 @@ message outer {
 										Line:     13,
 										Column:   3,
 									},
+									LastPos: meta.Position{
+										Filename: "official.proto",
+										Offset:   312,
+										Line:     15,
+										Column:   3,
+									},
 								},
 							},
 							&parser.Field{
@@ -245,6 +251,12 @@ message outer {
 								Filename: "official.proto",
 								Offset:   225,
 								Line:     11,
+								Column:   1,
+							},
+							LastPos: meta.Position{
+								Filename: "official.proto",
+								Offset:   418,
+								Line:     19,
 								Column:   1,
 							},
 						},
@@ -503,6 +515,12 @@ syntax2
 								Line:     14,
 								Column:   1,
 							},
+							LastPos: meta.Position{
+								Filename: "comments.proto",
+								Offset:   192,
+								Line:     15,
+								Column:   1,
+							},
 						},
 					},
 					&parser.Enum{
@@ -753,6 +771,12 @@ service SearchService {
 								Filename: "inlineComments.proto",
 								Offset:   151,
 								Line:     6,
+								Column:   1,
+							},
+							LastPos: meta.Position{
+								Filename: "inlineComments.proto",
+								Offset:   167,
+								Line:     7,
 								Column:   1,
 							},
 						},
