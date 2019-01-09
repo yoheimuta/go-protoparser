@@ -61,6 +61,11 @@ service SearchService {
 								Line:   3,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 78,
+								Line:   3,
+								Column: 54,
+							},
 						},
 					},
 				},
@@ -68,6 +73,11 @@ service SearchService {
 					Pos: meta.Position{
 						Offset: 1,
 						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 80,
+						Line:   4,
 						Column: 1,
 					},
 				},
@@ -124,6 +134,11 @@ service SearchService {
 								Line:   3,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 110,
+								Line:   3,
+								Column: 86,
+							},
 						},
 					},
 				},
@@ -131,6 +146,11 @@ service SearchService {
 					Pos: meta.Position{
 						Offset: 1,
 						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 112,
+						Line:   4,
 						Column: 1,
 					},
 				},
@@ -201,6 +221,11 @@ service SearchService {
 								Line:   3,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 146,
+								Line:   6,
+								Column: 3,
+							},
 						},
 					},
 				},
@@ -208,6 +233,11 @@ service SearchService {
 					Pos: meta.Position{
 						Offset: 1,
 						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 148,
+						Line:   7,
 						Column: 1,
 					},
 				},
@@ -268,6 +298,11 @@ service ItemService {
 								Line:   5,
 								Column: 5,
 							},
+							LastPos: meta.Position{
+								Offset: 215,
+								Line:   5,
+								Column: 89,
+							},
 						},
 					},
 					&parser.RPC{
@@ -310,6 +345,11 @@ service ItemService {
 								Line:   8,
 								Column: 5,
 							},
+							LastPos: meta.Position{
+								Offset: 354,
+								Line:   8,
+								Column: 78,
+							},
 						},
 					},
 				},
@@ -317,6 +357,11 @@ service ItemService {
 					Pos: meta.Position{
 						Offset: 46,
 						Line:   3,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 356,
+						Line:   9,
 						Column: 1,
 					},
 				},
@@ -370,6 +415,11 @@ service SearchService { // TODO: Search is not implemented yet.
 								Line:   3,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 118,
+								Line:   3,
+								Column: 54,
+							},
 						},
 					},
 				},
@@ -387,6 +437,11 @@ service SearchService { // TODO: Search is not implemented yet.
 					Pos: meta.Position{
 						Offset: 1,
 						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 144,
+						Line:   4,
 						Column: 1,
 					},
 				},
@@ -431,6 +486,11 @@ service SearchService {
 								Line:   3,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 78,
+								Line:   3,
+								Column: 54,
+							},
 						},
 					},
 				},
@@ -438,6 +498,11 @@ service SearchService {
 					Pos: meta.Position{
 						Offset: 1,
 						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 98,
+						Line:   5,
 						Column: 1,
 					},
 				},
@@ -484,6 +549,11 @@ service SearchService {
 								Line:   3,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 78,
+								Line:   3,
+								Column: 54,
+							},
 						},
 					},
 					&parser.Comment{
@@ -511,6 +581,11 @@ service SearchService {
 					Pos: meta.Position{
 						Offset: 1,
 						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 132,
+						Line:   6,
 						Column: 1,
 					},
 				},

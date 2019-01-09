@@ -129,7 +129,7 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 		OneofFields:                  oneofFields,
 		OneofName:                    oneofName,
 		InlineCommentBehindLeftCurly: inlineLeftCurly,
-		Meta:                         meta.NewMeta(startPos),
+		Meta:                         meta.NewMetaWithLastPos(startPos, p.lex.Pos),
 	}, nil
 }
 
