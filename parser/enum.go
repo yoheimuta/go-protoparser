@@ -118,7 +118,7 @@ func (p *Parser) ParseEnum() (*Enum, error) {
 	}
 	enumName := p.lex.Text
 
-	enumBody, inlineLeftCurly, err := p.parseEnumBody()
+	enumBody, inlineLeftCurly, lastPos, err := p.parseEnumBody()
 	if err != nil {
 		return nil, err
 	}
@@ -127,16 +127,21 @@ func (p *Parser) ParseEnum() (*Enum, error) {
 		EnumName:                     enumName,
 		EnumBody:                     enumBody,
 		InlineCommentBehindLeftCurly: inlineLeftCurly,
-		Meta:                         meta.NewMeta(startPos),
+		Meta:                         meta.NewMetaWithLastPos(startPos, lastPos),
 	}, nil
 }
 
 // enumBody = "{" { option | enumField | emptyStatement } "}"
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#enum_definition
-func (p *Parser) parseEnumBody() ([]Visitee, *Comment, error) {
+func (p *Parser) parseEnumBody() (
+	[]Visitee,
+	*Comment,
+	scanner.Position,
+	error,
+) {
 	p.lex.Next()
 	if p.lex.Token != scanner.TLEFTCURLY {
-		return nil, nil, p.unexpected("{")
+		return nil, nil, scanner.Position{}, p.unexpected("{")
 	}
 
 	inlineLeftCurly := p.parseInlineComment()
@@ -157,17 +162,18 @@ func (p *Parser) parseEnumBody() ([]Visitee, *Comment, error) {
 
 		switch token {
 		case scanner.TRIGHTCURLY:
+			lastPos := p.lex.Pos
 			if p.bodyIncludingComments {
 				for _, comment := range comments {
 					stmts = append(stmts, Visitee(comment))
 				}
 			}
 			p.lex.Next()
-			return stmts, inlineLeftCurly, nil
+			return stmts, inlineLeftCurly, lastPos, nil
 		case scanner.TOPTION:
 			option, err := p.ParseOption()
 			if err != nil {
-				return nil, nil, err
+				return nil, nil, scanner.Position{}, err
 			}
 			option.Comments = comments
 			stmt = option
@@ -186,7 +192,7 @@ func (p *Parser) parseEnumBody() ([]Visitee, *Comment, error) {
 				break
 			}
 
-			return nil, nil, &parseEnumBodyStatementErr{
+			return nil, nil, scanner.Position{}, &parseEnumBodyStatementErr{
 				parseEnumFieldErr:      enumFieldErr,
 				parseEmptyStatementErr: emptyErr,
 			}

@@ -149,6 +149,12 @@ message outer {
 								Line:     5,
 								Column:   1,
 							},
+							LastPos: meta.Position{
+								Filename: "official.proto",
+								Offset:   223,
+								Line:     10,
+								Column:   1,
+							},
 						},
 					},
 					&parser.Message{
@@ -523,6 +529,12 @@ syntax2
 								Line:     17,
 								Column:   1,
 							},
+							LastPos: meta.Position{
+								Filename: "comments.proto",
+								Offset:   256,
+								Line:     19,
+								Column:   1,
+							},
 						},
 					},
 					&parser.Service{
@@ -753,6 +765,12 @@ service SearchService {
 								Filename: "inlineComments.proto",
 								Offset:   180,
 								Line:     8,
+								Column:   1,
+							},
+							LastPos: meta.Position{
+								Filename: "inlineComments.proto",
+								Offset:   234,
+								Line:     10,
 								Column:   1,
 							},
 						},

@@ -369,6 +369,11 @@ message outer {
 								Line:   12,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 245,
+								Line:   14,
+								Column: 3,
+							},
 						},
 					},
 					&parser.Field{
@@ -590,6 +595,11 @@ message SearchRequest {
 							Pos: meta.Position{
 								Offset: 177,
 								Line:   6,
+								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 235,
+								Line:   8,
 								Column: 3,
 							},
 						},
