@@ -70,6 +70,11 @@ service SearchService {
 						Line:   2,
 						Column: 1,
 					},
+					LastPos: meta.Position{
+						Offset: 80,
+						Line:   4,
+						Column: 1,
+					},
 				},
 			},
 		},
@@ -131,6 +136,11 @@ service SearchService {
 					Pos: meta.Position{
 						Offset: 1,
 						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 112,
+						Line:   4,
 						Column: 1,
 					},
 				},
@@ -208,6 +218,11 @@ service SearchService {
 					Pos: meta.Position{
 						Offset: 1,
 						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 148,
+						Line:   7,
 						Column: 1,
 					},
 				},
@@ -319,6 +334,11 @@ service ItemService {
 						Line:   3,
 						Column: 1,
 					},
+					LastPos: meta.Position{
+						Offset: 356,
+						Line:   9,
+						Column: 1,
+					},
 				},
 			},
 		},
@@ -389,6 +409,11 @@ service SearchService { // TODO: Search is not implemented yet.
 						Line:   2,
 						Column: 1,
 					},
+					LastPos: meta.Position{
+						Offset: 144,
+						Line:   4,
+						Column: 1,
+					},
 				},
 			},
 		},
@@ -438,6 +463,11 @@ service SearchService {
 					Pos: meta.Position{
 						Offset: 1,
 						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 98,
+						Line:   5,
 						Column: 1,
 					},
 				},
@@ -511,6 +541,11 @@ service SearchService {
 					Pos: meta.Position{
 						Offset: 1,
 						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 132,
+						Line:   6,
 						Column: 1,
 					},
 				},

@@ -115,7 +115,7 @@ func (p *Parser) ParseService() (*Service, error) {
 	}
 	serviceName := p.lex.Text
 
-	serviceBody, inlineLeftCurly, err := p.parseServiceBody()
+	serviceBody, inlineLeftCurly, lastPos, err := p.parseServiceBody()
 	if err != nil {
 		return nil, err
 	}
@@ -124,16 +124,21 @@ func (p *Parser) ParseService() (*Service, error) {
 		ServiceName:                  serviceName,
 		ServiceBody:                  serviceBody,
 		InlineCommentBehindLeftCurly: inlineLeftCurly,
-		Meta:                         meta.NewMeta(startPos),
+		Meta:                         meta.NewMetaWithLastPos(startPos, lastPos),
 	}, nil
 }
 
 // serviceBody = "{" { option | rpc | emptyStatement } "}"
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#service_definition
-func (p *Parser) parseServiceBody() ([]Visitee, *Comment, error) {
+func (p *Parser) parseServiceBody() (
+	[]Visitee,
+	*Comment,
+	scanner.Position,
+	error,
+) {
 	p.lex.Next()
 	if p.lex.Token != scanner.TLEFTCURLY {
-		return nil, nil, p.unexpected("{")
+		return nil, nil, scanner.Position{}, p.unexpected("{")
 	}
 
 	inlineLeftCurly := p.parseInlineComment()
@@ -153,31 +158,32 @@ func (p *Parser) parseServiceBody() ([]Visitee, *Comment, error) {
 
 		switch token {
 		case scanner.TRIGHTCURLY:
+			lastPos := p.lex.Pos
 			if p.bodyIncludingComments {
 				for _, comment := range comments {
 					stmts = append(stmts, Visitee(comment))
 				}
 			}
 			p.lex.Next()
-			return stmts, inlineLeftCurly, nil
+			return stmts, inlineLeftCurly, lastPos, nil
 		case scanner.TOPTION:
 			option, err := p.ParseOption()
 			if err != nil {
-				return nil, nil, err
+				return nil, nil, scanner.Position{}, err
 			}
 			option.Comments = comments
 			stmt = option
 		case scanner.TRPC:
 			rpc, err := p.parseRPC()
 			if err != nil {
-				return nil, nil, err
+				return nil, nil, scanner.Position{}, err
 			}
 			rpc.Comments = comments
 			stmt = rpc
 		default:
 			err := p.lex.ReadEmptyStatement()
 			if err != nil {
-				return nil, nil, err
+				return nil, nil, scanner.Position{}, err
 			}
 		}
 
