@@ -459,6 +459,11 @@ message outer {
 								Line:   19,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 404,
+								Line:   22,
+								Column: 3,
+							},
 						},
 					},
 					&parser.Reserved{
