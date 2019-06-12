@@ -14,6 +14,7 @@ func TestParser_ParseOption(t *testing.T) {
 	tests := []struct {
 		name       string
 		input      string
+		permissive bool
 		wantOption *parser.Option
 		wantErr    bool
 	}{
@@ -81,12 +82,54 @@ func TestParser_ParseOption(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: `parsing "{" ident ":" constant { ident ":" constant } "}" by permissive mode.`,
+			input: `
+option (google.api.http) = {
+    get: "/v1/projects/{project_id}/aggregated/addresses"
+    rest_collection: "projects.addresses"
+};`,
+			permissive: true,
+			wantOption: &parser.Option{
+				OptionName: "(google.api.http)",
+				Constant: `{get:"/v1/projects/{project_id}/aggregated/addresses"
+rest_collection:"projects.addresses"}`,
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+				},
+			},
+		},
+		{
+			name: `parsing "{" ident ":" constant { "," ident ":" constant } "}" by permissive mode.`,
+			input: `
+option (google.api.http) = {
+    post: "/v1/resources",
+    body: "resource",
+    rest_method_name: "insert"
+};`,
+			permissive: true,
+			wantOption: &parser.Option{
+				OptionName: "(google.api.http)",
+				Constant:   `{post:"/v1/resources",body:"resource",rest_method_name:"insert"}`,
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			p := parser.NewParser(lexer.NewLexer(strings.NewReader(test.input)))
+			p := parser.NewParser(lexer.NewLexer(strings.NewReader(test.input)), parser.WithPermissive(test.permissive))
 			got, err := p.ParseOption()
 			switch {
 			case test.wantErr:

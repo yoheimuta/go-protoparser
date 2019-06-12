@@ -58,9 +58,26 @@ func (p *Parser) ParseOption() (*Option, error) {
 		return nil, p.unexpected("=")
 	}
 
-	constant, _, err := p.lex.ReadConstant()
-	if err != nil {
-		return nil, err
+	var constant string
+	p.lex.Next()
+	token := p.lex.Token
+	p.lex.UnNext()
+	switch token {
+	// Cloud Endpoints requires this exception.
+	case scanner.TLEFTCURLY:
+		if !p.permissive {
+			return nil, p.unexpected("constant or permissive mode")
+		}
+
+		constant, err = p.parseCloudEndpointsOptionConstant()
+		if err != nil {
+			return nil, err
+		}
+	default:
+		constant, _, err = p.lex.ReadConstant()
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	p.lex.Next()
@@ -73,6 +90,51 @@ func (p *Parser) ParseOption() (*Option, error) {
 		Constant:   constant,
 		Meta:       meta.NewMeta(startPos),
 	}, nil
+}
+
+// cloudEndpointsOptionConstant = "{" ident ":" constant { [","] ident ":" constant } "}"
+//
+// See https://cloud.google.com/endpoints/docs/grpc-service-config/reference/rpc/google.api
+func (p *Parser) parseCloudEndpointsOptionConstant() (string, error) {
+	var ret string
+
+	p.lex.Next()
+	if p.lex.Token != scanner.TLEFTCURLY {
+		return "", p.unexpected("{")
+	}
+	ret += p.lex.Text
+
+	for {
+		p.lex.Next()
+		if p.lex.Token != scanner.TIDENT {
+			return "", p.unexpected("ident")
+		}
+		ret += p.lex.Text
+
+		p.lex.Next()
+		if p.lex.Token != scanner.TCOLON {
+			return "", p.unexpected(":")
+		}
+		ret += p.lex.Text
+
+		constant, _, err := p.lex.ReadConstant()
+		if err != nil {
+			return "", err
+		}
+		ret += constant
+
+		p.lex.Next()
+		switch {
+		case p.lex.Token == scanner.TCOMMA:
+			ret += p.lex.Text
+		case p.lex.Token == scanner.TRIGHTCURLY:
+			ret += p.lex.Text
+			return ret, nil
+		default:
+			ret += "\n"
+			p.lex.UnNext()
+		}
+	}
 }
 
 // optionName = ( ident | "(" fullIdent ")" ) { "." ident }
