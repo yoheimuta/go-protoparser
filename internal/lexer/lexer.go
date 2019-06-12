@@ -137,6 +137,13 @@ func (lex *Lexer) LatestErr() error {
 	return lex.scanErr
 }
 
+// Peek returns the next token with keeping the read buffer unchanged.
+func (lex *Lexer) Peek() scanner.Token {
+	lex.Next()
+	defer lex.UnNext()
+	return lex.Token
+}
+
 // UnNext put the latest text back to the read buffer.
 func (lex *Lexer) UnNext() {
 	lex.scanner.UnScan()
