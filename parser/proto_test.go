@@ -1096,6 +1096,59 @@ service SearchService {
 				},
 			},
 		},
+		{
+			name: "parsing an extend",
+			input: `
+syntax = "proto3";
+extend Foo {
+  int32 bar = 126;
+}
+`,
+			wantProto: &parser.Proto{
+				Syntax: &parser.Syntax{
+					ProtobufVersion: "proto3",
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 1,
+							Line:   2,
+							Column: 1,
+						},
+					},
+				},
+				ProtoBody: []parser.Visitee{
+					&parser.Extend{
+						MessageType: "Foo",
+						ExtendBody: []parser.Visitee{
+							&parser.Field{
+								Type:        "int32",
+								FieldName:   "bar",
+								FieldNumber: "126",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 35,
+										Line:   4,
+										Column: 3,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 20,
+								Line:   3,
+								Column: 1,
+							},
+							LastPos: meta.Position{
+								Offset: 52,
+								Line:   5,
+								Column: 1,
+							},
+						},
+					},
+				},
+				Meta: &parser.ProtoMeta{},
+			},
+		},
 	}
 
 	for _, test := range tests {

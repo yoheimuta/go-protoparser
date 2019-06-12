@@ -757,6 +757,62 @@ message SearchRequest {
 				},
 			},
 		},
+		{
+			name: "parsing an extend",
+			input: `
+message Outer {
+  extend Foo {
+    int32 bar = 126;
+  }
+}
+`,
+			wantMessage: &parser.Message{
+				MessageName: "Outer",
+				MessageBody: []parser.Visitee{
+					&parser.Extend{
+						MessageType: "Foo",
+						ExtendBody: []parser.Visitee{
+							&parser.Field{
+								Type:        "int32",
+								FieldName:   "bar",
+								FieldNumber: "126",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 36,
+										Line:   4,
+										Column: 5,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 19,
+								Line:   3,
+								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 55,
+								Line:   5,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 57,
+						Line:   6,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

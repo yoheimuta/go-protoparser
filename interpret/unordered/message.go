@@ -16,6 +16,7 @@ type MessageBody struct {
 	Oneofs   []*parser.Oneof
 	Maps     []*parser.MapField
 	Reserves []*parser.Reserved
+	Extends  []*parser.Extend
 }
 
 // Message consists of a message name and a message body.
@@ -64,6 +65,7 @@ func interpretMessageBody(src []parser.Visitee) (
 	var oneofs []*parser.Oneof
 	var maps []*parser.MapField
 	var reserves []*parser.Reserved
+	var extends []*parser.Extend
 	for _, s := range src {
 		switch t := s.(type) {
 		case *parser.Field:
@@ -88,6 +90,8 @@ func interpretMessageBody(src []parser.Visitee) (
 			maps = append(maps, t)
 		case *parser.Reserved:
 			reserves = append(reserves, t)
+		case *parser.Extend:
+			extends = append(extends, t)
 		default:
 			return nil, fmt.Errorf("invalid MessageBody type %v of %v", t, s)
 		}
@@ -100,5 +104,6 @@ func interpretMessageBody(src []parser.Visitee) (
 		Oneofs:   oneofs,
 		Maps:     maps,
 		Reserves: reserves,
+		Extends:  extends,
 	}, nil
 }

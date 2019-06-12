@@ -6,6 +6,7 @@ type Visitor interface {
 	VisitEmptyStatement(*EmptyStatement) (next bool)
 	VisitEnum(*Enum) (next bool)
 	VisitEnumField(*EnumField) (next bool)
+	VisitExtend(*Extend) (next bool)
 	VisitField(*Field) (next bool)
 	VisitImport(*Import) (next bool)
 	VisitMapField(*MapField) (next bool)

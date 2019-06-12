@@ -35,6 +35,11 @@ func (p *protoTestVisitor) VisitEnumField(f *parser.EnumField) bool {
 	return true
 }
 
+func (p *protoTestVisitor) VisitExtend(e *parser.Extend) bool {
+	p.buffers = append(p.buffers, "Extend: "+e.MessageType)
+	return true
+}
+
 func (p *protoTestVisitor) VisitField(f *parser.Field) bool {
 	p.buffers = append(p.buffers, "Field: "+f.FieldName)
 	return true
