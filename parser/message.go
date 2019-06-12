@@ -24,7 +24,7 @@ func (e *parseMessageBodyStatementErr) Error() string {
 type Message struct {
 	MessageName string
 	// MessageBody can have fields, nested enum definitions, nested message definitions,
-	// options, oneofs, map fields, and reserved statements.
+	// options, oneofs, map fields, extends, and reserved statements.
 	MessageBody []Visitee
 
 	// Comments are the optional ones placed at the beginning.
@@ -174,6 +174,13 @@ func (p *Parser) parseMessageBody() (
 			}
 			mapField.Comments = comments
 			stmt = mapField
+		case scanner.TEXTEND:
+			extend, err := p.ParseExtend()
+			if err != nil {
+				return nil, nil, scanner.Position{}, err
+			}
+			extend.Comments = comments
+			stmt = extend
 		case scanner.TRESERVED:
 			reserved, err := p.ParseReserved()
 			if err != nil {

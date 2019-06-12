@@ -43,6 +43,7 @@ const (
 	TRPC
 	TRETURNS
 	TMESSAGE
+	TEXTEND
 	TIMPORT
 	TPACKAGE
 	TOPTION
@@ -87,6 +88,7 @@ func asKeywordToken(st string) Token {
 		"rpc":      TRPC,
 		"returns":  TRETURNS,
 		"message":  TMESSAGE,
+		"extend":   TEXTEND,
 		"import":   TIMPORT,
 		"package":  TPACKAGE,
 		"option":   TOPTION,

@@ -11,7 +11,7 @@ type ProtoMeta struct {
 // Proto represents a protocol buffer definition.
 type Proto struct {
 	Syntax *Syntax
-	// ProtoBody is a slice of sum type consisted of *Import, *Package, *Option, *Message, *Enum, *Service and *EmptyStatement.
+	// ProtoBody is a slice of sum type consisted of *Import, *Package, *Option, *Message, *Enum, *Service, *Extend and *EmptyStatement.
 	ProtoBody []Visitee
 	Meta      *ProtoMeta
 }
@@ -55,7 +55,7 @@ func (p *Parser) ParseProto() (*Proto, error) {
 }
 
 // protoBody = { import | package | option | topLevelDef | emptyStatement }
-// topLevelDef = message | enum | service
+// topLevelDef = message | enum | service | extend
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file
 func (p *Parser) parseProtoBody() ([]Visitee, error) {
 	var protoBody []Visitee
@@ -124,6 +124,13 @@ func (p *Parser) parseProtoBody() ([]Visitee, error) {
 			}
 			service.Comments = comments
 			stmt = service
+		case scanner.TEXTEND:
+			extend, err := p.ParseExtend()
+			if err != nil {
+				return nil, err
+			}
+			extend.Comments = comments
+			stmt = extend
 		default:
 			err := p.lex.ReadEmptyStatement()
 			if err != nil {

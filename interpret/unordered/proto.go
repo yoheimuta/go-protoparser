@@ -12,6 +12,7 @@ type ProtoBody struct {
 	Packages        []*parser.Package
 	Options         []*parser.Option
 	Messages        []*Message
+	Extends         []*Extend
 	Enums           []*Enum
 	Services        []*Service
 	EmptyStatements []*parser.EmptyStatement
@@ -47,6 +48,7 @@ func interpretProtoBody(src []parser.Visitee) (
 	var packages []*parser.Package
 	var options []*parser.Option
 	var messages []*Message
+	var extends []*Extend
 	var enums []*Enum
 	var services []*Service
 	var emptyStatements []*parser.EmptyStatement
@@ -64,6 +66,12 @@ func interpretProtoBody(src []parser.Visitee) (
 				return nil, err
 			}
 			messages = append(messages, message)
+		case *parser.Extend:
+			extend, err := InterpretExtend(t)
+			if err != nil {
+				return nil, err
+			}
+			extends = append(extends, extend)
 		case *parser.Enum:
 			enum, err := InterpretEnum(t)
 			if err != nil {
@@ -87,6 +95,7 @@ func interpretProtoBody(src []parser.Visitee) (
 		Packages:        packages,
 		Options:         options,
 		Messages:        messages,
+		Extends:         extends,
 		Enums:           enums,
 		Services:        services,
 		EmptyStatements: emptyStatements,
