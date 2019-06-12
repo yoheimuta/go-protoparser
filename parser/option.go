@@ -59,10 +59,7 @@ func (p *Parser) ParseOption() (*Option, error) {
 	}
 
 	var constant string
-	p.lex.Next()
-	token := p.lex.Token
-	p.lex.UnNext()
-	switch token {
+	switch p.lex.Peek() {
 	// Cloud Endpoints requires this exception.
 	case scanner.TLEFTCURLY:
 		if !p.permissive {

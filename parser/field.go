@@ -161,10 +161,7 @@ func (p *Parser) parseFieldOption() (*FieldOption, error) {
 	}
 
 	var constant string
-	p.lex.Next()
-	token := p.lex.Token
-	p.lex.UnNext()
-	switch token {
+	switch p.lex.Peek() {
 	// go-proto-validators requires this exception.
 	case scanner.TLEFTCURLY:
 		if !p.permissive {
