@@ -20,7 +20,7 @@ func TestInterpretEnum(t *testing.T) {
 			name: "interpreting a nil",
 		},
 		{
-			name: "interpreting an excerpt from the official reference with comments",
+			name: "interpreting an excerpt from the official reference with comments and reserved",
 			inputEnum: &parser.Enum{
 				EnumName: "EnumAllowingAlias",
 				EnumBody: []parser.Visitee{
@@ -44,6 +44,12 @@ func TestInterpretEnum(t *testing.T) {
 								OptionName: "(custom_option)",
 								Constant:   `"hello world"`,
 							},
+						},
+					},
+					&parser.Reserved{
+						FieldNames: []string{
+							`"FOO"`,
+							`"BAR"`,
 						},
 					},
 				},
@@ -106,6 +112,14 @@ func TestInterpretEnum(t *testing.T) {
 									OptionName: "(custom_option)",
 									Constant:   `"hello world"`,
 								},
+							},
+						},
+					},
+					Reserveds: []*parser.Reserved{
+						{
+							FieldNames: []string{
+								`"FOO"`,
+								`"BAR"`,
 							},
 						},
 					},

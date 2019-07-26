@@ -400,6 +400,69 @@ func TestParser_ParseEnum(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "parsing an excerpt containing reserved, from the official reference",
+			input: `enum Foo {
+  reserved 2, 15, 9 to 11, 40 to max;
+  reserved "FOO", "BAR";
+}
+`,
+			wantEnum: &parser.Enum{
+				EnumName: "Foo",
+				EnumBody: []parser.Visitee{
+					&parser.Reserved{
+						Ranges: []*parser.Range{
+							{
+								Begin: "2",
+							},
+							{
+								Begin: "15",
+							},
+							{
+								Begin: "9",
+								End:   "11",
+							},
+							{
+								Begin: "40",
+								End:   "max",
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 13,
+								Line:   2,
+								Column: 3,
+							},
+						},
+					},
+					&parser.Reserved{
+						FieldNames: []string{
+							`"FOO"`,
+							`"BAR"`,
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 51,
+								Line:   3,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 74,
+						Line:   4,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
