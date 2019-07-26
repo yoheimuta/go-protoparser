@@ -63,7 +63,7 @@ func (f *EnumField) Accept(v Visitor) {
 type Enum struct {
 	EnumName string
 	// EnumBody can have options and enum fields.
-	// The element of this is the union of an option, enumField and emptyStatement.
+	// The element of this is the union of an option, enumField, reserved, and emptyStatement.
 	EnumBody []Visitee
 
 	// Comments are the optional ones placed at the beginning.
@@ -178,6 +178,7 @@ func (p *Parser) parseEnumBody() (
 			option.Comments = comments
 			stmt = option
 		case scanner.TRESERVED:
+			// See https://developers.google.com/protocol-buffers/docs/proto3#enum_reserved
 			reserved, err := p.ParseReserved()
 			if err != nil {
 				return nil, nil, scanner.Position{}, err

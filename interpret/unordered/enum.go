@@ -11,6 +11,7 @@ import (
 type EnumBody struct {
 	Options         []*parser.Option
 	EnumFields      []*parser.EnumField
+	Reserveds       []*parser.Reserved
 	EmptyStatements []*parser.EmptyStatement
 }
 
@@ -55,6 +56,7 @@ func interpretEnumBody(src []parser.Visitee) (
 ) {
 	var options []*parser.Option
 	var enumFields []*parser.EnumField
+	var reserveds []*parser.Reserved
 	var emptyStatements []*parser.EmptyStatement
 	for _, s := range src {
 		switch t := s.(type) {
@@ -62,6 +64,8 @@ func interpretEnumBody(src []parser.Visitee) (
 			options = append(options, t)
 		case *parser.EnumField:
 			enumFields = append(enumFields, t)
+		case *parser.Reserved:
+			reserveds = append(reserveds, t)
 		case *parser.EmptyStatement:
 			emptyStatements = append(emptyStatements, t)
 		default:
@@ -71,6 +75,7 @@ func interpretEnumBody(src []parser.Visitee) (
 	return &EnumBody{
 		Options:         options,
 		EnumFields:      enumFields,
+		Reserveds:       reserveds,
 		EmptyStatements: emptyStatements,
 	}, nil
 }
