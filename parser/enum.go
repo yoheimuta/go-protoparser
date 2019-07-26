@@ -177,6 +177,13 @@ func (p *Parser) parseEnumBody() (
 			}
 			option.Comments = comments
 			stmt = option
+		case scanner.TRESERVED:
+			reserved, err := p.ParseReserved()
+			if err != nil {
+				return nil, nil, scanner.Position{}, err
+			}
+			reserved.Comments = comments
+			stmt = reserved
 		default:
 			enumField, enumFieldErr := p.parseEnumField()
 			if enumFieldErr == nil {
