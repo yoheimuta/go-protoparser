@@ -36,8 +36,21 @@ func (s *Syntax) Accept(v Visitor) {
 	}
 }
 
+// Version returns the version number.
+func (s *Syntax) Version() int {
+	switch s.ProtobufVersion {
+	case "proto3":
+		return 3
+	case "proto2":
+		return 2
+	default:
+		return 0
+	}
+}
+
 // ParseSyntax parses the syntax.
 //  syntax = "syntax" "=" quote "proto3" quote ";"
+//  syntax = "syntax" "=" quote "proto2" quote ";"
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#syntax
 func (p *Parser) ParseSyntax() (*Syntax, error) {
@@ -58,9 +71,10 @@ func (p *Parser) ParseSyntax() (*Syntax, error) {
 	}
 
 	p.lex.Next()
-	if p.lex.Text != "proto3" {
-		return nil, p.unexpected("proto3")
+	if p.lex.Text != "proto3" && p.lex.Text != "proto2" {
+		return nil, p.unexpected("proto3 or proto2")
 	}
+	version := p.lex.Text
 
 	p.lex.Next()
 	if p.lex.Token != scanner.TQUOTE {
@@ -73,7 +87,7 @@ func (p *Parser) ParseSyntax() (*Syntax, error) {
 	}
 
 	return &Syntax{
-		ProtobufVersion: "proto3",
+		ProtobufVersion: version,
 		Meta:            meta.NewMeta(startPos),
 	}, nil
 }

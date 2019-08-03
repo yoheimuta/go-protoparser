@@ -97,6 +97,18 @@ func (s *Scanner) Scan() (Token, string, Position, error) {
 	return s.scan()
 }
 
+// LastScanRaw returns the deep-copied lastScanRaw.
+func (s *Scanner) LastScanRaw() []rune {
+	r := make([]rune, len(s.lastScanRaw))
+	copy(r, s.lastScanRaw)
+	return r
+}
+
+// SetLastScanRaw sets lastScanRaw to the given raw.
+func (s *Scanner) SetLastScanRaw(raw []rune) {
+	s.lastScanRaw = raw
+}
+
 func (s *Scanner) scan() (Token, string, Position, error) {
 	ch := s.peek()
 

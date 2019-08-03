@@ -154,6 +154,46 @@ func TestParser_ParseField(t *testing.T) {
 				},
 			},
 		},
+		{
+			name:  "parsing an excerpt from the official reference(proto2)",
+			input: `optional foo.bar nested_message = 2;`,
+			wantField: &parser.Field{
+				IsOptional:  true,
+				Type:        "foo.bar",
+				FieldName:   "nested_message",
+				FieldNumber: "2",
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+				},
+			},
+		},
+		{
+			name:  "parsing a required label(proto2)",
+			input: `required int32 samples = 4 [packed=true];`,
+			wantField: &parser.Field{
+				IsRequired:  true,
+				Type:        "int32",
+				FieldName:   "samples",
+				FieldNumber: "4",
+				FieldOptions: []*parser.FieldOption{
+					{
+						OptionName: "packed",
+						Constant:   "true",
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

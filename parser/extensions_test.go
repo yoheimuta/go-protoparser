@@ -10,22 +10,37 @@ import (
 	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
-func TestParser_ParseSyntax(t *testing.T) {
+func TestParser_ParseExtensions(t *testing.T) {
 	tests := []struct {
-		name       string
-		input      string
-		wantSyntax *parser.Syntax
-		wantErr    bool
+		name           string
+		input          string
+		wantExtensions *parser.Extensions
+		wantErr        bool
 	}{
 		{
 			name:    "parsing an empty",
 			wantErr: true,
 		},
 		{
+			name:    "parsing an invalid; without to",
+			input:   "extensions 2, 15, 9 11;",
+			wantErr: true,
+		},
+		{
+			name:    "parsing an invalid; including both ranges and fieldNames",
+			input:   `extensions 2, "foo", 9 to 11;`,
+			wantErr: true,
+		},
+		{
 			name:  "parsing an excerpt from the official reference",
-			input: `syntax = "proto3";`,
-			wantSyntax: &parser.Syntax{
-				ProtobufVersion: "proto3",
+			input: `extensions 100 to 199;`,
+			wantExtensions: &parser.Extensions{
+				Ranges: []*parser.Range{
+					{
+						Begin: "100",
+						End:   "199",
+					},
+				},
 				Meta: meta.Meta{
 					Pos: meta.Position{
 						Offset: 0,
@@ -36,10 +51,18 @@ func TestParser_ParseSyntax(t *testing.T) {
 			},
 		},
 		{
-			name:  "parsing an excerpt from the official reference(proto2)",
-			input: `syntax = "proto2";`,
-			wantSyntax: &parser.Syntax{
-				ProtobufVersion: "proto2",
+			name:  "parsing another excerpt from the official reference",
+			input: `extensions 4, 20 to max;`,
+			wantExtensions: &parser.Extensions{
+				Ranges: []*parser.Range{
+					{
+						Begin: "4",
+					},
+					{
+						Begin: "20",
+						End:   "max",
+					},
+				},
 				Meta: meta.Meta{
 					Pos: meta.Position{
 						Offset: 0,
@@ -55,7 +78,7 @@ func TestParser_ParseSyntax(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			p := parser.NewParser(lexer.NewLexer(strings.NewReader(test.input)))
-			got, err := p.ParseSyntax()
+			got, err := p.ParseExtensions()
 			switch {
 			case test.wantErr:
 				if err == nil {
@@ -67,8 +90,8 @@ func TestParser_ParseSyntax(t *testing.T) {
 				return
 			}
 
-			if !reflect.DeepEqual(got, test.wantSyntax) {
-				t.Errorf("got %v, but want %v", got, test.wantSyntax)
+			if !reflect.DeepEqual(got, test.wantExtensions) {
+				t.Errorf("got %v, but want %v", got, test.wantExtensions)
 			}
 
 			if !p.IsEOF() {

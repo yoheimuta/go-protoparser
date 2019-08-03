@@ -1149,6 +1149,337 @@ extend Foo {
 				Meta: &parser.ProtoMeta{},
 			},
 		},
+		{
+			name: "parsing an excerpt from the official reference(proto2)",
+			input: `
+syntax = "proto2";
+import public "other.proto";
+option java_package = "com.example.foo";
+enum EnumAllowingAlias {
+  option allow_alias = true;
+  UNKNOWN = 0;
+  STARTED = 1;
+  RUNNING = 2 [(custom_option) = "hello world"];
+}
+message outer {
+  option (my_option).a = true;
+  message inner {   // Level 2
+    required int64 ival = 1;
+  }
+  repeated inner inner_message = 2;
+  optional EnumAllowingAlias enum_field = 3;
+  map<int32, string> my_map = 4;
+  extensions 20 to 30;
+}
+message foo {
+  optional group GroupMessage = 1 {
+    optional int64 a = 1;
+  }
+}`,
+			filename: "official.proto",
+			wantProto: &parser.Proto{
+				Syntax: &parser.Syntax{
+					ProtobufVersion: "proto2",
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Filename: "official.proto",
+							Offset:   1,
+							Line:     2,
+							Column:   1,
+						},
+					},
+				},
+				ProtoBody: []parser.Visitee{
+					&parser.Import{
+						Modifier: parser.ImportModifierPublic,
+						Location: `"other.proto"`,
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "official.proto",
+								Offset:   20,
+								Line:     3,
+								Column:   1,
+							},
+						},
+					},
+					&parser.Option{
+						OptionName: "java_package",
+						Constant:   `"com.example.foo"`,
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "official.proto",
+								Offset:   49,
+								Line:     4,
+								Column:   1,
+							},
+						},
+					},
+					&parser.Enum{
+						EnumName: "EnumAllowingAlias",
+						EnumBody: []parser.Visitee{
+							&parser.Option{
+								OptionName: "allow_alias",
+								Constant:   "true",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "official.proto",
+										Offset:   117,
+										Line:     6,
+										Column:   3,
+									},
+								},
+							},
+							&parser.EnumField{
+								Ident:  "UNKNOWN",
+								Number: "0",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "official.proto",
+										Offset:   146,
+										Line:     7,
+										Column:   3,
+									},
+								},
+							},
+							&parser.EnumField{
+								Ident:  "STARTED",
+								Number: "1",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "official.proto",
+										Offset:   161,
+										Line:     8,
+										Column:   3,
+									},
+								},
+							},
+							&parser.EnumField{
+								Ident:  "RUNNING",
+								Number: "2",
+								EnumValueOptions: []*parser.EnumValueOption{
+									{
+										OptionName: "(custom_option)",
+										Constant:   `"hello world"`,
+									},
+								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "official.proto",
+										Offset:   176,
+										Line:     9,
+										Column:   3,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "official.proto",
+								Offset:   90,
+								Line:     5,
+								Column:   1,
+							},
+							LastPos: meta.Position{
+								Filename: "official.proto",
+								Offset:   223,
+								Line:     10,
+								Column:   1,
+							},
+						},
+					},
+					&parser.Message{
+						MessageName: "outer",
+						MessageBody: []parser.Visitee{
+							&parser.Option{
+								OptionName: "(my_option).a",
+								Constant:   "true",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "official.proto",
+										Offset:   243,
+										Line:     12,
+										Column:   3,
+									},
+								},
+							},
+							&parser.Message{
+								MessageName: "inner",
+								MessageBody: []parser.Visitee{
+									&parser.Field{
+										IsRequired:  true,
+										Type:        "int64",
+										FieldName:   "ival",
+										FieldNumber: "1",
+										Meta: meta.Meta{
+											Pos: meta.Position{
+												Filename: "official.proto",
+												Offset:   307,
+												Line:     14,
+												Column:   5,
+											},
+										},
+									},
+								},
+								InlineCommentBehindLeftCurly: &parser.Comment{
+									Raw: `// Level 2`,
+									Meta: meta.Meta{
+										Pos: meta.Position{
+											Filename: "official.proto",
+											Offset:   292,
+											Line:     13,
+											Column:   21,
+										},
+									},
+								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "official.proto",
+										Offset:   274,
+										Line:     13,
+										Column:   3,
+									},
+									LastPos: meta.Position{
+										Filename: "official.proto",
+										Offset:   334,
+										Line:     15,
+										Column:   3,
+									},
+								},
+							},
+							&parser.Field{
+								IsRepeated:  true,
+								Type:        "inner",
+								FieldName:   "inner_message",
+								FieldNumber: "2",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "official.proto",
+										Offset:   338,
+										Line:     16,
+										Column:   3,
+									},
+								},
+							},
+							&parser.Field{
+								IsOptional:  true,
+								Type:        "EnumAllowingAlias",
+								FieldName:   "enum_field",
+								FieldNumber: "3",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "official.proto",
+										Offset:   374,
+										Line:     17,
+										Column:   3,
+									},
+								},
+							},
+							&parser.MapField{
+								KeyType:     "int32",
+								Type:        "string",
+								MapName:     "my_map",
+								FieldNumber: "4",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "official.proto",
+										Offset:   419,
+										Line:     18,
+										Column:   3,
+									},
+								},
+							},
+							&parser.Extensions{
+								Ranges: []*parser.Range{
+									{
+										Begin: "20",
+										End:   "30",
+									},
+								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "official.proto",
+										Offset:   452,
+										Line:     19,
+										Column:   3,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "official.proto",
+								Offset:   225,
+								Line:     11,
+								Column:   1,
+							},
+							LastPos: meta.Position{
+								Filename: "official.proto",
+								Offset:   473,
+								Line:     20,
+								Column:   1,
+							},
+						},
+					},
+					&parser.Message{
+						MessageName: "foo",
+						MessageBody: []parser.Visitee{
+							&parser.GroupField{
+								IsOptional:  true,
+								GroupName:   "GroupMessage",
+								FieldNumber: "1",
+								MessageBody: []parser.Visitee{
+									&parser.Field{
+										IsOptional:  true,
+										Type:        "int64",
+										FieldName:   "a",
+										FieldNumber: "1",
+										Meta: meta.Meta{
+											Pos: meta.Position{
+												Filename: "official.proto",
+												Offset:   529,
+												Line:     23,
+												Column:   5,
+											},
+										},
+									},
+								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "official.proto",
+										Offset:   491,
+										Line:     22,
+										Column:   3,
+									},
+									LastPos: meta.Position{
+										Filename: "official.proto",
+										Offset:   553,
+										Line:     24,
+										Column:   3,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "official.proto",
+								Offset:   475,
+								Line:     21,
+								Column:   1,
+							},
+							LastPos: meta.Position{
+								Filename: "official.proto",
+								Offset:   555,
+								Line:     25,
+								Column:   1,
+							},
+						},
+					},
+				},
+				Meta: &parser.ProtoMeta{
+					Filename: "official.proto",
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

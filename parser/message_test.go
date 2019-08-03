@@ -813,6 +813,114 @@ message Outer {
 				},
 			},
 		},
+		{
+			name: "parsing an excerpt from the official reference(proto2)",
+			input: `
+message Outer {
+  option (my_option).a = true;
+  message Inner {   // Level 2
+    required int64 ival = 1;
+  }
+  map<int32, string> my_map = 2;
+  extensions 20 to 30;
+}`,
+			wantMessage: &parser.Message{
+				MessageName: "Outer",
+				MessageBody: []parser.Visitee{
+					&parser.Option{
+						OptionName: "(my_option).a",
+						Constant:   "true",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 19,
+								Line:   3,
+								Column: 3,
+							},
+						},
+					},
+					&parser.Message{
+						MessageName: "Inner",
+						MessageBody: []parser.Visitee{
+							&parser.Field{
+								IsRequired:  true,
+								Type:        "int64",
+								FieldName:   "ival",
+								FieldNumber: "1",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 83,
+										Line:   5,
+										Column: 5,
+									},
+								},
+							},
+						},
+						InlineCommentBehindLeftCurly: &parser.Comment{
+							Raw: "// Level 2",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 68,
+									Line:   4,
+									Column: 21,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 50,
+								Line:   4,
+								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 110,
+								Line:   6,
+								Column: 3,
+							},
+						},
+					},
+					&parser.MapField{
+						KeyType:     "int32",
+						Type:        "string",
+						MapName:     "my_map",
+						FieldNumber: "2",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 114,
+								Line:   7,
+								Column: 3,
+							},
+						},
+					},
+					&parser.Extensions{
+						Ranges: []*parser.Range{
+							{
+								Begin: "20",
+								End:   "30",
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 147,
+								Line:   8,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 168,
+						Line:   9,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
