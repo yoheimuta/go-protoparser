@@ -36,7 +36,7 @@ func (e *Extensions) Accept(v Visitor) {
 	}
 }
 
-// ParseExtensions parses the reserved.
+// ParseExtensions parses the extensions.
 //  extensions = "extensions" ranges ";"
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto2-spec#extensions
