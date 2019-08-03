@@ -14,6 +14,8 @@ type FieldOption struct {
 // Field is a normal field that is the basic element of a protocol buffer message.
 type Field struct {
 	IsRepeated   bool
+	IsRequired   bool // proto2 only
+	IsOptional   bool // proto2 only
 	Type         string
 	FieldName    string
 	FieldNumber  string
@@ -48,13 +50,22 @@ func (f *Field) Accept(v Visitor) {
 
 // ParseField parses the field.
 //  field = [ "repeated" ] type fieldName "=" fieldNumber [ "[" fieldOptions "]" ] ";"
+//  field = [ "required" | "optional" | "repeated" ] type fieldName "=" fieldNumber [ "[" fieldOptions "]" ] ";"
 //
-// See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#field
+// See
+//  https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#normal_field
+//  https://developers.google.com/protocol-buffers/docs/reference/proto2-spec#normal_field
 func (p *Parser) ParseField() (*Field, error) {
 	var isRepeated bool
+	var isRequired bool
+	var isOptional bool
 	p.lex.NextKeyword()
 	if p.lex.Token == scanner.TREPEATED {
 		isRepeated = true
+	} else if p.lex.Token == scanner.TREQUIRED {
+		isRequired = true
+	} else if p.lex.Token == scanner.TOPTIONAL {
+		isOptional = true
 	} else {
 		p.lex.UnNext()
 	}
@@ -93,6 +104,8 @@ func (p *Parser) ParseField() (*Field, error) {
 
 	return &Field{
 		IsRepeated:   isRepeated,
+		IsRequired:   isRequired,
+		IsOptional:   isOptional,
 		Type:         typeValue,
 		FieldName:    fieldName,
 		FieldNumber:  fieldNumber,

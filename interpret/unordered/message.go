@@ -15,6 +15,7 @@ type MessageBody struct {
 	Options  []*parser.Option
 	Oneofs   []*parser.Oneof
 	Maps     []*parser.MapField
+	Groups   []*parser.GroupField
 	Reserves []*parser.Reserved
 	Extends  []*parser.Extend
 }
@@ -64,6 +65,7 @@ func interpretMessageBody(src []parser.Visitee) (
 	var options []*parser.Option
 	var oneofs []*parser.Oneof
 	var maps []*parser.MapField
+	var groups []*parser.GroupField
 	var reserves []*parser.Reserved
 	var extends []*parser.Extend
 	for _, s := range src {
@@ -88,6 +90,8 @@ func interpretMessageBody(src []parser.Visitee) (
 			oneofs = append(oneofs, t)
 		case *parser.MapField:
 			maps = append(maps, t)
+		case *parser.GroupField:
+			groups = append(groups, t)
 		case *parser.Reserved:
 			reserves = append(reserves, t)
 		case *parser.Extend:
@@ -103,6 +107,7 @@ func interpretMessageBody(src []parser.Visitee) (
 		Options:  options,
 		Oneofs:   oneofs,
 		Maps:     maps,
+		Groups:   groups,
 		Reserves: reserves,
 		Extends:  extends,
 	}, nil

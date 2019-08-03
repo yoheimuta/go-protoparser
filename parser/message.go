@@ -24,7 +24,7 @@ func (e *parseMessageBodyStatementErr) Error() string {
 type Message struct {
 	MessageName string
 	// MessageBody can have fields, nested enum definitions, nested message definitions,
-	// options, oneofs, map fields, extends, and reserved statements.
+	// options, oneofs, map fields, group fields(proto2 only), extends, reserved, and extensions(proto2 only) statements.
 	MessageBody []Visitee
 
 	// Comments are the optional ones placed at the beginning.
@@ -188,14 +188,35 @@ func (p *Parser) parseMessageBody() (
 			}
 			reserved.Comments = comments
 			stmt = reserved
-		default:
-			field, fieldErr := p.ParseField()
-			if fieldErr == nil {
-				field.Comments = comments
-				stmt = field
-				break
+		case scanner.TEXTENSIONS:
+			extensions, err := p.ParseExtensions()
+			if err != nil {
+				return nil, nil, scanner.Position{}, err
 			}
-			p.lex.UnNext()
+			extensions.Comments = comments
+			stmt = extensions
+		default:
+			var ferr error
+			isGroup := p.peekIsGroup()
+			if isGroup {
+				groupField, groupErr := p.ParseGroupField()
+				if groupErr == nil {
+					groupField.Comments = comments
+					stmt = groupField
+					break
+				}
+				ferr = groupErr
+				p.lex.UnNext()
+			} else {
+				field, fieldErr := p.ParseField()
+				if fieldErr == nil {
+					field.Comments = comments
+					stmt = field
+					break
+				}
+				ferr = fieldErr
+				p.lex.UnNext()
+			}
 
 			emptyErr := p.lex.ReadEmptyStatement()
 			if emptyErr == nil {
@@ -204,7 +225,7 @@ func (p *Parser) parseMessageBody() (
 			}
 
 			return nil, nil, scanner.Position{}, &parseMessageBodyStatementErr{
-				parseFieldErr:          fieldErr,
+				parseFieldErr:          ferr,
 				parseEmptyStatementErr: emptyErr,
 			}
 		}

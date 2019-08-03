@@ -40,8 +40,18 @@ func (p *protoTestVisitor) VisitExtend(e *parser.Extend) bool {
 	return true
 }
 
+func (p *protoTestVisitor) VisitExtensions(r *parser.Extensions) bool {
+	p.buffers = append(p.buffers, "Extensions")
+	return true
+}
+
 func (p *protoTestVisitor) VisitField(f *parser.Field) bool {
 	p.buffers = append(p.buffers, "Field: "+f.FieldName)
+	return true
+}
+
+func (p *protoTestVisitor) VisitGroupField(f *parser.GroupField) bool {
+	p.buffers = append(p.buffers, "GroupField: "+f.GroupName)
 	return true
 }
 

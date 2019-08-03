@@ -17,6 +17,9 @@ type Lexer struct {
 	// Text is the lexical value.
 	Text string
 
+	// RawText is the scanned raw text.
+	RawText []rune
+
 	// Pos is the source position.
 	Pos scanner.Position
 
@@ -81,6 +84,7 @@ func (lex *Lexer) Next() {
 
 	var err error
 	lex.Token, lex.Text, lex.Pos, err = lex.scanner.Scan()
+	lex.RawText = lex.scanner.LastScanRaw()
 	if err != nil {
 		lex.scanErr = err
 		lex.Error(lex, err)
@@ -146,6 +150,13 @@ func (lex *Lexer) Peek() scanner.Token {
 
 // UnNext put the latest text back to the read buffer.
 func (lex *Lexer) UnNext() {
+	lex.scanner.UnScan()
+	lex.Token = scanner.TILLEGAL
+}
+
+// UnNextTo put the given latest text back to the read buffer.
+func (lex *Lexer) UnNextTo(lastScan []rune) {
+	lex.scanner.SetLastScanRaw(lastScan)
 	lex.scanner.UnScan()
 	lex.Token = scanner.TILLEGAL
 }
