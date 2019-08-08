@@ -30,7 +30,7 @@ func TestScanner_Scan(t *testing.T) {
 		},
 		{
 			name:  "scan idents",
-			input: "service s1928 s_a 1ac-",
+			input: "service s1928 s_a 1ac- _s_a",
 			wants: []want{
 				{
 					token: scanner.TIDENT,
@@ -84,6 +84,15 @@ func TestScanner_Scan(t *testing.T) {
 						Offset: 21,
 						Line:   1,
 						Column: 22,
+					},
+				},
+				{
+					token: scanner.TIDENT,
+					text:  "_s_a",
+					pos: scanner.Position{
+						Offset: 23,
+						Line:   1,
+						Column: 24,
 					},
 				},
 			},

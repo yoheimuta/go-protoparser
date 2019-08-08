@@ -120,7 +120,7 @@ func (s *Scanner) scan() (Token, string, Position, error) {
 		return s.scan()
 	case s.isEOF():
 		return TEOF, "", startPos, nil
-	case isLetter(ch):
+	case isLetter(ch), ch == '_':
 		ident := s.scanIdent()
 		if s.Mode&ScanBoolLit != 0 && isBoolLit(ident) {
 			return TBOOLLIT, ident, startPos, nil
