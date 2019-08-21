@@ -103,6 +103,30 @@ repeated group Result = 1 {
 				},
 			},
 		},
+		{
+			name: "parsing a block followed by semicolon",
+			input: `
+group Result = 1 {
+};
+`,
+			permissive: true,
+			wantGroupField: &parser.GroupField{
+				GroupName:   "Result",
+				FieldNumber: "1",
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 20,
+						Line:   3,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

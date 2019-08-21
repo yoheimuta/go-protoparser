@@ -160,3 +160,12 @@ func (lex *Lexer) UnNextTo(lastScan []rune) {
 	lex.scanner.UnScan()
 	lex.Token = scanner.TILLEGAL
 }
+
+// ConsumeToken consumes a given token if it exists. Otherwise, it consumes no token.
+func (lex *Lexer) ConsumeToken(t scanner.Token) {
+	lex.Next()
+	if lex.Token == t {
+		return
+	}
+	lex.UnNext()
+}

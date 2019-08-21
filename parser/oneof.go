@@ -125,6 +125,11 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 		}
 	}
 
+	if p.permissive {
+		// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
+		p.lex.ConsumeToken(scanner.TSEMICOLON)
+	}
+
 	return &Oneof{
 		OneofFields:                  oneofFields,
 		OneofName:                    oneofName,

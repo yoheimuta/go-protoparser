@@ -17,6 +17,7 @@ func TestParser_ParseExtend(t *testing.T) {
 		name                       string
 		input                      string
 		inputBodyIncludingComments bool
+		permissive                 bool
 		wantExtend                 *parser.Extend
 		wantErr                    bool
 	}{
@@ -110,6 +111,29 @@ extend google.protobuf.MethodOptions {
 				},
 			},
 		},
+		{
+			name: "parsing a block followed by semicolon",
+			input: `
+extend Foo {
+};
+`,
+			permissive: true,
+			wantExtend: &parser.Extend{
+				MessageType: "Foo",
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 14,
+						Line:   3,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
@@ -118,6 +142,7 @@ extend google.protobuf.MethodOptions {
 			p := parser.NewParser(
 				lexer.NewLexer(strings.NewReader(test.input)),
 				parser.WithBodyIncludingComments(test.inputBodyIncludingComments),
+				parser.WithPermissive(test.permissive),
 			)
 			got, err := p.ParseExtend()
 			switch {

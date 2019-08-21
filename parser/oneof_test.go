@@ -13,10 +13,11 @@ import (
 
 func TestParser_ParseOneof(t *testing.T) {
 	tests := []struct {
-		name      string
-		input     string
-		wantOneof *parser.Oneof
-		wantErr   bool
+		name       string
+		input      string
+		permissive bool
+		wantOneof  *parser.Oneof
+		wantErr    bool
 	}{
 		{
 			name:    "parsing an empty",
@@ -292,12 +293,52 @@ func TestParser_ParseOneof(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "parsing a block followed by semicolon",
+			input: `oneof foo {
+    string name = 4;
+};
+`,
+			permissive: true,
+			wantOneof: &parser.Oneof{
+				OneofFields: []*parser.OneofField{
+					{
+						Type:        "string",
+						FieldName:   "name",
+						FieldNumber: "4",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 16,
+								Line:   2,
+								Column: 5,
+							},
+						},
+					},
+				},
+				OneofName: "foo",
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 34,
+						Line:   3,
+						Column: 2,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			p := parser.NewParser(lexer.NewLexer(strings.NewReader(test.input)))
+			p := parser.NewParser(
+				lexer.NewLexer(strings.NewReader(test.input)),
+				parser.WithPermissive(test.permissive),
+			)
 			got, err := p.ParseOneof()
 			switch {
 			case test.wantErr:

@@ -16,6 +16,7 @@ func TestParser_ParseEnum(t *testing.T) {
 		name                       string
 		input                      string
 		inputBodyIncludingComments bool
+		permissive                 bool
 		wantEnum                   *parser.Enum
 		wantErr                    bool
 	}{
@@ -463,6 +464,28 @@ func TestParser_ParseEnum(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "parsing a block followed by semicolon",
+			input: `enum EnumAllowingAlias {
+};
+`,
+			permissive: true,
+			wantEnum: &parser.Enum{
+				EnumName: "EnumAllowingAlias",
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 25,
+						Line:   2,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
@@ -471,6 +494,7 @@ func TestParser_ParseEnum(t *testing.T) {
 			p := parser.NewParser(
 				lexer.NewLexer(strings.NewReader(test.input)),
 				parser.WithBodyIncludingComments(test.inputBodyIncludingComments),
+				parser.WithPermissive(test.permissive),
 			)
 			got, err := p.ParseEnum()
 			switch {
