@@ -84,6 +84,11 @@ func (p *Parser) ParseMessage() (*Message, error) {
 		return nil, err
 	}
 
+	if p.permissive {
+		// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
+		p.lex.ConsumeToken(scanner.TSEMICOLON)
+	}
+
 	return &Message{
 		MessageName:                  messageName,
 		MessageBody:                  messageBody,

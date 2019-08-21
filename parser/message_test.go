@@ -16,6 +16,7 @@ func TestParser_ParseMessage(t *testing.T) {
 		name                       string
 		input                      string
 		inputBodyIncludingComments bool
+		permissive                 bool
 		wantMessage                *parser.Message
 		wantErr                    bool
 	}{
@@ -921,6 +922,47 @@ message Outer {
 				},
 			},
 		},
+		{
+			name: "parsing a block followed by semicolon",
+			input: `
+message Outer {
+  message Inner {};
+};
+`,
+			permissive: true,
+			wantMessage: &parser.Message{
+				MessageName: "Outer",
+				MessageBody: []parser.Visitee{
+					&parser.Message{
+						MessageName: "Inner",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 19,
+								Line:   3,
+								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 34,
+								Line:   3,
+								Column: 18,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 37,
+						Line:   4,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
@@ -929,6 +971,7 @@ message Outer {
 			p := parser.NewParser(
 				lexer.NewLexer(strings.NewReader(test.input)),
 				parser.WithBodyIncludingComments(test.inputBodyIncludingComments),
+				parser.WithPermissive(test.permissive),
 			)
 			got, err := p.ParseMessage()
 			switch {
