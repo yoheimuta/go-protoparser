@@ -595,11 +595,50 @@ service SearchService {
 		{
 			name: "parsing a block followed by semicolon",
 			input: `
-service SearchService {};
+service SearchService {
+  rpc Search (SearchRequest) returns (SearchResponse) {};
+};
 `,
 			permissive: true,
 			wantService: &parser.Service{
 				ServiceName: "SearchService",
+				ServiceBody: []parser.Visitee{
+					&parser.RPC{
+						RPCName: "Search",
+						RPCRequest: &parser.RPCRequest{
+							MessageType: "SearchRequest",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 38,
+									Line:   3,
+									Column: 14,
+								},
+							},
+						},
+						RPCResponse: &parser.RPCResponse{
+							MessageType: "SearchResponse",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 62,
+									Line:   3,
+									Column: 38,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 27,
+								Line:   3,
+								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 81,
+								Line:   3,
+								Column: 57,
+							},
+						},
+					},
+				},
 				Meta: meta.Meta{
 					Pos: meta.Position{
 						Offset: 1,
@@ -607,9 +646,9 @@ service SearchService {};
 						Column: 1,
 					},
 					LastPos: meta.Position{
-						Offset: 24,
-						Line:   2,
-						Column: 24,
+						Offset: 83,
+						Line:   4,
+						Column: 1,
 					},
 				},
 			},
