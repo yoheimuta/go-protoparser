@@ -120,9 +120,9 @@ group Result = 1 {
 						Column: 1,
 					},
 					LastPos: meta.Position{
-						Offset: 20,
+						Offset: 21,
 						Line:   3,
-						Column: 1,
+						Column: 2,
 					},
 				},
 			},

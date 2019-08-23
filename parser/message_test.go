@@ -942,9 +942,9 @@ message Outer {
 								Column: 3,
 							},
 							LastPos: meta.Position{
-								Offset: 34,
+								Offset: 35,
 								Line:   3,
-								Column: 18,
+								Column: 19,
 							},
 						},
 					},
@@ -956,9 +956,9 @@ message Outer {
 						Column: 1,
 					},
 					LastPos: meta.Position{
-						Offset: 37,
+						Offset: 38,
 						Line:   4,
-						Column: 1,
+						Column: 2,
 					},
 				},
 			},

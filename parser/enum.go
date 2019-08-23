@@ -123,11 +123,6 @@ func (p *Parser) ParseEnum() (*Enum, error) {
 		return nil, err
 	}
 
-	if p.permissive {
-		// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
-		p.lex.ConsumeToken(scanner.TSEMICOLON)
-	}
-
 	return &Enum{
 		EnumName:                     enumName,
 		EnumBody:                     enumBody,
@@ -167,14 +162,18 @@ func (p *Parser) parseEnumBody() (
 
 		switch token {
 		case scanner.TRIGHTCURLY:
-			lastPos := p.lex.Pos
 			if p.bodyIncludingComments {
 				for _, comment := range comments {
 					stmts = append(stmts, Visitee(comment))
 				}
 			}
 			p.lex.Next()
-			return stmts, inlineLeftCurly, lastPos, nil
+
+			if p.permissive {
+				// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
+				p.lex.ConsumeToken(scanner.TSEMICOLON)
+			}
+			return stmts, inlineLeftCurly, p.lex.Pos, nil
 		case scanner.TOPTION:
 			option, err := p.ParseOption()
 			if err != nil {
