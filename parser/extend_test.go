@@ -127,9 +127,9 @@ extend Foo {
 						Column: 1,
 					},
 					LastPos: meta.Position{
-						Offset: 14,
+						Offset: 15,
 						Line:   3,
-						Column: 1,
+						Column: 2,
 					},
 				},
 			},

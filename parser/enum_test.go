@@ -479,9 +479,9 @@ func TestParser_ParseEnum(t *testing.T) {
 						Column: 1,
 					},
 					LastPos: meta.Position{
-						Offset: 25,
+						Offset: 26,
 						Line:   2,
-						Column: 1,
+						Column: 2,
 					},
 				},
 			},

@@ -84,11 +84,6 @@ func (p *Parser) ParseMessage() (*Message, error) {
 		return nil, err
 	}
 
-	if p.permissive {
-		// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
-		p.lex.ConsumeToken(scanner.TSEMICOLON)
-	}
-
 	return &Message{
 		MessageName:                  messageName,
 		MessageBody:                  messageBody,
@@ -115,6 +110,11 @@ func (p *Parser) parseMessageBody() (
 	// Parses emptyBody. This spec is not documented, but allowed in general. {
 	p.lex.Next()
 	if p.lex.Token == scanner.TRIGHTCURLY {
+		if p.permissive {
+			// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
+			p.lex.ConsumeToken(scanner.TSEMICOLON)
+		}
+
 		return nil, nil, p.lex.Pos, nil
 	}
 	p.lex.UnNext()
@@ -136,14 +136,18 @@ func (p *Parser) parseMessageBody() (
 
 		switch token {
 		case scanner.TRIGHTCURLY:
-			lastPos := p.lex.Pos
 			if p.bodyIncludingComments {
 				for _, comment := range comments {
 					stmts = append(stmts, Visitee(comment))
 				}
 			}
 			p.lex.Next()
-			return stmts, inlineLeftCurly, lastPos, nil
+
+			if p.permissive {
+				// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
+				p.lex.ConsumeToken(scanner.TSEMICOLON)
+			}
+			return stmts, inlineLeftCurly, p.lex.Pos, nil
 		case scanner.TENUM:
 			enum, err := p.ParseEnum()
 			if err != nil {

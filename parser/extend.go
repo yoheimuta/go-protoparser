@@ -83,11 +83,6 @@ func (p *Parser) ParseExtend() (*Extend, error) {
 		return nil, err
 	}
 
-	if p.permissive {
-		// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
-		p.lex.ConsumeToken(scanner.TSEMICOLON)
-	}
-
 	return &Extend{
 		MessageType:                  messageType,
 		ExtendBody:                   extendBody,
@@ -113,6 +108,11 @@ func (p *Parser) parseExtendBody() (
 	// Parses emptyBody. This spec is not documented, but allowed in general. {
 	p.lex.Next()
 	if p.lex.Token == scanner.TRIGHTCURLY {
+		if p.permissive {
+			// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
+			p.lex.ConsumeToken(scanner.TSEMICOLON)
+		}
+
 		return nil, nil, p.lex.Pos, nil
 	}
 	p.lex.UnNext()
@@ -134,14 +134,18 @@ func (p *Parser) parseExtendBody() (
 
 		switch token {
 		case scanner.TRIGHTCURLY:
-			lastPos := p.lex.Pos
 			if p.bodyIncludingComments {
 				for _, comment := range comments {
 					stmts = append(stmts, Visitee(comment))
 				}
 			}
 			p.lex.Next()
-			return stmts, inlineLeftCurly, lastPos, nil
+
+			if p.permissive {
+				// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
+				p.lex.ConsumeToken(scanner.TSEMICOLON)
+			}
+			return stmts, inlineLeftCurly, p.lex.Pos, nil
 		default:
 			field, fieldErr := p.ParseField()
 			if fieldErr == nil {

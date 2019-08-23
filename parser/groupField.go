@@ -104,11 +104,6 @@ func (p *Parser) ParseGroupField() (*GroupField, error) {
 		return nil, err
 	}
 
-	if p.permissive {
-		// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
-		p.lex.ConsumeToken(scanner.TSEMICOLON)
-	}
-
 	return &GroupField{
 		IsRepeated:  isRepeated,
 		IsRequired:  isRequired,

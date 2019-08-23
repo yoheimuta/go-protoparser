@@ -646,9 +646,9 @@ service SearchService {
 						Column: 1,
 					},
 					LastPos: meta.Position{
-						Offset: 83,
+						Offset: 84,
 						Line:   4,
-						Column: 1,
+						Column: 2,
 					},
 				},
 			},
