@@ -110,12 +110,16 @@ func (p *Parser) parseMessageBody() (
 	// Parses emptyBody. This spec is not documented, but allowed in general. {
 	p.lex.Next()
 	if p.lex.Token == scanner.TRIGHTCURLY {
+		lastPos := p.lex.Pos
 		if p.permissive {
 			// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
 			p.lex.ConsumeToken(scanner.TSEMICOLON)
+			if p.lex.Token == scanner.TSEMICOLON {
+				lastPos = p.lex.Pos
+			}
 		}
 
-		return nil, nil, p.lex.Pos, nil
+		return nil, nil, lastPos, nil
 	}
 	p.lex.UnNext()
 	// }
@@ -143,11 +147,15 @@ func (p *Parser) parseMessageBody() (
 			}
 			p.lex.Next()
 
+			lastPos := p.lex.Pos
 			if p.permissive {
 				// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
 				p.lex.ConsumeToken(scanner.TSEMICOLON)
+				if p.lex.Token == scanner.TSEMICOLON {
+					lastPos = p.lex.Pos
+				}
 			}
-			return stmts, inlineLeftCurly, p.lex.Pos, nil
+			return stmts, inlineLeftCurly, lastPos, nil
 		case scanner.TENUM:
 			enum, err := p.ParseEnum()
 			if err != nil {

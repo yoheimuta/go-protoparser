@@ -963,6 +963,47 @@ message Outer {
 				},
 			},
 		},
+		{
+			name: "set LastPos to the correct position when a semicolon doesn't follow the last block",
+			input: `
+message Outer {
+  message Inner {}
+}
+`,
+			permissive: true,
+			wantMessage: &parser.Message{
+				MessageName: "Outer",
+				MessageBody: []parser.Visitee{
+					&parser.Message{
+						MessageName: "Inner",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 19,
+								Line:   3,
+								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 34,
+								Line:   3,
+								Column: 18,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 36,
+						Line:   4,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

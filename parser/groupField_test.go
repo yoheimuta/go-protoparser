@@ -127,6 +127,30 @@ group Result = 1 {
 				},
 			},
 		},
+		{
+			name: "set LastPos to the correct position when a semicolon doesn't follow the last block",
+			input: `
+group Result = 1 {
+}
+`,
+			permissive: true,
+			wantGroupField: &parser.GroupField{
+				GroupName:   "Result",
+				FieldNumber: "1",
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 20,
+						Line:   3,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

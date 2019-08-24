@@ -125,16 +125,20 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 		}
 	}
 
+	lastPos := p.lex.Pos
 	if p.permissive {
 		// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
 		p.lex.ConsumeToken(scanner.TSEMICOLON)
+		if p.lex.Token == scanner.TSEMICOLON {
+			lastPos = p.lex.Pos
+		}
 	}
 
 	return &Oneof{
 		OneofFields:                  oneofFields,
 		OneofName:                    oneofName,
 		InlineCommentBehindLeftCurly: inlineLeftCurly,
-		Meta:                         meta.NewMetaWithLastPos(startPos, p.lex.Pos),
+		Meta:                         meta.NewMetaWithLastPos(startPos, lastPos),
 	}, nil
 }
 
