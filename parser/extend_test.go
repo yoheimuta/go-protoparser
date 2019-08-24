@@ -134,6 +134,29 @@ extend Foo {
 				},
 			},
 		},
+		{
+			name: "set LastPos to the correct position when a semicolon doesn't follow the last block",
+			input: `
+extend Foo {
+}
+`,
+			permissive: true,
+			wantExtend: &parser.Extend{
+				MessageType: "Foo",
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 14,
+						Line:   3,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

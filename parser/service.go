@@ -165,11 +165,15 @@ func (p *Parser) parseServiceBody() (
 			}
 			p.lex.Next()
 
+			lastPos := p.lex.Pos
 			if p.permissive {
 				// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
 				p.lex.ConsumeToken(scanner.TSEMICOLON)
+				if p.lex.Token == scanner.TSEMICOLON {
+					lastPos = p.lex.Pos
+				}
 			}
-			return stmts, inlineLeftCurly, p.lex.Pos, nil
+			return stmts, inlineLeftCurly, lastPos, nil
 		case scanner.TOPTION:
 			option, err := p.ParseOption()
 			if err != nil {
@@ -229,6 +233,7 @@ func (p *Parser) parseRPC() (*RPC, error) {
 
 	var opts []*Option
 	p.lex.Next()
+	lastPos := p.lex.Pos
 	switch p.lex.Token {
 	case scanner.TLEFTCURLY:
 		p.lex.UnNext()
@@ -236,9 +241,13 @@ func (p *Parser) parseRPC() (*RPC, error) {
 		if err != nil {
 			return nil, err
 		}
+		lastPos = p.lex.Pos
 		if p.permissive {
 			// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
 			p.lex.ConsumeToken(scanner.TSEMICOLON)
+			if p.lex.Token == scanner.TSEMICOLON {
+				lastPos = p.lex.Pos
+			}
 		}
 	case scanner.TSEMICOLON:
 		break
@@ -251,7 +260,7 @@ func (p *Parser) parseRPC() (*RPC, error) {
 		RPCRequest:  rpcRequest,
 		RPCResponse: rpcResponse,
 		Options:     opts,
-		Meta:        meta.NewMetaWithLastPos(startPos, p.lex.Pos),
+		Meta:        meta.NewMetaWithLastPos(startPos, lastPos),
 	}, nil
 }
 

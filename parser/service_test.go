@@ -653,6 +653,67 @@ service SearchService {
 				},
 			},
 		},
+		{
+			name: "set LastPos to the correct position when a semicolon doesn't follow the last block",
+			input: `
+service SearchService {
+  rpc Search (SearchRequest) returns (SearchResponse) {}
+}
+`,
+			permissive: true,
+			wantService: &parser.Service{
+				ServiceName: "SearchService",
+				ServiceBody: []parser.Visitee{
+					&parser.RPC{
+						RPCName: "Search",
+						RPCRequest: &parser.RPCRequest{
+							MessageType: "SearchRequest",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 38,
+									Line:   3,
+									Column: 14,
+								},
+							},
+						},
+						RPCResponse: &parser.RPCResponse{
+							MessageType: "SearchResponse",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 62,
+									Line:   3,
+									Column: 38,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 27,
+								Line:   3,
+								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 80,
+								Line:   3,
+								Column: 56,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 82,
+						Line:   4,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

@@ -169,11 +169,15 @@ func (p *Parser) parseEnumBody() (
 			}
 			p.lex.Next()
 
+			lastPos := p.lex.Pos
 			if p.permissive {
 				// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
 				p.lex.ConsumeToken(scanner.TSEMICOLON)
+				if p.lex.Token == scanner.TSEMICOLON {
+					lastPos = p.lex.Pos
+				}
 			}
-			return stmts, inlineLeftCurly, p.lex.Pos, nil
+			return stmts, inlineLeftCurly, lastPos, nil
 		case scanner.TOPTION:
 			option, err := p.ParseOption()
 			if err != nil {

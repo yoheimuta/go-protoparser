@@ -486,6 +486,28 @@ func TestParser_ParseEnum(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "set LastPos to the correct position when a semicolon doesn't follow the last block",
+			input: `enum EnumAllowingAlias {
+}
+`,
+			permissive: true,
+			wantEnum: &parser.Enum{
+				EnumName: "EnumAllowingAlias",
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 25,
+						Line:   2,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

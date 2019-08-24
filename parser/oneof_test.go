@@ -330,6 +330,43 @@ func TestParser_ParseOneof(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "set LastPos to the correct position when a semicolon doesn't follow the last block",
+			input: `oneof foo {
+    string name = 4;
+}
+`,
+			permissive: true,
+			wantOneof: &parser.Oneof{
+				OneofFields: []*parser.OneofField{
+					{
+						Type:        "string",
+						FieldName:   "name",
+						FieldNumber: "4",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 16,
+								Line:   2,
+								Column: 5,
+							},
+						},
+					},
+				},
+				OneofName: "foo",
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 33,
+						Line:   3,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
