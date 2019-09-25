@@ -508,6 +508,50 @@ func TestParser_ParseEnum(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "parsing an enum with multiple string literals. See #35",
+			input: `enum EnumAllowingAlias {
+  UNKNOWN = 0 [(custom_option) = "this is a "
+                                 "string on two lines"
+              ];
+}
+`,
+			permissive: true,
+			wantEnum: &parser.Enum{
+				EnumName: "EnumAllowingAlias",
+				EnumBody: []parser.Visitee{
+					&parser.EnumField{
+						Ident:  "UNKNOWN",
+						Number: "0",
+						EnumValueOptions: []*parser.EnumValueOption{
+							{
+								OptionName: "(custom_option)",
+								Constant:   `"this is a string on two lines"`,
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 27,
+								Line:   2,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 143,
+						Line:   5,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
