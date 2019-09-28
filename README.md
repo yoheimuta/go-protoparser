@@ -382,6 +382,19 @@ A parser which supports a visitor pattern is useful to implement like linter, bu
 It can be sufficient for most parsing situations to just return a parsing result well-typed value.
 This is easier to use.
 
+### Contributing
+
+- Fork it
+- Create your feature branch: git checkout -b your-new-feature
+- Commit changes: git commit -m 'Add your feature'
+- Pass all tests
+- Push to the branch: git push origin your-new-feature
+- Submit a pull request
+
+### License
+
+The MIT License (MIT)
+
 ### Acknowledgement
 
 Thank you to the proto package: https://github.com/emicklei/proto
