@@ -186,7 +186,7 @@ func (p *Parser) parseFieldOption() (*FieldOption, error) {
 			return nil, err
 		}
 	default:
-		constant, _, err = p.lex.ReadConstant()
+		constant, _, err = p.lex.ReadConstant(p.permissive)
 		if err != nil {
 			return nil, err
 		}
@@ -221,7 +221,7 @@ func (p *Parser) parseGoProtoValidatorFieldOptionConstant() (string, error) {
 		}
 		ret += p.lex.Text
 
-		constant, _, err := p.lex.ReadConstant()
+		constant, _, err := p.lex.ReadConstant(p.permissive)
 		if err != nil {
 			return "", err
 		}

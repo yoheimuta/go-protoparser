@@ -1,10 +1,14 @@
 package lexer
 
-import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+import (
+	"strings"
 
-// ReadConstant reads a constant.
+	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+)
+
+// ReadConstant reads a constant. If permissive is true, accepts multiline string literals.
 // constant = fullIdent | ( [ "-" | "+" ] intLit ) | ( [ "-" | "+" ] floatLit ) | strLit | boolLit
-func (lex *Lexer) ReadConstant() (string, scanner.Position, error) {
+func (lex *Lexer) ReadConstant(permissive bool) (string, scanner.Position, error) {
 	lex.NextLit()
 
 	startPos := lex.Pos
@@ -12,7 +16,19 @@ func (lex *Lexer) ReadConstant() (string, scanner.Position, error) {
 
 	switch {
 	case lex.Token == scanner.TSTRLIT:
-		return cons, startPos, nil
+		if !permissive {
+			return cons, startPos, nil
+		}
+		var b strings.Builder
+		b.WriteString("\"")
+		for lex.Token == scanner.TSTRLIT {
+			strippedString := strings.Trim(lex.Text, "\"")
+			b.WriteString(strippedString)
+			lex.NextLit()
+		}
+		lex.UnNext()
+		b.WriteString("\"")
+		return b.String(), startPos, nil
 	case lex.Token == scanner.TBOOLLIT:
 		return cons, startPos, nil
 	case lex.Token == scanner.TIDENT:

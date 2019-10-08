@@ -13,11 +13,13 @@ enum EnumAllowingAlias {
                 ];
 }
 message outer {
-    option (my_option).a = true;
+    option (my_option).a = "this is a string";
     message inner {   // Level 2
       int64 ival = 1;
     }
-    repeated inner inner_message = 2;
+    repeated inner inner_message = 2[(custom_option) = "this is a "
+                                   "string on two lines"
+                ];
     EnumAllowingAlias enum_field =3;
     map<int32, string> my_map = 4;
 }
