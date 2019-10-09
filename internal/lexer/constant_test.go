@@ -64,9 +64,15 @@ func TestLexer2_ReadConstant(t *testing.T) {
 			wantIsEOF: true,
 		},
 		{
-			name:      "multiline strLit",
+			name:      "multiline strLit with double quotes",
 			input:     "\"line1 \"\n\"line2 \" \n\"line3\" ",
 			wantText:  `"line1 line2 line3"`,
+			wantIsEOF: true,
+		},
+		{
+			name:      "multiline strLit with single quotes",
+			input:     "'line1 '\n'line2 ' \n'line3' ",
+			wantText:  `'line1 line2 line3'`,
 			wantIsEOF: true,
 		},
 		{
