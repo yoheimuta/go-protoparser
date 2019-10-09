@@ -2,7 +2,6 @@ package parser
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 	"github.com/yoheimuta/go-protoparser/parser/meta"
@@ -314,47 +313,8 @@ func (p *Parser) parseEnumValueOption() (*EnumValueOption, error) {
 		return nil, err
 	}
 
-	if p.permissive {
-		// accept a multiple string literals. See https://github.com/yoheimuta/go-protoparser/issues/35.
-		for {
-			next := p.lex.Peek()
-			if next == scanner.TCOMMA || next == scanner.TRIGHTSQUARE {
-				break
-			}
-
-			lit, _, err := p.lex.ReadConstant(p.permissive)
-			if err != nil {
-				return nil, err
-			}
-			constant = p.concatLiteral(constant, lit)
-		}
-	}
-
 	return &EnumValueOption{
 		OptionName: optionName,
 		Constant:   constant,
 	}, nil
-}
-
-func (p *Parser) concatLiteral(base, next string) string {
-	unQuoteNext, _, err := p.unQuote(next)
-	if err != nil {
-		return base + next
-	}
-
-	unQuoteBase, quote, err := p.unQuote(base)
-	if err != nil {
-		return base + next
-	}
-
-	return string(quote) + unQuoteBase + unQuoteNext + string(quote)
-}
-
-func (p *Parser) unQuote(lit string) (string, rune, error) {
-	for _, c := range []rune{'\'', '"'} {
-		if strings.HasPrefix(lit, string(c)) && strings.HasSuffix(lit, string(c)) {
-			return lit[1 : len(lit)-1], c, nil
-		}
-	}
-	return lit, 0, p.unexpected("quote")
 }

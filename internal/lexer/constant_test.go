@@ -65,8 +65,8 @@ func TestLexer2_ReadConstant(t *testing.T) {
 		},
 		{
 			name:      "multiline strLit",
-			input:     "\"line1 \"\n\"line2\"",
-			wantText:  `"line1 line2"`,
+			input:     "\"line1 \"\n\"line2 \" \n\"line 3\" ",
+			wantText:  `"line1 line2 line3"`,
 			wantIsEOF: true,
 		},
 		{
