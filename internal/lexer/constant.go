@@ -1,10 +1,14 @@
 package lexer
 
-import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+import (
+	"strings"
 
-// ReadConstant reads a constant.
+	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+)
+
+// ReadConstant reads a constant. If permissive is true, accepts multiline string literals.
 // constant = fullIdent | ( [ "-" | "+" ] intLit ) | ( [ "-" | "+" ] floatLit ) | strLit | boolLit
-func (lex *Lexer) ReadConstant() (string, scanner.Position, error) {
+func (lex *Lexer) ReadConstant(permissive bool) (string, scanner.Position, error) {
 	lex.NextLit()
 
 	startPos := lex.Pos
@@ -12,6 +16,9 @@ func (lex *Lexer) ReadConstant() (string, scanner.Position, error) {
 
 	switch {
 	case lex.Token == scanner.TSTRLIT:
+		if permissive {
+			return lex.mergeMultilineStrLit(), startPos, nil
+		}
 		return cons, startPos, nil
 	case lex.Token == scanner.TBOOLLIT:
 		return cons, startPos, nil
@@ -37,4 +44,22 @@ func (lex *Lexer) ReadConstant() (string, scanner.Position, error) {
 	default:
 		return "", scanner.Position{}, lex.unexpected(lex.Text, "constant")
 	}
+}
+
+// Merges a multiline string literal into a single string.
+func (lex *Lexer) mergeMultilineStrLit() string {
+	q := "'"
+	if strings.HasPrefix(lex.Text, "\"") {
+		q = "\""
+	}
+	var b strings.Builder
+	b.WriteString(q)
+	for lex.Token == scanner.TSTRLIT {
+		strippedString := strings.Trim(lex.Text, q)
+		b.WriteString(strippedString)
+		lex.NextLit()
+	}
+	lex.UnNext()
+	b.WriteString(q)
+	return b.String()
 }

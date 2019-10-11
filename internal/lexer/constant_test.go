@@ -58,9 +58,21 @@ func TestLexer2_ReadConstant(t *testing.T) {
 			wantIsEOF: true,
 		},
 		{
-			name:      "strLit",
+			name:      "single line strLit",
 			input:     `"あいうえお''"`,
 			wantText:  `"あいうえお''"`,
+			wantIsEOF: true,
+		},
+		{
+			name:      "multiline strLit with double quotes",
+			input:     "\"line1 \"\n\"line2 \" \n\"line3\" ",
+			wantText:  `"line1 line2 line3"`,
+			wantIsEOF: true,
+		},
+		{
+			name:      "multiline strLit with single quotes",
+			input:     "'line1 '\n'line2 ' \n'line3' ",
+			wantText:  `'line1 line2 line3'`,
 			wantIsEOF: true,
 		},
 		{
@@ -89,7 +101,7 @@ func TestLexer2_ReadConstant(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			lex := lexer.NewLexer(strings.NewReader(test.input))
-			got, pos, err := lex.ReadConstant()
+			got, pos, err := lex.ReadConstant(true)
 
 			switch {
 			case test.wantErr:

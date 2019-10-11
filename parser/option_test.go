@@ -124,6 +124,28 @@ option (google.api.http) = {
 				},
 			},
 		},
+		{
+			name: "parses multiline string literal in multi-option annotation",
+			input: `
+option (google.api.http) = {
+    post: "/v1/resources",
+    body: "res"
+		      "ource",
+    rest_method_name: "insert"
+};`,
+			permissive: true,
+			wantOption: &parser.Option{
+				OptionName: "(google.api.http)",
+				Constant:   `{post:"/v1/resources",body:"resource",rest_method_name:"insert"}`,
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
