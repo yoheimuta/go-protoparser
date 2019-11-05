@@ -367,6 +367,101 @@ func TestParser_ParseOneof(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "accept options. See https://github.com/yoheimuta/go-protoparser/issues/39",
+			input: `oneof something {
+  option (validator.oneof) = {required: true};
+  uint32 three_int = 5 [(validator.field) = {int_gt: 20}];
+  uint32 four_int = 6 [(validator.field) = {int_gt: 100}];
+  string five_regex = 7 [(validator.field) = {regex: "^[a-z]{2,5}$"}];
+}
+`,
+			permissive: true,
+			wantOneof: &parser.Oneof{
+				OneofFields: []*parser.OneofField{
+					{
+						Type:        "uint32",
+						FieldName:   "three_int",
+						FieldNumber: "5",
+						FieldOptions: []*parser.FieldOption{
+							{
+								OptionName: "(validator.field)",
+								Constant:   "{int_gt:20}",
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 67,
+								Line:   3,
+								Column: 3,
+							},
+						},
+					},
+					{
+						Type:        "uint32",
+						FieldName:   "four_int",
+						FieldNumber: "6",
+						FieldOptions: []*parser.FieldOption{
+							{
+								OptionName: "(validator.field)",
+								Constant:   "{int_gt:100}",
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 126,
+								Line:   4,
+								Column: 3,
+							},
+						},
+					},
+					{
+						Type:        "string",
+						FieldName:   "five_regex",
+						FieldNumber: "7",
+						FieldOptions: []*parser.FieldOption{
+							{
+								OptionName: "(validator.field)",
+								Constant:   "{regex:\"^[a-z]{2,5}$\"}",
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 185,
+								Line:   5,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Options: []*parser.Option{
+					{
+						OptionName: "(validator.oneof)",
+						Constant:   "{required:true}",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 20,
+								Line:   2,
+								Column: 3,
+							},
+						},
+					},
+				},
+				OneofName: "something",
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 254,
+						Line:   6,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

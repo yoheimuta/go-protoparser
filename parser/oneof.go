@@ -44,6 +44,8 @@ type Oneof struct {
 	OneofFields []*OneofField
 	OneofName   string
 
+	Options []*Option
+
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
 	// InlineComment is the optional one placed at the ending.
@@ -67,6 +69,9 @@ func (o *Oneof) Accept(v Visitor) {
 
 	for _, field := range o.OneofFields {
 		field.Accept(v)
+	}
+	for _, option := range o.Options {
+		option.Accept(v)
 	}
 	for _, comment := range o.Comments {
 		comment.Accept(v)
@@ -101,6 +106,7 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 	inlineLeftCurly := p.parseInlineComment()
 
 	var oneofFields []*OneofField
+	var options []*Option
 	for {
 		comments := p.ParseComments()
 
@@ -109,13 +115,27 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 			continue
 		}
 
-		oneofField, err := p.parseOneofField()
-		if err != nil {
-			return nil, err
+		p.lex.NextKeyword()
+		token := p.lex.Token
+		p.lex.UnNext()
+		if p.permissive && token == scanner.TOPTION {
+			// accept an option. See https://github.com/yoheimuta/go-protoparser/issues/39.
+			option, err := p.ParseOption()
+			if err != nil {
+				return nil, err
+			}
+			option.Comments = comments
+			p.MaybeScanInlineComment(option)
+			options = append(options, option)
+		} else {
+			oneofField, err := p.parseOneofField()
+			if err != nil {
+				return nil, err
+			}
+			oneofField.Comments = comments
+			p.MaybeScanInlineComment(oneofField)
+			oneofFields = append(oneofFields, oneofField)
 		}
-		oneofField.Comments = comments
-		p.MaybeScanInlineComment(oneofField)
-		oneofFields = append(oneofFields, oneofField)
 
 		p.lex.Next()
 		if p.lex.Token == scanner.TRIGHTCURLY {
@@ -137,6 +157,7 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 	return &Oneof{
 		OneofFields:                  oneofFields,
 		OneofName:                    oneofName,
+		Options:                      options,
 		InlineCommentBehindLeftCurly: inlineLeftCurly,
 		Meta:                         meta.NewMetaWithLastPos(startPos, lastPos),
 	}, nil
