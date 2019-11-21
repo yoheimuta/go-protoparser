@@ -7,6 +7,7 @@ import (
 	"github.com/yoheimuta/go-protoparser/internal/lexer"
 )
 
+// ParseError is the error returned during parsing.
 type ParseError struct {
 	Lexer *lexer.Lexer
 
