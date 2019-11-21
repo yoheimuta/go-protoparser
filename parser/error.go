@@ -3,12 +3,35 @@ package parser
 import (
 	"fmt"
 	"runtime"
+
+	"github.com/yoheimuta/go-protoparser/internal/lexer"
 )
 
-func (p *Parser) unexpected(expected string) error {
+type ParseError struct {
+	Lexer *lexer.Lexer
+
+	Expected  string
+	occuredIn string
+	occuredAt int
+}
+
+func (pe ParseError) String() string {
+	return fmt.Sprintf("found %q(Token=%v, Pos=%s) but expected [%s] at %s:%d", pe.Lexer.Text, pe.Lexer.Token, pe.Lexer.Pos, pe.Expected, pe.occuredIn, pe.occuredAt)
+}
+
+func (pe ParseError) Error() string {
+	return pe.String()
+}
+
+func (p *Parser) unexpected(expected string) ParseError {
 	_, file, line, _ := runtime.Caller(1)
-	msg := fmt.Sprintf(" at %s:%d", file, line)
-	return fmt.Errorf("found %q(Token=%v, Pos=%s) but expected [%s]%s", p.lex.Text, p.lex.Token, p.lex.Pos, expected, msg)
+
+	return ParseError{
+		Lexer:     p.lex,
+		Expected:  expected,
+		occuredIn: file,
+		occuredAt: line,
+	}
 }
 
 func (p *Parser) unexpectedf(
