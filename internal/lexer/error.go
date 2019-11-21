@@ -3,7 +3,7 @@ package lexer
 import (
 	"runtime"
 
-	"github.com/yoheimuta/go-protoparser/errors"
+	"github.com/yoheimuta/go-protoparser/issues"
 )
 
 func (lex *Lexer) unexpected(found, expected string) error {
@@ -12,5 +12,5 @@ func (lex *Lexer) unexpected(found, expected string) error {
 	if lex.debug {
 		_, file, line, _ = runtime.Caller(1)
 	}
-	return errors.NewParseError(found, expected, file, line)
+	return issues.NewParseError(found, expected, file, line)
 }

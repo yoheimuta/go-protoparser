@@ -1,6 +1,6 @@
 // Copyright (c) Improbable Worlds Ltd, All Rights Reserved
 
-package errors
+package issues
 
 import (
 	"fmt"
@@ -28,6 +28,7 @@ func (pe ParseError) Error() string {
 	return pe.String()
 }
 
+// NewParseError creates new issues, populating the unexported fields for debug data.
 func NewParseError(found string, expected string, occuredIn string, occuredAt int) ParseError {
 	return ParseError{
 		Found:      found,

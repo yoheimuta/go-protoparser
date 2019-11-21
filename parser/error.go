@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"runtime"
 
-	"github.com/yoheimuta/go-protoparser/errors"
+	"github.com/yoheimuta/go-protoparser/issues"
 )
 
-func (p *Parser) unexpected(expected string) errors.ParseError {
+func (p *Parser) unexpected(expected string) issues.ParseError {
 	_, file, line, _ := runtime.Caller(1)
 
-	return errors.NewParseError(
+	return issues.NewParseError(
 		p.lex.String(),
 		expected,
 		file,
