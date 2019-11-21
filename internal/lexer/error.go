@@ -1,15 +1,16 @@
 package lexer
 
 import (
-	"fmt"
 	"runtime"
+
+	"github.com/yoheimuta/go-protoparser/errors"
 )
 
 func (lex *Lexer) unexpected(found, expected string) error {
-	debug := ""
+	file := ""
+	line := 0
 	if lex.debug {
-		_, file, line, _ := runtime.Caller(1)
-		debug = fmt.Sprintf(" at %s:%d", file, line)
+		_, file, line, _ = runtime.Caller(1)
 	}
-	return fmt.Errorf("found %q but expected [%s]%s", found, expected, debug)
+	return errors.NewParseError(found, expected, file, line)
 }

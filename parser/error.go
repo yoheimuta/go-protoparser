@@ -4,35 +4,18 @@ import (
 	"fmt"
 	"runtime"
 
-	"github.com/yoheimuta/go-protoparser/internal/lexer"
+	"github.com/yoheimuta/go-protoparser/errors"
 )
 
-// ParseError is the error returned during parsing.
-type ParseError struct {
-	Lexer *lexer.Lexer
-
-	Expected  string
-	occuredIn string
-	occuredAt int
-}
-
-func (pe ParseError) String() string {
-	return fmt.Sprintf("found %q(Token=%v, Pos=%s) but expected [%s] at %s:%d", pe.Lexer.Text, pe.Lexer.Token, pe.Lexer.Pos, pe.Expected, pe.occuredIn, pe.occuredAt)
-}
-
-func (pe ParseError) Error() string {
-	return pe.String()
-}
-
-func (p *Parser) unexpected(expected string) ParseError {
+func (p *Parser) unexpected(expected string) errors.ParseError {
 	_, file, line, _ := runtime.Caller(1)
 
-	return ParseError{
-		Lexer:     p.lex,
-		Expected:  expected,
-		occuredIn: file,
-		occuredAt: line,
-	}
+	return errors.NewParseError(
+		p.lex.String(),
+		expected,
+		file,
+		line,
+	)
 }
 
 func (p *Parser) unexpectedf(

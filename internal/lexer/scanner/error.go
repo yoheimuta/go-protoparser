@@ -1,12 +1,12 @@
 package scanner
 
 import (
-	"fmt"
 	"runtime"
+
+	"github.com/yoheimuta/go-protoparser/errors"
 )
 
-func (s *Scanner) unexpected(found rune, expected string) error {
+func (s *Scanner) unexpected(found rune, expected string) errors.ParseError {
 	_, file, line, _ := runtime.Caller(1)
-	message := fmt.Sprintf(" at %s:%d", file, line)
-	return fmt.Errorf("found %q but expected [%s]%s", found, expected, message)
+	return errors.NewParseError(string(found), expected, file, line)
 }

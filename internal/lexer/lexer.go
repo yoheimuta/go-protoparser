@@ -1,6 +1,7 @@
 package lexer
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"path/filepath"
@@ -31,6 +32,10 @@ type Lexer struct {
 	scannerOpts []scanner.Option
 	scanErr     error
 	debug       bool
+}
+
+func (lex *Lexer) String() string {
+	return fmt.Sprintf("%q(Token=%v, Pos=%s)", lex.Text, lex.Token, lex.Pos)
 }
 
 // Option is an option for lexer.NewLexer.
