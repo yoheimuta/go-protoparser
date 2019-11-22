@@ -75,7 +75,7 @@ func (p *Parser) ParseOption() (*Option, error) {
 	}, nil
 }
 
-// cloudEndpointsOptionConstant = "{" ident ":" constant { ( [","] ident ":" constant | cloudEndpointsOptionConstant ) } "}"
+// cloudEndpointsOptionConstant = "{" ident ":" constant { ( [","] ident ":" constant | cloudEndpointsOptionConstant ) } [","] "}"
 //
 // See https://cloud.google.com/endpoints/docs/grpc-service-config/reference/rpc/google.api
 func (p *Parser) parseCloudEndpointsOptionConstant() (string, error) {
@@ -124,6 +124,11 @@ func (p *Parser) parseCloudEndpointsOptionConstant() (string, error) {
 		switch {
 		case p.lex.Token == scanner.TCOMMA:
 			ret += p.lex.Text
+			if p.lex.Peek() == scanner.TRIGHTCURLY {
+				p.lex.Next()
+				ret += p.lex.Text
+				return ret, nil
+			}
 		case p.lex.Token == scanner.TRIGHTCURLY:
 			ret += p.lex.Text
 			return ret, nil
