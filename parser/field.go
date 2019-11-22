@@ -231,7 +231,7 @@ func (p *Parser) parseGoProtoValidatorFieldOptionConstant() (string, error) {
 		switch {
 		case p.lex.Token == scanner.TCOMMA:
 			ret += p.lex.Text
-			if p.lex.Peek() == scanner.TRIGHTCURLY {
+			if p.lex.Peek() == scanner.TRIGHTCURLY && p.permissive {
 				p.lex.Next()
 				ret += p.lex.Text
 				return ret, nil

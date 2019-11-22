@@ -98,15 +98,21 @@ func (p *Parser) parseCloudEndpointsOptionConstant() (string, error) {
 		p.lex.Next()
 		switch p.lex.Token {
 		case scanner.TLEFTCURLY:
+			if !p.permissive {
+				return "", p.unexpected(":")
+			}
 			p.lex.UnNext()
-			fallthrough
+			break
 		case scanner.TCOLON:
 			ret += p.lex.Text
-			if p.lex.Peek() == scanner.TLEFTCURLY {
+			if p.lex.Peek() == scanner.TLEFTCURLY && p.permissive {
 				needSemi = true
 			}
 		default:
-			return "", p.unexpected("{ or :")
+			if p.permissive {
+				return "", p.unexpected("{ or :")
+			}
+			return "", p.unexpected(":")
 		}
 
 		constant, err := p.parseOptionConstant()
@@ -116,7 +122,7 @@ func (p *Parser) parseCloudEndpointsOptionConstant() (string, error) {
 		ret += constant
 
 		p.lex.Next()
-		if p.lex.Token == scanner.TSEMICOLON && needSemi {
+		if p.lex.Token == scanner.TSEMICOLON && needSemi && p.permissive {
 			ret += p.lex.Text
 			p.lex.Next()
 		}
@@ -124,7 +130,7 @@ func (p *Parser) parseCloudEndpointsOptionConstant() (string, error) {
 		switch {
 		case p.lex.Token == scanner.TCOMMA, p.lex.Token == scanner.TSEMICOLON:
 			ret += p.lex.Text
-			if p.lex.Peek() == scanner.TRIGHTCURLY {
+			if p.lex.Peek() == scanner.TRIGHTCURLY && p.permissive {
 				p.lex.Next()
 				ret += p.lex.Text
 				return ret, nil
