@@ -7,10 +7,17 @@ import (
 )
 
 func (lex *Lexer) unexpected(found, expected string) error {
-	file := ""
-	line := 0
-	if lex.debug {
-		_, file, line, _ = runtime.Caller(1)
+	pe := issues.ParseError{
+		Filename: lex.Pos.Filename,
+		Line:     lex.Pos.Line,
+		Column:   lex.Pos.Column,
+		Found:    found,
+		Expected: expected,
 	}
-	return issues.NewParseError(found, expected, file, line)
+	if lex.debug {
+		_, file, line, _ := runtime.Caller(1)
+		pe.SetOccured(file, line)
+	}
+
+	return pe
 }

@@ -8,6 +8,10 @@ import (
 
 // ParseError is the error returned during parsing.
 type ParseError struct {
+	Filename string
+	Line     int
+	Column   int
+
 	Found      string
 	Expected   string
 	occurredIn string
@@ -28,12 +32,8 @@ func (pe ParseError) Error() string {
 	return pe.String()
 }
 
-// NewParseError creates new issues, populating the unexported fields for debug data.
-func NewParseError(found string, expected string, occuredIn string, occuredAt int) ParseError {
-	return ParseError{
-		Found:      found,
-		Expected:   expected,
-		occurredIn: occuredIn,
-		occurredAt: occuredAt,
-	}
+// SetOccurred sets the fields to log where each error was raised.
+func (pe *ParseError) SetOccured(occurerdIn string, occurredAt int) {
+	pe.occurredIn = occurerdIn
+	pe.occurredAt = occurredAt
 }
