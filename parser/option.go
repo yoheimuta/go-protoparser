@@ -58,23 +58,9 @@ func (p *Parser) ParseOption() (*Option, error) {
 		return nil, p.unexpected("=")
 	}
 
-	var constant string
-	switch p.lex.Peek() {
-	// Cloud Endpoints requires this exception.
-	case scanner.TLEFTCURLY:
-		if !p.permissive {
-			return nil, p.unexpected("constant or permissive mode")
-		}
-
-		constant, err = p.parseCloudEndpointsOptionConstant()
-		if err != nil {
-			return nil, err
-		}
-	default:
-		constant, _, err = p.lex.ReadConstant(p.permissive)
-		if err != nil {
-			return nil, err
-		}
+	constant, err := p.parseOptionConstant()
+	if err != nil {
+		return nil, err
 	}
 
 	p.lex.Next()
@@ -89,7 +75,7 @@ func (p *Parser) ParseOption() (*Option, error) {
 	}, nil
 }
 
-// cloudEndpointsOptionConstant = "{" ident ":" constant { [","] ident ":" constant } "}"
+// cloudEndpointsOptionConstant = "{" ident ":" constant { ( [","] ident ":" constant | cloudEndpointsOptionConstant ) } "}"
 //
 // See https://cloud.google.com/endpoints/docs/grpc-service-config/reference/rpc/google.api
 func (p *Parser) parseCloudEndpointsOptionConstant() (string, error) {
@@ -109,12 +95,17 @@ func (p *Parser) parseCloudEndpointsOptionConstant() (string, error) {
 		ret += p.lex.Text
 
 		p.lex.Next()
-		if p.lex.Token != scanner.TCOLON {
-			return "", p.unexpected(":")
+		switch p.lex.Token {
+		case scanner.TLEFTCURLY:
+			p.lex.UnNext()
+			fallthrough
+		case scanner.TCOLON:
+			ret += p.lex.Text
+		default:
+			return "", p.unexpected("{ or :")
 		}
-		ret += p.lex.Text
 
-		constant, _, err := p.lex.ReadConstant(p.permissive)
+		constant, err := p.parseOptionConstant()
 		if err != nil {
 			return "", err
 		}
@@ -174,4 +165,25 @@ func (p *Parser) parseOptionName() (string, error) {
 		optionName += p.lex.Text
 	}
 	return optionName, nil
+}
+
+func (p *Parser) parseOptionConstant() (constant string, err error) {
+	switch p.lex.Peek() {
+	// Cloud Endpoints requires this exception.
+	case scanner.TLEFTCURLY:
+		if !p.permissive {
+			return "", p.unexpected("constant or permissive mode")
+		}
+
+		constant, err = p.parseCloudEndpointsOptionConstant()
+		if err != nil {
+			return "", err
+		}
+	default:
+		constant, _, err = p.lex.ReadConstant(p.permissive)
+		if err != nil {
+			return "", err
+		}
+	}
+	return constant, nil
 }
