@@ -102,7 +102,6 @@ func (p *Parser) parseCloudEndpointsOptionConstant() (string, error) {
 				return "", p.unexpected(":")
 			}
 			p.lex.UnNext()
-			break
 		case scanner.TCOLON:
 			ret += p.lex.Text
 			if p.lex.Peek() == scanner.TLEFTCURLY && p.permissive {
