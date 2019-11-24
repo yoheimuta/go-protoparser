@@ -146,6 +146,48 @@ option (google.api.http) = {
 				},
 			},
 		},
+		{
+			name: "parses nested cloudsetup options",
+			input: `
+option (google.api.http) = {
+    post: "/v1/resources",
+    additional_bindings: {
+		post: "/v2/resources"
+	};
+};`,
+			permissive: true,
+			wantOption: &parser.Option{
+				OptionName: "(google.api.http)",
+				Constant:   `{post:"/v1/resources",additional_bindings:{post:"/v2/resources"};}`,
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+				},
+			},
+		},
+		{
+			name: "parses trailing commas in options",
+			input: `
+option (google.api.http) = {
+    post: "/v1/resources",
+    body: "data",
+};`,
+			permissive: true,
+			wantOption: &parser.Option{
+				OptionName: "(google.api.http)",
+				Constant:   `{post:"/v1/resources",body:"data",}`,
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

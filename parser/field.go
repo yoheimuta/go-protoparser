@@ -198,7 +198,7 @@ func (p *Parser) parseFieldOption() (*FieldOption, error) {
 	}, nil
 }
 
-// goProtoValidatorFieldOptionConstant = "{" ident ":" constant { , ident ":" constant } "}"
+// goProtoValidatorFieldOptionConstant = "{" ident ":" constant { "," ident ":" constant } [ "," ] "}"
 func (p *Parser) parseGoProtoValidatorFieldOptionConstant() (string, error) {
 	var ret string
 
@@ -231,6 +231,11 @@ func (p *Parser) parseGoProtoValidatorFieldOptionConstant() (string, error) {
 		switch {
 		case p.lex.Token == scanner.TCOMMA:
 			ret += p.lex.Text
+			if p.lex.Peek() == scanner.TRIGHTCURLY && p.permissive {
+				p.lex.Next()
+				ret += p.lex.Text
+				return ret, nil
+			}
 		case p.lex.Token == scanner.TRIGHTCURLY:
 			ret += p.lex.Text
 			return ret, nil

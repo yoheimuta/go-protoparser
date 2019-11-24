@@ -58,23 +58,9 @@ func (p *Parser) ParseOption() (*Option, error) {
 		return nil, p.unexpected("=")
 	}
 
-	var constant string
-	switch p.lex.Peek() {
-	// Cloud Endpoints requires this exception.
-	case scanner.TLEFTCURLY:
-		if !p.permissive {
-			return nil, p.unexpected("constant or permissive mode")
-		}
-
-		constant, err = p.parseCloudEndpointsOptionConstant()
-		if err != nil {
-			return nil, err
-		}
-	default:
-		constant, _, err = p.lex.ReadConstant(p.permissive)
-		if err != nil {
-			return nil, err
-		}
+	constant, err := p.parseOptionConstant()
+	if err != nil {
+		return nil, err
 	}
 
 	p.lex.Next()
@@ -89,7 +75,7 @@ func (p *Parser) ParseOption() (*Option, error) {
 	}, nil
 }
 
-// cloudEndpointsOptionConstant = "{" ident ":" constant { [","] ident ":" constant } "}"
+// cloudEndpointsOptionConstant = "{" ident ":" constant { ( ["," | ";" ] ident ":" constant | cloudEndpointsOptionConstant ) } ["," | ";"] "}"
 //
 // See https://cloud.google.com/endpoints/docs/grpc-service-config/reference/rpc/google.api
 func (p *Parser) parseCloudEndpointsOptionConstant() (string, error) {
@@ -108,22 +94,47 @@ func (p *Parser) parseCloudEndpointsOptionConstant() (string, error) {
 		}
 		ret += p.lex.Text
 
+		needSemi := false
 		p.lex.Next()
-		if p.lex.Token != scanner.TCOLON {
+		switch p.lex.Token {
+		case scanner.TLEFTCURLY:
+			if !p.permissive {
+				return "", p.unexpected(":")
+			}
+			p.lex.UnNext()
+			break
+		case scanner.TCOLON:
+			ret += p.lex.Text
+			if p.lex.Peek() == scanner.TLEFTCURLY && p.permissive {
+				needSemi = true
+			}
+		default:
+			if p.permissive {
+				return "", p.unexpected("{ or :")
+			}
 			return "", p.unexpected(":")
 		}
-		ret += p.lex.Text
 
-		constant, _, err := p.lex.ReadConstant(p.permissive)
+		constant, err := p.parseOptionConstant()
 		if err != nil {
 			return "", err
 		}
 		ret += constant
 
 		p.lex.Next()
-		switch {
-		case p.lex.Token == scanner.TCOMMA:
+		if p.lex.Token == scanner.TSEMICOLON && needSemi && p.permissive {
 			ret += p.lex.Text
+			p.lex.Next()
+		}
+
+		switch {
+		case p.lex.Token == scanner.TCOMMA, p.lex.Token == scanner.TSEMICOLON:
+			ret += p.lex.Text
+			if p.lex.Peek() == scanner.TRIGHTCURLY && p.permissive {
+				p.lex.Next()
+				ret += p.lex.Text
+				return ret, nil
+			}
 		case p.lex.Token == scanner.TRIGHTCURLY:
 			ret += p.lex.Text
 			return ret, nil
@@ -174,4 +185,26 @@ func (p *Parser) parseOptionName() (string, error) {
 		optionName += p.lex.Text
 	}
 	return optionName, nil
+}
+
+func (p *Parser) parseOptionConstant() (constant string, err error) {
+	switch p.lex.Peek() {
+	// Cloud Endpoints requires this exception.
+	case scanner.TLEFTCURLY:
+		if !p.permissive {
+			return "", p.unexpected("constant or permissive mode")
+		}
+
+		constant, err = p.parseCloudEndpointsOptionConstant()
+		if err != nil {
+			return "", err
+		}
+
+	default:
+		constant, _, err = p.lex.ReadConstant(p.permissive)
+		if err != nil {
+			return "", err
+		}
+	}
+	return constant, nil
 }
