@@ -16,9 +16,9 @@ type Error struct {
 
 func (e *Error) Error() string {
 	if e.occuredAt == 0 && e.occuredIn == "" {
-		return fmt.Sprintf("found %s but expected [%s]", e.Found, e.Expected)
+		return fmt.Sprintf("found %q but expected [%s]", e.Found, e.Expected)
 	}
-	return fmt.Sprintf("found %s but expected [%s] at %s:%d", e.Found, e.Expected, e.occuredIn, e.occuredAt)
+	return fmt.Sprintf("found %q but expected [%s] at %s:%d", e.Found, e.Expected, e.occuredIn, e.occuredAt)
 }
 
 // SetOccured sets the file and the line number at which the error was raised (through runtime.Caller).
