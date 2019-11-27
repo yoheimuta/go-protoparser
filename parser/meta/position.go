@@ -2,8 +2,6 @@ package meta
 
 import (
 	"fmt"
-
-	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 )
 
 // Position represents a source position.
@@ -16,16 +14,6 @@ type Position struct {
 	Line int
 	// Column is a column number, starting at 1 (character count per line)
 	Column int
-}
-
-// NewPosition creates a new Position from scanner.Position.
-func NewPosition(from scanner.Position) Position {
-	return Position{
-		Filename: from.Filename,
-		Offset:   from.Offset,
-		Line:     from.Line,
-		Column:   from.Column,
-	}
 }
 
 // String stringify the position.

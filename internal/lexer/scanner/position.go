@@ -1,20 +1,14 @@
 package scanner
 
 import (
-	"fmt"
 	"unicode/utf8"
+
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 // Position represents a source position.
 type Position struct {
-	// Filename is a name of file, if any
-	Filename string
-	// Offset is a byte offset, starting at 0
-	Offset int
-	// Line is a line number, starting at 1
-	Line int
-	// Column is a column number, starting at 1 (character count per line)
-	Column int
+	meta.Position
 
 	// columns is a map which the key is a line number and the value is a column number.
 	columns map[int]int
@@ -23,21 +17,18 @@ type Position struct {
 // NewPosition creates a new Position.
 func NewPosition() *Position {
 	return &Position{
-		Offset:  0,
-		Line:    1,
-		Column:  1,
+		Position: meta.Position{
+			Offset: 0,
+			Line:   1,
+			Column: 1,
+		},
 		columns: make(map[int]int),
 	}
 }
 
 // String stringify the position.
 func (pos Position) String() string {
-	s := pos.Filename
-	if s == "" {
-		s = "<input>"
-	}
-	s += fmt.Sprintf(":%d:%d", pos.Line, pos.Column)
-	return s
+	return pos.Position.String()
 }
 
 // Advance advances the position value.

@@ -71,7 +71,7 @@ func (p *Parser) ParseOption() (*Option, error) {
 	return &Option{
 		OptionName: optionName,
 		Constant:   constant,
-		Meta:       meta.NewMeta(startPos),
+		Meta:       meta.Meta{Pos: startPos.Position},
 	}, nil
 }
 

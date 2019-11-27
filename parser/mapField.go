@@ -108,7 +108,7 @@ func (p *Parser) ParseMapField() (*MapField, error) {
 		MapName:      mapName,
 		FieldNumber:  fieldNumber,
 		FieldOptions: fieldOptions,
-		Meta:         meta.NewMeta(startPos),
+		Meta:         meta.Meta{Pos: startPos.Position},
 	}, nil
 }
 

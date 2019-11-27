@@ -127,7 +127,10 @@ func (p *Parser) ParseEnum() (*Enum, error) {
 		EnumName:                     enumName,
 		EnumBody:                     enumBody,
 		InlineCommentBehindLeftCurly: inlineLeftCurly,
-		Meta:                         meta.NewMetaWithLastPos(startPos, lastPos),
+		Meta: meta.Meta{
+			Pos:     startPos.Position,
+			LastPos: lastPos.Position,
+		},
 	}, nil
 }
 
@@ -254,7 +257,7 @@ func (p *Parser) parseEnumField() (*EnumField, error) {
 		Ident:            ident,
 		Number:           number,
 		EnumValueOptions: enumValueOptions,
-		Meta:             meta.NewMeta(startPos),
+		Meta:             meta.Meta{Pos: startPos.Position},
 	}, nil
 }
 

@@ -59,6 +59,6 @@ func (p *Parser) ParseExtensions() (*Extensions, error) {
 
 	return &Extensions{
 		Ranges: ranges,
-		Meta:   meta.NewMeta(startPos),
+		Meta:   meta.Meta{Pos: startPos.Position},
 	}, nil
 }

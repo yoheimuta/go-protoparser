@@ -87,7 +87,10 @@ func (p *Parser) ParseExtend() (*Extend, error) {
 		MessageType:                  messageType,
 		ExtendBody:                   extendBody,
 		InlineCommentBehindLeftCurly: inlineLeftCurly,
-		Meta:                         meta.NewMetaWithLastPos(startPos, lastPos),
+		Meta: meta.Meta{
+			Pos:     startPos.Position,
+			LastPos: lastPos.Position,
+		},
 	}, nil
 }
 

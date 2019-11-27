@@ -88,6 +88,6 @@ func (p *Parser) ParseSyntax() (*Syntax, error) {
 
 	return &Syntax{
 		ProtobufVersion: version,
-		Meta:            meta.NewMeta(startPos),
+		Meta:            meta.Meta{Pos: startPos.Position},
 	}, nil
 }

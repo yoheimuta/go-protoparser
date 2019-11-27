@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
 
 func TestScanner_Scan(t *testing.T) {
@@ -36,63 +37,83 @@ func TestScanner_Scan(t *testing.T) {
 					token: scanner.TIDENT,
 					text:  "service",
 					pos: scanner.Position{
-						Offset: 0,
-						Line:   1,
-						Column: 1,
+						Position: meta.Position{
+							Offset: 0,
+							Line:   1,
+							Column: 1,
+						},
 					},
 				},
 				{
 					token: scanner.TIDENT,
 					text:  "s1928",
 					pos: scanner.Position{
-						Offset: 8,
-						Line:   1,
-						Column: 9,
+						Position: meta.Position{
+
+							Offset: 8,
+							Line:   1,
+							Column: 9,
+						},
 					},
 				},
 				{
 					token: scanner.TIDENT,
 					text:  "s_a",
 					pos: scanner.Position{
-						Offset: 14,
-						Line:   1,
-						Column: 15,
+						Position: meta.Position{
+
+							Offset: 14,
+							Line:   1,
+							Column: 15,
+						},
 					},
 				},
 				{
 					token: scanner.TILLEGAL,
 					text:  "1",
 					pos: scanner.Position{
-						Offset: 18,
-						Line:   1,
-						Column: 19,
+						Position: meta.Position{
+
+							Offset: 18,
+							Line:   1,
+							Column: 19,
+						},
 					},
 				},
 				{
 					token: scanner.TIDENT,
 					text:  "ac",
 					pos: scanner.Position{
-						Offset: 19,
-						Line:   1,
-						Column: 20,
+						Position: meta.Position{
+
+							Offset: 19,
+							Line:   1,
+							Column: 20,
+						},
 					},
 				},
 				{
 					token: scanner.TILLEGAL,
 					text:  "-",
 					pos: scanner.Position{
-						Offset: 21,
-						Line:   1,
-						Column: 22,
+						Position: meta.Position{
+
+							Offset: 21,
+							Line:   1,
+							Column: 22,
+						},
 					},
 				},
 				{
 					token: scanner.TIDENT,
 					text:  "_s_a",
 					pos: scanner.Position{
-						Offset: 23,
-						Line:   1,
-						Column: 24,
+						Position: meta.Position{
+
+							Offset: 23,
+							Line:   1,
+							Column: 24,
+						},
 					},
 				},
 			},
@@ -106,45 +127,60 @@ func TestScanner_Scan(t *testing.T) {
 					token: scanner.TBOOLLIT,
 					text:  "true",
 					pos: scanner.Position{
-						Offset: 0,
-						Line:   1,
-						Column: 1,
+						Position: meta.Position{
+
+							Offset: 0,
+							Line:   1,
+							Column: 1,
+						},
 					},
 				},
 				{
 					token: scanner.TDOT,
 					text:  ".",
 					pos: scanner.Position{
-						Offset: 4,
-						Line:   1,
-						Column: 5,
+						Position: meta.Position{
+
+							Offset: 4,
+							Line:   1,
+							Column: 5,
+						},
 					},
 				},
 				{
 					token: scanner.TBOOLLIT,
 					text:  "false",
 					pos: scanner.Position{
-						Offset: 5,
-						Line:   1,
-						Column: 6,
+						Position: meta.Position{
+
+							Offset: 5,
+							Line:   1,
+							Column: 6,
+						},
 					},
 				},
 				{
 					token: scanner.TCOMMA,
 					text:  ",",
 					pos: scanner.Position{
-						Offset: 10,
-						Line:   1,
-						Column: 11,
+						Position: meta.Position{
+
+							Offset: 10,
+							Line:   1,
+							Column: 11,
+						},
 					},
 				},
 				{
 					token: scanner.TIDENT,
 					text:  "talse",
 					pos: scanner.Position{
-						Offset: 11,
-						Line:   1,
-						Column: 12,
+						Position: meta.Position{
+
+							Offset: 11,
+							Line:   1,
+							Column: 12,
+						},
 					},
 				},
 			},
@@ -158,27 +194,36 @@ func TestScanner_Scan(t *testing.T) {
 					token: scanner.TIDENT,
 					text:  "true",
 					pos: scanner.Position{
-						Offset: 0,
-						Line:   1,
-						Column: 1,
+						Position: meta.Position{
+
+							Offset: 0,
+							Line:   1,
+							Column: 1,
+						},
 					},
 				},
 				{
 					token: scanner.TSERVICE,
 					text:  "service",
 					pos: scanner.Position{
-						Offset: 5,
-						Line:   1,
-						Column: 6,
+						Position: meta.Position{
+
+							Offset: 5,
+							Line:   1,
+							Column: 6,
+						},
 					},
 				},
 				{
 					token: scanner.TRPC,
 					text:  "rpc",
 					pos: scanner.Position{
-						Offset: 13,
-						Line:   1,
-						Column: 14,
+						Position: meta.Position{
+
+							Offset: 13,
+							Line:   1,
+							Column: 14,
+						},
 					},
 				},
 			},
@@ -200,27 +245,36 @@ fugafuga
 					token: scanner.TCOMMENT,
 					text:  "// hogehoge",
 					pos: scanner.Position{
-						Offset: 1,
-						Line:   2,
-						Column: 1,
+						Position: meta.Position{
+
+							Offset: 1,
+							Line:   2,
+							Column: 1,
+						},
 					},
 				},
 				{
 					token: scanner.TIDENT,
 					text:  "hogehoge",
 					pos: scanner.Position{
-						Offset: 13,
-						Line:   3,
-						Column: 1,
+						Position: meta.Position{
+
+							Offset: 13,
+							Line:   3,
+							Column: 1,
+						},
 					},
 				},
 				{
 					token: scanner.TCOMMENT,
 					text:  "//",
 					pos: scanner.Position{
-						Offset: 22,
-						Line:   4,
-						Column: 1,
+						Position: meta.Position{
+
+							Offset: 22,
+							Line:   4,
+							Column: 1,
+						},
 					},
 				},
 				{
@@ -229,18 +283,24 @@ fugafuga
 fugafuga
 */`,
 					pos: scanner.Position{
-						Offset: 25,
-						Line:   5,
-						Column: 1,
+						Position: meta.Position{
+
+							Offset: 25,
+							Line:   5,
+							Column: 1,
+						},
 					},
 				},
 				{
 					token: scanner.TCOMMENT,
 					text:  "/**/",
 					pos: scanner.Position{
-						Offset: 40,
-						Line:   8,
-						Column: 1,
+						Position: meta.Position{
+
+							Offset: 40,
+							Line:   8,
+							Column: 1,
+						},
 					},
 				},
 			},
@@ -254,54 +314,72 @@ fugafuga
 					token: scanner.TSTRLIT,
 					text:  `""`,
 					pos: scanner.Position{
-						Offset: 0,
-						Line:   1,
-						Column: 1,
+						Position: meta.Position{
+
+							Offset: 0,
+							Line:   1,
+							Column: 1,
+						},
 					},
 				},
 				{
 					token: scanner.TSTRLIT,
 					text:  `''`,
 					pos: scanner.Position{
-						Offset: 3,
-						Line:   1,
-						Column: 4,
+						Position: meta.Position{
+
+							Offset: 3,
+							Line:   1,
+							Column: 4,
+						},
 					},
 				},
 				{
 					token: scanner.TSTRLIT,
 					text:  `"abc"`,
 					pos: scanner.Position{
-						Offset: 6,
-						Line:   1,
-						Column: 7,
+						Position: meta.Position{
+
+							Offset: 6,
+							Line:   1,
+							Column: 7,
+						},
 					},
 				},
 				{
 					token: scanner.TSTRLIT,
 					text:  `'あいう'`,
 					pos: scanner.Position{
-						Offset: 12,
-						Line:   1,
-						Column: 13,
+						Position: meta.Position{
+
+							Offset: 12,
+							Line:   1,
+							Column: 13,
+						},
 					},
 				},
 				{
 					token: scanner.TSTRLIT,
 					text:  `"\x1fzz"`,
 					pos: scanner.Position{
-						Offset: 24,
-						Line:   1,
-						Column: 19,
+						Position: meta.Position{
+
+							Offset: 24,
+							Line:   1,
+							Column: 19,
+						},
 					},
 				},
 				{
 					token: scanner.TSTRLIT,
 					text:  `'\123\n\\'`,
 					pos: scanner.Position{
-						Offset: 33,
-						Line:   1,
-						Column: 28,
+						Position: meta.Position{
+
+							Offset: 33,
+							Line:   1,
+							Column: 28,
+						},
 					},
 				},
 			},
@@ -315,63 +393,84 @@ fugafuga
 					token: scanner.TINTLIT,
 					text:  "1",
 					pos: scanner.Position{
-						Offset: 0,
-						Line:   1,
-						Column: 1,
+						Position: meta.Position{
+
+							Offset: 0,
+							Line:   1,
+							Column: 1,
+						},
 					},
 				},
 				{
 					token: scanner.TINTLIT,
 					text:  "10",
 					pos: scanner.Position{
-						Offset: 2,
-						Line:   1,
-						Column: 3,
+						Position: meta.Position{
+
+							Offset: 2,
+							Line:   1,
+							Column: 3,
+						},
 					},
 				},
 				{
 					token: scanner.TINTLIT,
 					text:  "9999",
 					pos: scanner.Position{
-						Offset: 5,
-						Line:   1,
-						Column: 6,
+						Position: meta.Position{
+
+							Offset: 5,
+							Line:   1,
+							Column: 6,
+						},
 					},
 				},
 				{
 					token: scanner.TINTLIT,
 					text:  "07",
 					pos: scanner.Position{
-						Offset: 10,
-						Line:   1,
-						Column: 11,
+						Position: meta.Position{
+
+							Offset: 10,
+							Line:   1,
+							Column: 11,
+						},
 					},
 				},
 				{
 					token: scanner.TINTLIT,
 					text:  "0123",
 					pos: scanner.Position{
-						Offset: 13,
-						Line:   1,
-						Column: 14,
+						Position: meta.Position{
+
+							Offset: 13,
+							Line:   1,
+							Column: 14,
+						},
 					},
 				},
 				{
 					token: scanner.TINTLIT,
 					text:  "0xf",
 					pos: scanner.Position{
-						Offset: 18,
-						Line:   1,
-						Column: 19,
+						Position: meta.Position{
+
+							Offset: 18,
+							Line:   1,
+							Column: 19,
+						},
 					},
 				},
 				{
 					token: scanner.TINTLIT,
 					text:  "0X123",
 					pos: scanner.Position{
-						Offset: 22,
-						Line:   1,
-						Column: 23,
+						Position: meta.Position{
+
+							Offset: 22,
+							Line:   1,
+							Column: 23,
+						},
 					},
 				},
 			},
@@ -385,99 +484,132 @@ fugafuga
 					token: scanner.TFLOATLIT,
 					text:  "1.0",
 					pos: scanner.Position{
-						Offset: 0,
-						Line:   1,
-						Column: 1,
+						Position: meta.Position{
+
+							Offset: 0,
+							Line:   1,
+							Column: 1,
+						},
 					},
 				},
 				{
 					token: scanner.TFLOATLIT,
 					text:  "99.9",
 					pos: scanner.Position{
-						Offset: 4,
-						Line:   1,
-						Column: 5,
+						Position: meta.Position{
+
+							Offset: 4,
+							Line:   1,
+							Column: 5,
+						},
 					},
 				},
 				{
 					token: scanner.TFLOATLIT,
 					text:  "99.999",
 					pos: scanner.Position{
-						Offset: 9,
-						Line:   1,
-						Column: 10,
+						Position: meta.Position{
+
+							Offset: 9,
+							Line:   1,
+							Column: 10,
+						},
 					},
 				},
 				{
 					token: scanner.TFLOATLIT,
 					text:  "0.11",
 					pos: scanner.Position{
-						Offset: 16,
-						Line:   1,
-						Column: 17,
+						Position: meta.Position{
+
+							Offset: 16,
+							Line:   1,
+							Column: 17,
+						},
 					},
 				},
 				{
 					token: scanner.TFLOATLIT,
 					text:  ".101",
 					pos: scanner.Position{
-						Offset: 21,
-						Line:   1,
-						Column: 22,
+						Position: meta.Position{
+
+							Offset: 21,
+							Line:   1,
+							Column: 22,
+						},
 					},
 				},
 				{
 					token: scanner.TFLOATLIT,
 					text:  "1.234e5",
 					pos: scanner.Position{
-						Offset: 26,
-						Line:   1,
-						Column: 27,
+						Position: meta.Position{
+
+							Offset: 26,
+							Line:   1,
+							Column: 27,
+						},
 					},
 				},
 				{
 					token: scanner.TFLOATLIT,
 					text:  "1928e10",
 					pos: scanner.Position{
-						Offset: 34,
-						Line:   1,
-						Column: 35,
+						Position: meta.Position{
+
+							Offset: 34,
+							Line:   1,
+							Column: 35,
+						},
 					},
 				},
 				{
 					token: scanner.TFLOATLIT,
 					text:  "100.234E+15",
 					pos: scanner.Position{
-						Offset: 42,
-						Line:   1,
-						Column: 43,
+						Position: meta.Position{
+
+							Offset: 42,
+							Line:   1,
+							Column: 43,
+						},
 					},
 				},
 				{
 					token: scanner.TFLOATLIT,
 					text:  "1.234e-5",
 					pos: scanner.Position{
-						Offset: 54,
-						Line:   1,
-						Column: 55,
+						Position: meta.Position{
+
+							Offset: 54,
+							Line:   1,
+							Column: 55,
+						},
 					},
 				},
 				{
 					token: scanner.TFLOATLIT,
 					text:  "inf",
 					pos: scanner.Position{
-						Offset: 63,
-						Line:   1,
-						Column: 64,
+						Position: meta.Position{
+
+							Offset: 63,
+							Line:   1,
+							Column: 64,
+						},
 					},
 				},
 				{
 					token: scanner.TFLOATLIT,
 					text:  "nan",
 					pos: scanner.Position{
-						Offset: 67,
-						Line:   1,
-						Column: 68,
+						Position: meta.Position{
+
+							Offset: 67,
+							Line:   1,
+							Column: 68,
+						},
 					},
 				},
 			},
