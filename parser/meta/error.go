@@ -4,6 +4,7 @@ package meta
 
 import "fmt"
 
+// Error is the error type returned for all scanning/lexing/parsing related errors.
 type Error struct {
 	Pos      Position
 	Expected string
@@ -20,6 +21,7 @@ func (e *Error) Error() string {
 	return fmt.Sprintf("found %s but expected [%s] at %s:%d", e.Found, e.Expected, e.occuredIn, e.occuredAt)
 }
 
+// SetOccured sets the file and the line number at which the error was raised (through runtime.Caller).
 func (e *Error) SetOccured(occuredIn string, occuredAt int) {
 	e.occuredIn = occuredIn
 	e.occuredAt = occuredAt
