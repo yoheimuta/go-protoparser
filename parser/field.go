@@ -110,7 +110,7 @@ func (p *Parser) ParseField() (*Field, error) {
 		FieldName:    fieldName,
 		FieldNumber:  fieldNumber,
 		FieldOptions: fieldOptions,
-		Meta:         meta.NewMeta(startPos),
+		Meta:         meta.Meta{Pos: startPos.Position},
 	}, nil
 }
 

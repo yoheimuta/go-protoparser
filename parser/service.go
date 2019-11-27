@@ -124,7 +124,10 @@ func (p *Parser) ParseService() (*Service, error) {
 		ServiceName:                  serviceName,
 		ServiceBody:                  serviceBody,
 		InlineCommentBehindLeftCurly: inlineLeftCurly,
-		Meta:                         meta.NewMetaWithLastPos(startPos, lastPos),
+		Meta: meta.Meta{
+			Pos:     startPos.Position,
+			LastPos: lastPos.Position,
+		},
 	}, nil
 }
 
@@ -260,7 +263,10 @@ func (p *Parser) parseRPC() (*RPC, error) {
 		RPCRequest:  rpcRequest,
 		RPCResponse: rpcResponse,
 		Options:     opts,
-		Meta:        meta.NewMetaWithLastPos(startPos, lastPos),
+		Meta: meta.Meta{
+			Pos:     startPos.Position,
+			LastPos: lastPos.Position,
+		},
 	}, nil
 }
 
@@ -293,7 +299,7 @@ func (p *Parser) parseRPCRequest() (*RPCRequest, error) {
 	return &RPCRequest{
 		IsStream:    isStream,
 		MessageType: messageType,
-		Meta:        meta.NewMeta(startPos),
+		Meta:        meta.Meta{Pos: startPos.Position},
 	}, nil
 }
 
@@ -326,7 +332,7 @@ func (p *Parser) parseRPCResponse() (*RPCResponse, error) {
 	return &RPCResponse{
 		IsStream:    isStream,
 		MessageType: messageType,
-		Meta:        meta.NewMeta(startPos),
+		Meta:        meta.Meta{Pos: startPos.Position},
 	}, nil
 }
 

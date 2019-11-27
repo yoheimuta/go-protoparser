@@ -59,6 +59,6 @@ func (p *Parser) ParsePackage() (*Package, error) {
 
 	return &Package{
 		Name: ident,
-		Meta: meta.NewMeta(startPos),
+		Meta: meta.Meta{Pos: startPos.Position},
 	}, nil
 }

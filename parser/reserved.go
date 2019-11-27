@@ -96,7 +96,7 @@ func (p *Parser) ParseReserved() (*Reserved, error) {
 	return &Reserved{
 		Ranges:     ranges,
 		FieldNames: fieldNames,
-		Meta:       meta.NewMeta(startPos),
+		Meta:       meta.Meta{Pos: startPos.Position},
 	}, nil
 }
 

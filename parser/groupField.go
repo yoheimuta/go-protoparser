@@ -113,7 +113,10 @@ func (p *Parser) ParseGroupField() (*GroupField, error) {
 		MessageBody: messageBody,
 
 		InlineCommentBehindLeftCurly: inlineLeftCurly,
-		Meta:                         meta.NewMetaWithLastPos(startPos, lastPos),
+		Meta: meta.Meta{
+			Pos:     startPos.Position,
+			LastPos: lastPos.Position,
+		},
 	}, nil
 }
 

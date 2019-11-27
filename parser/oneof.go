@@ -159,7 +159,10 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 		OneofName:                    oneofName,
 		Options:                      options,
 		InlineCommentBehindLeftCurly: inlineLeftCurly,
-		Meta:                         meta.NewMetaWithLastPos(startPos, lastPos),
+		Meta: meta.Meta{
+			Pos:     startPos.Position,
+			LastPos: lastPos.Position,
+		},
 	}, nil
 }
 
@@ -202,6 +205,6 @@ func (p *Parser) parseOneofField() (*OneofField, error) {
 		FieldName:    fieldName,
 		FieldNumber:  fieldNumber,
 		FieldOptions: fieldOptions,
-		Meta:         meta.NewMeta(startPos),
+		Meta:         meta.Meta{Pos: startPos.Position},
 	}, nil
 }

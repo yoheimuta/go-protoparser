@@ -65,7 +65,7 @@ func (p *Parser) parseComment() (*Comment, error) {
 	if p.lex.Token == scanner.TCOMMENT {
 		return &Comment{
 			Raw:  p.lex.Text,
-			Meta: meta.NewMeta(p.lex.Pos),
+			Meta: meta.Meta{Pos: p.lex.Pos.Position},
 		}, nil
 	}
 	defer p.lex.UnNext()
