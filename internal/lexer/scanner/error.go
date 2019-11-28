@@ -3,7 +3,7 @@ package scanner
 import (
 	"runtime"
 
-	"github.com/yoheimuta/go-protoparser/parser/meta"
+	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 )
 
 func (s *Scanner) unexpected(found rune, expected string) error {

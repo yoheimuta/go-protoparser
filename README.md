@@ -1,17 +1,17 @@
-# go-protoparser [![GoDoc](https://godoc.org/github.com/yoheimuta/go-protoparser?status.svg)](https://godoc.org/github.com/yoheimuta/go-protoparser)[![CircleCI](https://circleci.com/gh/yoheimuta/go-protoparser/tree/master.svg?style=svg)](https://circleci.com/gh/yoheimuta/go-protoparser/tree/master)[![Go Report Card](https://goreportcard.com/badge/github.com/yoheimuta/go-protoparser)](https://goreportcard.com/report/github.com/yoheimuta/go-protoparser)[![Release](http://img.shields.io/github/release/yoheimuta/go-protoparser.svg?style=flat)](https://github.com/yoheimuta/go-protoparser/releases/latest)[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/yoheimuta/go-protoparser/blob/master/LICENSE.md)
+# go-protoparser [![GoDoc](https://godoc.org/github.com/yoheimuta/go-protoparser/v4?status.svg)](https://godoc.org/github.com/yoheimuta/go-protoparser/v4)[![CircleCI](https://circleci.com/gh/yoheimuta/go-protoparser/tree/master.svg?style=svg)](https://circleci.com/gh/yoheimuta/go-protoparser/tree/master)[![Go Report Card](https://goreportcard.com/badge/github.com/yoheimuta/go-protoparser/v4)](https://goreportcard.com/report/github.com/yoheimuta/go-protoparser/v4)[![Release](http://img.shields.io/github/release/yoheimuta/go-protoparser.svg?style=flat)](https://github.com/yoheimuta/go-protoparser/releases/latest)[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/yoheimuta/go-protoparser/blob/master/LICENSE.md)
 
 go-protoparser is a yet another Go package which parses a Protocol Buffer file (proto2+proto3).
 
 - Conforms to the exactly [official spec](https://developers.google.com/protocol-buffers/docs/reference/proto3-spec).
 - Undergone rigorous testing. The parser can parses all examples of the official spec well.
-- Easy to use the parser. You can just call the [Parse function](https://godoc.org/github.com/yoheimuta/go-protoparser#Parse) and receive the [Proto struct](https://godoc.org/github.com/yoheimuta/go-protoparser/parser#Proto).
-  - If you don't care about the order of body elements, consider to use the [unordered.Proto struct](https://godoc.org/github.com/yoheimuta/go-protoparser/interpret/unordered#Proto).
-  - Or if you want to use the visitor pattern, use the [Visitor struct](https://godoc.org/github.com/yoheimuta/go-protoparser/parser#Visitor).
+- Easy to use the parser. You can just call the [Parse function](https://godoc.org/github.com/yoheimuta/go-protoparser/v4#Parse) and receive the [Proto struct](https://godoc.org/github.com/yoheimuta/go-protoparser/v4/parser#Proto).
+  - If you don't care about the order of body elements, consider to use the [unordered.Proto struct](https://godoc.org/github.com/yoheimuta/go-protoparser/v4/interpret/unordered#Proto).
+  - Or if you want to use the visitor pattern, use the [Visitor struct](https://godoc.org/github.com/yoheimuta/go-protoparser/v4/parser#Visitor).
 
 ### Installation
 
 ```
-go get github.com/yoheimuta/go-protoparser
+go get github.com/yoheimuta/go-protoparser/v4
 ```
 
 ### Example

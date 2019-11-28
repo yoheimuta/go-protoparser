@@ -1,8 +1,8 @@
 package parser
 
 import (
-	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
-	"github.com/yoheimuta/go-protoparser/parser/meta"
+	"github.com/yoheimuta/go-protoparser/v4/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 )
 
 // FieldOption is an option for the field.

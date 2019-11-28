@@ -3,7 +3,7 @@ package lexer
 import (
 	"runtime"
 
-	"github.com/yoheimuta/go-protoparser/parser/meta"
+	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 )
 
 func (lex *Lexer) unexpected(found, expected string) error {

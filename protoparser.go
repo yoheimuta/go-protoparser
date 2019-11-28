@@ -3,9 +3,9 @@ package protoparser
 import (
 	"io"
 
-	"github.com/yoheimuta/go-protoparser/internal/lexer"
-	"github.com/yoheimuta/go-protoparser/interpret/unordered"
-	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/v4/internal/lexer"
+	"github.com/yoheimuta/go-protoparser/v4/interpret/unordered"
+	"github.com/yoheimuta/go-protoparser/v4/parser"
 )
 
 // ParseConfig is a config for parser.

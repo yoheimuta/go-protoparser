@@ -5,10 +5,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yoheimuta/go-protoparser/internal/lexer"
-	"github.com/yoheimuta/go-protoparser/internal/util_test"
-	"github.com/yoheimuta/go-protoparser/parser"
-	"github.com/yoheimuta/go-protoparser/parser/meta"
+	"github.com/yoheimuta/go-protoparser/v4/internal/lexer"
+	"github.com/yoheimuta/go-protoparser/v4/internal/util_test"
+	"github.com/yoheimuta/go-protoparser/v4/parser"
+	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 )
 
 func TestParser_ParseOneof(t *testing.T) {
@@ -368,7 +368,7 @@ func TestParser_ParseOneof(t *testing.T) {
 			},
 		},
 		{
-			name: "accept options. See https://github.com/yoheimuta/go-protoparser/issues/39",
+			name: "accept options. See https://github.com/yoheimuta/go-protoparser/v4/issues/39",
 			input: `oneof something {
   option (validator.oneof) = {required: true};
   uint32 three_int = 5 [(validator.field) = {int_gt: 20}];

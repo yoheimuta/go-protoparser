@@ -5,11 +5,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yoheimuta/go-protoparser/parser/meta"
+	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 
-	"github.com/yoheimuta/go-protoparser/internal/lexer"
-	"github.com/yoheimuta/go-protoparser/internal/util_test"
-	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/v4/internal/lexer"
+	"github.com/yoheimuta/go-protoparser/v4/internal/util_test"
+	"github.com/yoheimuta/go-protoparser/v4/parser"
 )
 
 func TestParser_ParseGroupField(t *testing.T) {

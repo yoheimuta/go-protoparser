@@ -1,6 +1,6 @@
 package parser
 
-import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+import "github.com/yoheimuta/go-protoparser/v4/internal/lexer/scanner"
 
 // ProtoMeta represents a meta information about the Proto.
 type ProtoMeta struct {

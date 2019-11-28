@@ -3,8 +3,8 @@ package parser
 import (
 	"fmt"
 
-	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
-	"github.com/yoheimuta/go-protoparser/parser/meta"
+	"github.com/yoheimuta/go-protoparser/v4/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 )
 
 type parseEnumBodyStatementErr struct {
@@ -174,7 +174,7 @@ func (p *Parser) parseEnumBody() (
 
 			lastPos := p.lex.Pos
 			if p.permissive {
-				// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
+				// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/v4/issues/30.
 				p.lex.ConsumeToken(scanner.TSEMICOLON)
 				if p.lex.Token == scanner.TSEMICOLON {
 					lastPos = p.lex.Pos

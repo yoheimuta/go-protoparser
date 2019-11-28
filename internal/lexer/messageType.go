@@ -1,6 +1,6 @@
 package lexer
 
-import "github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+import "github.com/yoheimuta/go-protoparser/v4/internal/lexer/scanner"
 
 // ReadMessageType reads a messageType.
 // messageType = [ "." ] { ident "." } messageName
