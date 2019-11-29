@@ -1,24 +1,9 @@
 package parser
 
 import (
-	"fmt"
-
 	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
-
-type parseMessageBodyStatementErr struct {
-	parseFieldErr          error
-	parseEmptyStatementErr error
-}
-
-func (e *parseMessageBodyStatementErr) Error() string {
-	return fmt.Sprintf(
-		"%v:%v",
-		e.parseFieldErr,
-		e.parseEmptyStatementErr,
-	)
-}
 
 // Message consists of a message name and a message body.
 type Message struct {
@@ -216,7 +201,6 @@ func (p *Parser) parseMessageBody() (
 			extensions.Comments = comments
 			stmt = extensions
 		default:
-			var ferr error
 			isGroup := p.peekIsGroup()
 			if isGroup {
 				groupField, groupErr := p.ParseGroupField()
@@ -225,7 +209,6 @@ func (p *Parser) parseMessageBody() (
 					stmt = groupField
 					break
 				}
-				ferr = groupErr
 				p.lex.UnNext()
 			} else {
 				field, fieldErr := p.ParseField()
@@ -234,7 +217,6 @@ func (p *Parser) parseMessageBody() (
 					stmt = field
 					break
 				}
-				ferr = fieldErr
 				p.lex.UnNext()
 			}
 
@@ -244,10 +226,7 @@ func (p *Parser) parseMessageBody() (
 				break
 			}
 
-			return nil, nil, scanner.Position{}, &parseMessageBodyStatementErr{
-				parseFieldErr:          ferr,
-				parseEmptyStatementErr: emptyErr,
-			}
+			return nil, nil, scanner.Position{}, emptyErr
 		}
 
 		p.MaybeScanInlineComment(stmt)

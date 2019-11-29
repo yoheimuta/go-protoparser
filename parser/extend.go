@@ -1,24 +1,9 @@
 package parser
 
 import (
-	"fmt"
-
 	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
-
-type parseExtendBodyStatementErr struct {
-	parseFieldErr          error
-	parseEmptyStatementErr error
-}
-
-func (e *parseExtendBodyStatementErr) Error() string {
-	return fmt.Sprintf(
-		"%v:%v",
-		e.parseFieldErr,
-		e.parseEmptyStatementErr,
-	)
-}
 
 // Extend consists of a messageType and an extend body.
 type Extend struct {
@@ -172,10 +157,17 @@ func (p *Parser) parseExtendBody() (
 				break
 			}
 
-			return nil, nil, scanner.Position{}, &parseExtendBodyStatementErr{
-				parseFieldErr:          fieldErr,
-				parseEmptyStatementErr: emptyErr,
+			metaFieldErr := fieldErr.(*meta.Error)
+			return nil, nil, scanner.Position{}, &meta.Error{
+				Pos:      metaFieldErr.Pos,
+				Expected: "",
+				Found:    "",
 			}
+
+			//&parseStatementErr{
+			//	parseFieldErr:          fieldErr,
+			//	parseEmptyStatementErr: emptyErr,
+			//}
 		}
 
 		p.MaybeScanInlineComment(stmt)

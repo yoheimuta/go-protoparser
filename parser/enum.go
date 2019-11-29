@@ -1,24 +1,9 @@
 package parser
 
 import (
-	"fmt"
-
 	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
-
-type parseEnumBodyStatementErr struct {
-	parseEnumFieldErr      error
-	parseEmptyStatementErr error
-}
-
-func (e *parseEnumBodyStatementErr) Error() string {
-	return fmt.Sprintf(
-		"%v:%v",
-		e.parseEnumFieldErr,
-		e.parseEmptyStatementErr,
-	)
-}
 
 // EnumValueOption is an option of a enumField.
 type EnumValueOption struct {
@@ -211,10 +196,12 @@ func (p *Parser) parseEnumBody() (
 				break
 			}
 
-			return nil, nil, scanner.Position{}, &parseEnumBodyStatementErr{
-				parseEnumFieldErr:      enumFieldErr,
-				parseEmptyStatementErr: emptyErr,
-			}
+			return nil, nil, scanner.Position{}, emptyErr
+
+			//&parseStatementErr{
+			//	parseFieldErr:          enumFieldErr,
+			//	parseEmptyStatementErr: emptyErr,
+			//}
 		}
 
 		p.MaybeScanInlineComment(stmt)
