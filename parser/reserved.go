@@ -1,20 +1,9 @@
 package parser
 
 import (
-	"fmt"
-
 	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
 	"github.com/yoheimuta/go-protoparser/parser/meta"
 )
-
-type parseReservedErr struct {
-	parseRangesErr     error
-	parseFieldNamesErr error
-}
-
-func (e *parseReservedErr) Error() string {
-	return fmt.Sprintf("%v:%v", e.parseRangesErr, e.parseFieldNamesErr)
-}
 
 // Range is a range of field numbers. End is an optional value.
 type Range struct {
@@ -77,10 +66,7 @@ func (p *Parser) ParseReserved() (*Reserved, error) {
 			return nil, fieldNames, nil
 		}
 
-		return nil, nil, &parseReservedErr{
-			parseRangesErr:     err,
-			parseFieldNamesErr: ferr,
-		}
+		return nil, nil, ferr
 	}
 
 	ranges, fieldNames, err := parse()
