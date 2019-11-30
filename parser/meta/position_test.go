@@ -3,7 +3,7 @@ package meta_test
 import (
 	"testing"
 
-	"github.com/yoheimuta/go-protoparser/parser/meta"
+	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 )
 
 func TestPosition_String(t *testing.T) {

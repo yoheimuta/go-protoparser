@@ -4,9 +4,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/yoheimuta/go-protoparser/interpret/unordered"
-	"github.com/yoheimuta/go-protoparser/parser"
-	"github.com/yoheimuta/go-protoparser/parser/meta"
+	"github.com/yoheimuta/go-protoparser/v4/interpret/unordered"
+	"github.com/yoheimuta/go-protoparser/v4/parser"
+	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 )
 
 func TestInterpretMessage(t *testing.T) {

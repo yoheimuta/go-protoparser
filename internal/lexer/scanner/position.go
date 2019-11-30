@@ -3,7 +3,7 @@ package scanner
 import (
 	"unicode/utf8"
 
-	"github.com/yoheimuta/go-protoparser/parser/meta"
+	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 )
 
 // Position represents a source position.

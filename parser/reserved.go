@@ -3,8 +3,8 @@ package parser
 import (
 	"fmt"
 
-	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
-	"github.com/yoheimuta/go-protoparser/parser/meta"
+	"github.com/yoheimuta/go-protoparser/v4/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 )
 
 type parseReservedErr struct {

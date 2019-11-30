@@ -1,8 +1,8 @@
 package parser
 
 import (
-	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
-	"github.com/yoheimuta/go-protoparser/parser/meta"
+	"github.com/yoheimuta/go-protoparser/v4/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 )
 
 // OneofField is a constituent field of oneof.
@@ -119,7 +119,7 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 		token := p.lex.Token
 		p.lex.UnNext()
 		if p.permissive && token == scanner.TOPTION {
-			// accept an option. See https://github.com/yoheimuta/go-protoparser/issues/39.
+			// accept an option. See https://github.com/yoheimuta/go-protoparser/v4/issues/39.
 			option, err := p.ParseOption()
 			if err != nil {
 				return nil, err
@@ -147,7 +147,7 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 
 	lastPos := p.lex.Pos
 	if p.permissive {
-		// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/issues/30.
+		// accept a block followed by semicolon. See https://github.com/yoheimuta/go-protoparser/v4/issues/30.
 		p.lex.ConsumeToken(scanner.TSEMICOLON)
 		if p.lex.Token == scanner.TSEMICOLON {
 			lastPos = p.lex.Pos

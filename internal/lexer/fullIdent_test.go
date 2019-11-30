@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yoheimuta/go-protoparser/internal/lexer"
+	"github.com/yoheimuta/go-protoparser/v4/internal/lexer"
 )
 
 func TestLexer2_ReadFullIdent(t *testing.T) {

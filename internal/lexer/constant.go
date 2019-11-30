@@ -3,7 +3,7 @@ package lexer
 import (
 	"strings"
 
-	"github.com/yoheimuta/go-protoparser/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/v4/internal/lexer/scanner"
 )
 
 // ReadConstant reads a constant. If permissive is true, accepts multiline string literals.

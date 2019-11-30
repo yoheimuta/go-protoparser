@@ -5,7 +5,7 @@ import (
 
 	"testing"
 
-	"github.com/yoheimuta/go-protoparser/parser"
+	"github.com/yoheimuta/go-protoparser/v4/parser"
 )
 
 type protoTestVisitor struct {
