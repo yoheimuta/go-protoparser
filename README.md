@@ -11,7 +11,7 @@ go-protoparser is a yet another Go package which parses a Protocol Buffer file (
 ### Installation
 
 ```
-go get github.com/yoheimuta/go-protoparser/v4
+GO111MODULE=on go get github.com/yoheimuta/go-protoparser/v4
 ```
 
 ### Example
