@@ -8,11 +8,11 @@ func (s *Scanner) scanComment() (string, error) {
 	switch ch {
 	case '/':
 		for ch != '\n' {
-			if s.isEOF() {
-				return lit, s.unexpected(eof, "\n")
-			}
 			lit += string(ch)
 
+			if s.isEOF() {
+				return lit, nil
+			}
 			ch = s.read()
 		}
 	case '*':
