@@ -306,6 +306,26 @@ fugafuga
 			},
 		},
 		{
+			name: "scan a comment without a newline",
+			input: `
+// hogehoge`,
+			mode: scanner.ScanComment,
+			wants: []want{
+				{
+					token: scanner.TCOMMENT,
+					text:  "// hogehoge",
+					pos: scanner.Position{
+						Position: meta.Position{
+
+							Offset: 1,
+							Line:   2,
+							Column: 1,
+						},
+					},
+				},
+			},
+		},
+		{
 			name:  "scan strLits",
 			input: `"" '' "abc" 'あいう' "\x1fzz" '\123\n\\'`,
 			mode:  scanner.ScanStrLit,
