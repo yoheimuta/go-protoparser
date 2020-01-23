@@ -33,8 +33,8 @@ func (pos Position) String() string {
 
 // Advance advances the position value.
 func (pos *Position) Advance(r rune) {
-	len := utf8.RuneLen(r)
-	pos.Offset += len
+	length := utf8.RuneLen(r)
+	pos.Offset += length
 
 	if r == '\n' {
 		pos.columns[pos.Line] = pos.Column
@@ -48,8 +48,8 @@ func (pos *Position) Advance(r rune) {
 
 // Revert reverts the position value.
 func (pos *Position) Revert(r rune) {
-	len := utf8.RuneLen(r)
-	pos.Offset -= len
+	length := utf8.RuneLen(r)
+	pos.Offset -= length
 
 	if r == '\n' {
 		pos.Line--
