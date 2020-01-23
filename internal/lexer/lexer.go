@@ -91,6 +91,14 @@ func (lex *Lexer) Next() {
 	}
 }
 
+// NextN scans the read buffer nth times.
+func (lex *Lexer) NextN(n int) {
+	for 0 < n {
+		lex.Next()
+		n--
+	}
+}
+
 // NextKeywordOrStrLit scans the read buffer with ScanKeyword or ScanStrLit modes.
 func (lex *Lexer) NextKeywordOrStrLit() {
 	lex.nextWithSpecificMode(scanner.ScanKeyword | scanner.ScanStrLit)
@@ -146,6 +154,21 @@ func (lex *Lexer) Peek() scanner.Token {
 	lex.Next()
 	defer lex.UnNext()
 	return lex.Token
+}
+
+// PeekN returns the nth next token with keeping the read buffer unchanged.
+func (lex *Lexer) PeekN(n int) scanner.Token {
+	var lasts [][]rune
+	for 0 < n {
+		lex.Next()
+		lasts = append(lasts, lex.RawText)
+		n--
+	}
+	token := lex.Token
+	for i := len(lasts) - 1; 0 <= i; i-- {
+		lex.UnNextTo(lasts[i])
+	}
+	return token
 }
 
 // UnNext put the latest text back to the read buffer.

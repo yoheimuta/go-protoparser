@@ -188,6 +188,28 @@ option (google.api.http) = {
 				},
 			},
 		},
+		{
+			name: "parses empty fields within an option",
+			input: `
+option (opt) = {
+    empty : {},
+    inner_empty : {
+    	empty : {},
+	},
+};`,
+			permissive: true,
+			wantOption: &parser.Option{
+				OptionName: "(opt)",
+				Constant:   `{empty:{},inner_empty:{empty:{},},}`,
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

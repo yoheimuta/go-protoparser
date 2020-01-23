@@ -194,6 +194,12 @@ func (p *Parser) parseOptionConstant() (constant string, err error) {
 			return "", p.unexpected("constant or permissive mode")
 		}
 
+		// parses empty fields within an option
+		if p.lex.PeekN(2) == scanner.TRIGHTCURLY {
+			p.lex.NextN(2)
+			return "{}", nil
+		}
+
 		constant, err = p.parseCloudEndpointsOptionConstant()
 		if err != nil {
 			return "", err
