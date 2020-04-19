@@ -217,6 +217,61 @@ func TestParser_ParseField(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "parsing fieldOption constant meaning a swagger annotation. Fix #52",
+			input: `string email_id = 1[(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {
+	pattern: "^-!#$%&'*+\/0-9=?A-Z^_a-z{|}~@a-zA-Z0-9\.a-zA-Z+$"
+	max_length: 254
+	min_length: 1
+	description: "Enter user email"
+}];
+`,
+			permissive: true,
+			wantField: &parser.Field{
+				Type:        "string",
+				FieldName:   "email_id",
+				FieldNumber: "1",
+				FieldOptions: []*parser.FieldOption{
+					{
+						OptionName: "(grpc.gateway.protoc_gen_swagger.options.openapiv2_field)",
+						Constant: `{pattern:"^-!#$%&'*+\/0-9=?A-Z^_a-z{|}~@a-zA-Z0-9\.a-zA-Z+$"
+max_length:254
+min_length:1
+description:"Enter user email"}`,
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+				},
+			},
+		},
+		{
+			name:       "parsing fieldOption constant contained in a_bit_of_everything.proto provided by grpc-gateway. Fix #52",
+			input:      `float float_value = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Float value field", default: "0.2", required: ['float_value']}];`,
+			permissive: true,
+			wantField: &parser.Field{
+				Type:        "float",
+				FieldName:   "float_value",
+				FieldNumber: "3",
+				FieldOptions: []*parser.FieldOption{
+					{
+						OptionName: "(grpc.gateway.protoc_gen_swagger.options.openapiv2_field)",
+						Constant:   `{description:"Float value field",default:"0.2",required:['float_value']}`,
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

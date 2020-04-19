@@ -210,6 +210,38 @@ option (opt) = {
 				},
 			},
 		},
+		{
+			name: "parsing the option constant contained in a_bit_of_everything.proto provided by grpc-gateway. Fix #52",
+			input: `
+option (google.api.http) = {
+	put: "/v2/example/a_bit_of_everything/{abe.uuid}"
+	additional_bindings: [
+		{
+			patch: "/v2/example/a_bit_of_everything/{abe.uuid}"
+			body: "abe"
+		},
+		{
+			patch: "/v2a/example/a_bit_of_everything/{abe.uuid}"
+			body: "*"
+		}
+	]
+};`,
+			permissive: true,
+			wantOption: &parser.Option{
+				OptionName: "(google.api.http)",
+				Constant: `{put:"/v2/example/a_bit_of_everything/{abe.uuid}"
+additional_bindings:[{patch:"/v2/example/a_bit_of_everything/{abe.uuid}"
+body:"abe"},{patch:"/v2a/example/a_bit_of_everything/{abe.uuid}"
+body:"*"}]}`,
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

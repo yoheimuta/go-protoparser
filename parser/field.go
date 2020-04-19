@@ -173,76 +173,15 @@ func (p *Parser) parseFieldOption() (*FieldOption, error) {
 		return nil, p.unexpected("=")
 	}
 
-	var constant string
-	switch p.lex.Peek() {
-	// go-proto-validators requires this exception.
-	case scanner.TLEFTCURLY:
-		if !p.permissive {
-			return nil, p.unexpected("constant or permissive mode")
-		}
-
-		constant, err = p.parseGoProtoValidatorFieldOptionConstant()
-		if err != nil {
-			return nil, err
-		}
-	default:
-		constant, _, err = p.lex.ReadConstant(p.permissive)
-		if err != nil {
-			return nil, err
-		}
+	constant, err := p.parseOptionConstant()
+	if err != nil {
+		return nil, err
 	}
 
 	return &FieldOption{
 		OptionName: optionName,
 		Constant:   constant,
 	}, nil
-}
-
-// goProtoValidatorFieldOptionConstant = "{" ident ":" constant { "," ident ":" constant } [ "," ] "}"
-func (p *Parser) parseGoProtoValidatorFieldOptionConstant() (string, error) {
-	var ret string
-
-	p.lex.Next()
-	if p.lex.Token != scanner.TLEFTCURLY {
-		return "", p.unexpected("{")
-	}
-	ret += p.lex.Text
-
-	for {
-		p.lex.Next()
-		if p.lex.Token != scanner.TIDENT {
-			return "", p.unexpected("ident")
-		}
-		ret += p.lex.Text
-
-		p.lex.Next()
-		if p.lex.Token != scanner.TCOLON {
-			return "", p.unexpected(":")
-		}
-		ret += p.lex.Text
-
-		constant, _, err := p.lex.ReadConstant(p.permissive)
-		if err != nil {
-			return "", err
-		}
-		ret += constant
-
-		p.lex.Next()
-		switch {
-		case p.lex.Token == scanner.TCOMMA:
-			ret += p.lex.Text
-			if p.lex.Peek() == scanner.TRIGHTCURLY && p.permissive {
-				p.lex.Next()
-				ret += p.lex.Text
-				return ret, nil
-			}
-		case p.lex.Token == scanner.TRIGHTCURLY:
-			ret += p.lex.Text
-			return ret, nil
-		default:
-			return "", p.unexpected("}")
-		}
-	}
 }
 
 var typeConstants = map[string]struct{}{
