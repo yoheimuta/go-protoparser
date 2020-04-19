@@ -249,6 +249,29 @@ description:"Enter user email"}`,
 				},
 			},
 		},
+		{
+			name:       "parsing fieldOption constant contained in a_bit_of_everything.proto provided by grpc-gateway. Fix #52",
+			input:      `float float_value = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Float value field", default: "0.2", required: ['float_value']}];`,
+			permissive: true,
+			wantField: &parser.Field{
+				Type:        "float",
+				FieldName:   "float_value",
+				FieldNumber: "3",
+				FieldOptions: []*parser.FieldOption{
+					{
+						OptionName: "(grpc.gateway.protoc_gen_swagger.options.openapiv2_field)",
+						Constant:   `{description:"Float value field",default:"0.2",required:['float_value']}`,
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

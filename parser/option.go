@@ -1,6 +1,8 @@
 package parser
 
 import (
+	"strings"
+
 	"github.com/yoheimuta/go-protoparser/v4/internal/lexer/scanner"
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 )
@@ -205,6 +207,25 @@ func (p *Parser) parseOptionConstant() (constant string, err error) {
 			return "", err
 		}
 
+	case scanner.TLEFTSQUARE:
+		if !p.permissive {
+			return "", p.unexpected("constant or permissive mode")
+		}
+		p.lex.Next()
+
+		// parses empty fields within an option
+		if p.lex.Peek() == scanner.TRIGHTSQUARE {
+			p.lex.Next()
+			return "[]", nil
+		}
+
+		constant, err = p.parseOptionConstants()
+		if err != nil {
+			return "", err
+		}
+		p.lex.Next()
+		constant = "[" + constant + "]"
+
 	default:
 		constant, _, err = p.lex.ReadConstant(p.permissive)
 		if err != nil {
@@ -212,4 +233,30 @@ func (p *Parser) parseOptionConstant() (constant string, err error) {
 		}
 	}
 	return constant, nil
+}
+
+// optionConstants = optionConstant { ","  optionConstant }
+func (p *Parser) parseOptionConstants() (constant string, err error) {
+	opt, err := p.parseOptionConstant()
+	if err != nil {
+		return "", err
+	}
+
+	var opts []string
+	opts = append(opts, opt)
+
+	for {
+		p.lex.Next()
+		if p.lex.Token != scanner.TCOMMA {
+			p.lex.UnNext()
+			break
+		}
+
+		opt, err = p.parseOptionConstant()
+		if err != nil {
+			return "", p.unexpected("optionConstant")
+		}
+		opts = append(opts, opt)
+	}
+	return strings.Join(opts, ","), nil
 }
