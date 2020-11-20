@@ -36,7 +36,7 @@ func InterpretService(src *parser.Service) (*Service, error) {
 
 	serviceBody, err := interpretServiceBody(src.ServiceBody)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("invalid Service %s: %w", src.ServiceName, err)
 	}
 	return &Service{
 		ServiceName:                  src.ServiceName,

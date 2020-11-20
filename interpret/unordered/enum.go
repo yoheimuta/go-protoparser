@@ -38,7 +38,7 @@ func InterpretEnum(src *parser.Enum) (*Enum, error) {
 
 	enumBody, err := interpretEnumBody(src.EnumBody)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("invalid Enum %s: %w", src.EnumName, err)
 	}
 	return &Enum{
 		EnumName:                     src.EnumName,
