@@ -43,7 +43,7 @@ func InterpretMessage(src *parser.Message) (*Message, error) {
 
 	messageBody, err := interpretMessageBody(src.MessageBody)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("invalid Message %s: %w", src.MessageName, err)
 	}
 	return &Message{
 		MessageName:                  src.MessageName,
