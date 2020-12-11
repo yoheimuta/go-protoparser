@@ -372,6 +372,7 @@ func main() {
 ### Users
 
 - [protolint](https://github.com/yoheimuta/protolint)
+- [Known importers](https://pkg.go.dev/github.com/yoheimuta/go-protoparser/v4?tab=importedby)
 
 ### Motivation
 
