@@ -222,7 +222,7 @@ func (p *Parser) parseEnumBody() (
 	}
 }
 
-// enumField = ident "=" intLit [ "[" enumValueOption { ","  enumValueOption } "]" ]";"
+// enumField = [ "-" ] ident "=" intLit [ "[" enumValueOption { ","  enumValueOption } "]" ]";"
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#enum_definition
 func (p *Parser) parseEnumField() (*EnumField, error) {
 	p.lex.Next()
@@ -237,11 +237,17 @@ func (p *Parser) parseEnumField() (*EnumField, error) {
 		return nil, p.unexpected("=")
 	}
 
+	var intLit string
+	p.lex.ConsumeToken(scanner.TMINUS)
+	if p.lex.Token == scanner.TMINUS {
+		intLit = "-"
+	}
+
 	p.lex.NextNumberLit()
 	if p.lex.Token != scanner.TINTLIT {
 		return nil, p.unexpected("intLit")
 	}
-	number := p.lex.Text
+	intLit += p.lex.Text
 
 	enumValueOptions, err := p.parseEnumValueOptions()
 	if err != nil {
@@ -255,7 +261,7 @@ func (p *Parser) parseEnumField() (*EnumField, error) {
 
 	return &EnumField{
 		Ident:            ident,
-		Number:           number,
+		Number:           intLit,
 		EnumValueOptions: enumValueOptions,
 		Meta:             meta.Meta{Pos: startPos.Position},
 	}, nil

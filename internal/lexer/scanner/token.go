@@ -36,6 +36,7 @@ const (
 	TGREATER     // >
 	TCOMMA       // ,
 	TDOT         // .
+	TMINUS       // -
 
 	// Keywords
 	TSYNTAX
@@ -78,6 +79,7 @@ func asMiscToken(ch rune) Token {
 		'>':  TGREATER,
 		',':  TCOMMA,
 		'.':  TDOT,
+		'-':  TMINUS,
 	}
 	if t, ok := m[ch]; ok {
 		return t

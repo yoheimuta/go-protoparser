@@ -93,7 +93,7 @@ func TestScanner_Scan(t *testing.T) {
 					},
 				},
 				{
-					token: scanner.TILLEGAL,
+					token: scanner.TMINUS,
 					text:  "-",
 					pos: scanner.Position{
 						Position: meta.Position{
