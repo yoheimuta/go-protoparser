@@ -82,7 +82,7 @@ func (o *Oneof) Accept(v Visitor) {
 }
 
 // ParseOneof parses the oneof.
-//  oneof = "oneof" oneofName "{" { oneofField | emptyStatement } "}"
+//  oneof = "oneof" oneofName "{" { option | oneofField | emptyStatement } "}"
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#oneof_and_oneof_field
 func (p *Parser) ParseOneof() (*Oneof, error) {
@@ -118,8 +118,8 @@ func (p *Parser) ParseOneof() (*Oneof, error) {
 		p.lex.NextKeyword()
 		token := p.lex.Token
 		p.lex.UnNext()
-		if p.permissive && token == scanner.TOPTION {
-			// accept an option. See https://github.com/yoheimuta/go-protoparser/v4/issues/39.
+		if token == scanner.TOPTION {
+			// See https://github.com/yoheimuta/go-protoparser/issues/57
 			option, err := p.ParseOption()
 			if err != nil {
 				return nil, err
