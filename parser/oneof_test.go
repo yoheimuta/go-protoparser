@@ -368,7 +368,7 @@ func TestParser_ParseOneof(t *testing.T) {
 			},
 		},
 		{
-			name: "accept options. See https://github.com/yoheimuta/go-protoparser/v4/issues/39",
+			name: "accept options. See https://github.com/yoheimuta/go-protoparser/issues/39",
 			input: `oneof something {
   option (validator.oneof) = {required: true};
   uint32 three_int = 5 [(validator.field) = {int_gt: 20}];
@@ -457,6 +457,41 @@ func TestParser_ParseOneof(t *testing.T) {
 					LastPos: meta.Position{
 						Offset: 254,
 						Line:   6,
+						Column: 1,
+					},
+				},
+			},
+		},
+		{
+			name: "accept a simple option without a permissive option. See https://github.com/yoheimuta/go-protoparser/issues/57",
+			input: `oneof something {
+  option (my_option).a = true;
+}
+`,
+			wantOneof: &parser.Oneof{
+				Options: []*parser.Option{
+					{
+						OptionName: "(my_option).a",
+						Constant:   "true",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 20,
+								Line:   2,
+								Column: 3,
+							},
+						},
+					},
+				},
+				OneofName: "something",
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 49,
+						Line:   3,
 						Column: 1,
 					},
 				},

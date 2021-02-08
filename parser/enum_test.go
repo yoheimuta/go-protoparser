@@ -552,6 +552,65 @@ func TestParser_ParseEnum(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "parsing a negative enum field",
+			input: `enum TestNegativeValue {
+  NEGATIVE_CONSTANT = -1;
+  ZERO_CONSTANT = 0;
+  POSITIVE_CONSTANT = 1;
+}
+`,
+			wantEnum: &parser.Enum{
+				EnumName: "TestNegativeValue",
+				EnumBody: []parser.Visitee{
+					&parser.EnumField{
+						Ident:  "NEGATIVE_CONSTANT",
+						Number: "-1",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 27,
+								Line:   2,
+								Column: 3,
+							},
+						},
+					},
+					&parser.EnumField{
+						Ident:  "ZERO_CONSTANT",
+						Number: "0",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 53,
+								Line:   3,
+								Column: 3,
+							},
+						},
+					},
+					&parser.EnumField{
+						Ident:  "POSITIVE_CONSTANT",
+						Number: "1",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 74,
+								Line:   4,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 97,
+						Line:   5,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
