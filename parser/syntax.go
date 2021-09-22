@@ -9,6 +9,9 @@ import (
 type Syntax struct {
 	ProtobufVersion string
 
+	// ProtobufVersionQuote includes quotes
+	ProtobufVersionQuote string
+
 	// Comments are the optional ones placed at the beginning.
 	Comments []*Comment
 	// InlineComment is the optional one placed at the ending.
@@ -69,6 +72,7 @@ func (p *Parser) ParseSyntax() (*Syntax, error) {
 	if p.lex.Token != scanner.TQUOTE {
 		return nil, p.unexpected("quote")
 	}
+	lq := p.lex.Text
 
 	p.lex.Next()
 	if p.lex.Text != "proto3" && p.lex.Text != "proto2" {
@@ -80,6 +84,7 @@ func (p *Parser) ParseSyntax() (*Syntax, error) {
 	if p.lex.Token != scanner.TQUOTE {
 		return nil, p.unexpected("quote")
 	}
+	tq := p.lex.Text
 
 	p.lex.Next()
 	if p.lex.Token != scanner.TSEMICOLON {
@@ -87,7 +92,8 @@ func (p *Parser) ParseSyntax() (*Syntax, error) {
 	}
 
 	return &Syntax{
-		ProtobufVersion: version,
-		Meta:            meta.Meta{Pos: startPos.Position},
+		ProtobufVersion:      version,
+		ProtobufVersionQuote: lq + version + tq,
+		Meta:                 meta.Meta{Pos: startPos.Position},
 	}, nil
 }

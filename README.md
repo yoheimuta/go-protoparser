@@ -29,16 +29,21 @@ enum EnumAllowingAlias {
     option allow_alias = true;
     UNKNOWN = 0;
     STARTED = 1;
-    RUNNING = 2 [(custom_option) = "hello world"];
+    RUNNING = 2 [(custom_option) = "this is a "
+                                   "string on two lines"
+                ];
 }
 message outer {
     option (my_option).a = true;
     message inner {   // Level 2
-        int64 ival = 1;
+      int64 ival = 1;
     }
     repeated inner inner_message = 2;
     EnumAllowingAlias enum_field =3;
     map<int32, string> my_map = 4;
+}
+service HelloService {
+  rpc SayHello (HelloRequest) returns (HelloResponse) {};
 }
 ```
 
@@ -48,6 +53,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
 {
   "Syntax": {
     "ProtobufVersion": "proto3",
+    "ProtobufVersionQuote": "\"proto3\"",
     "Comments": null,
     "InlineComment": null,
     "Meta": {
@@ -56,6 +62,12 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
         "Offset": 0,
         "Line": 1,
         "Column": 1
+      },
+      "LastPos": {
+        "Filename": "",
+        "Offset": 0,
+        "Line": 0,
+        "Column": 0
       }
     }
   },
@@ -71,6 +83,12 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
               "Offset": 19,
               "Line": 2,
               "Column": 1
+            },
+            "LastPos": {
+              "Filename": "",
+              "Offset": 0,
+              "Line": 0,
+              "Column": 0
             }
           }
         },
@@ -82,6 +100,12 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
               "Offset": 59,
               "Line": 3,
               "Column": 1
+            },
+            "LastPos": {
+              "Filename": "",
+              "Offset": 0,
+              "Line": 0,
+              "Column": 0
             }
           }
         }
@@ -93,6 +117,12 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Offset": 151,
           "Line": 4,
           "Column": 1
+        },
+        "LastPos": {
+          "Filename": "",
+          "Offset": 0,
+          "Line": 0,
+          "Column": 0
         }
       }
     },
@@ -107,6 +137,12 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Offset": 170,
           "Line": 5,
           "Column": 1
+        },
+        "LastPos": {
+          "Filename": "",
+          "Offset": 0,
+          "Line": 0,
+          "Column": 0
         }
       }
     },
@@ -121,6 +157,12 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Offset": 199,
           "Line": 6,
           "Column": 1
+        },
+        "LastPos": {
+          "Filename": "",
+          "Offset": 0,
+          "Line": 0,
+          "Column": 0
         }
       }
     },
@@ -138,6 +180,12 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
               "Offset": 269,
               "Line": 8,
               "Column": 5
+            },
+            "LastPos": {
+              "Filename": "",
+              "Offset": 0,
+              "Line": 0,
+              "Column": 0
             }
           }
         },
@@ -153,6 +201,12 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
               "Offset": 300,
               "Line": 9,
               "Column": 5
+            },
+            "LastPos": {
+              "Filename": "",
+              "Offset": 0,
+              "Line": 0,
+              "Column": 0
             }
           }
         },
@@ -168,6 +222,12 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
               "Offset": 317,
               "Line": 10,
               "Column": 5
+            },
+            "LastPos": {
+              "Filename": "",
+              "Offset": 0,
+              "Line": 0,
+              "Column": 0
             }
           }
         },
@@ -177,7 +237,7 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "EnumValueOptions": [
             {
               "OptionName": "(custom_option)",
-              "Constant": "\"hello world\""
+              "Constant": "\"this is a string on two lines\""
             }
           ],
           "Comments": null,
@@ -188,6 +248,12 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
               "Offset": 334,
               "Line": 11,
               "Column": 5
+            },
+            "LastPos": {
+              "Filename": "",
+              "Offset": 0,
+              "Line": 0,
+              "Column": 0
             }
           }
         }
@@ -200,6 +266,12 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Filename": "simple.proto",
           "Offset": 240,
           "Line": 7,
+          "Column": 1
+        },
+        "LastPos": {
+          "Filename": "simple.proto",
+          "Offset": 454,
+          "Line": 14,
           "Column": 1
         }
       }
@@ -215,9 +287,15 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Meta": {
             "Pos": {
               "Filename": "simple.proto",
-              "Offset": 403,
-              "Line": 14,
+              "Offset": 476,
+              "Line": 16,
               "Column": 5
+            },
+            "LastPos": {
+              "Filename": "",
+              "Offset": 0,
+              "Line": 0,
+              "Column": 0
             }
           }
         },
@@ -226,6 +304,8 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "MessageBody": [
             {
               "IsRepeated": false,
+              "IsRequired": false,
+              "IsOptional": false,
               "Type": "int64",
               "FieldName": "ival",
               "FieldNumber": "1",
@@ -235,9 +315,15 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
               "Meta": {
                 "Pos": {
                   "Filename": "simple.proto",
-                  "Offset": 471,
-                  "Line": 16,
+                  "Offset": 544,
+                  "Line": 18,
                   "Column": 7
+                },
+                "LastPos": {
+                  "Filename": "",
+                  "Offset": 0,
+                  "Line": 0,
+                  "Column": 0
                 }
               }
             }
@@ -249,23 +335,37 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
             "Meta": {
               "Pos": {
                 "Filename": "simple.proto",
-                "Offset": 454,
-                "Line": 15,
+                "Offset": 527,
+                "Line": 17,
                 "Column": 23
+              },
+              "LastPos": {
+                "Filename": "",
+                "Offset": 0,
+                "Line": 0,
+                "Column": 0
               }
             }
           },
           "Meta": {
             "Pos": {
               "Filename": "simple.proto",
-              "Offset": 436,
-              "Line": 15,
+              "Offset": 509,
+              "Line": 17,
+              "Column": 5
+            },
+            "LastPos": {
+              "Filename": "simple.proto",
+              "Offset": 564,
+              "Line": 19,
               "Column": 5
             }
           }
         },
         {
           "IsRepeated": true,
+          "IsRequired": false,
+          "IsOptional": false,
           "Type": "inner",
           "FieldName": "inner_message",
           "FieldNumber": "2",
@@ -275,14 +375,22 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Meta": {
             "Pos": {
               "Filename": "simple.proto",
-              "Offset": 497,
-              "Line": 18,
+              "Offset": 570,
+              "Line": 20,
               "Column": 5
+            },
+            "LastPos": {
+              "Filename": "",
+              "Offset": 0,
+              "Line": 0,
+              "Column": 0
             }
           }
         },
         {
           "IsRepeated": false,
+          "IsRequired": false,
+          "IsOptional": false,
           "Type": "EnumAllowingAlias",
           "FieldName": "enum_field",
           "FieldNumber": "3",
@@ -292,9 +400,15 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Meta": {
             "Pos": {
               "Filename": "simple.proto",
-              "Offset": 535,
-              "Line": 19,
+              "Offset": 608,
+              "Line": 21,
               "Column": 5
+            },
+            "LastPos": {
+              "Filename": "",
+              "Offset": 0,
+              "Line": 0,
+              "Column": 0
             }
           }
         },
@@ -309,9 +423,15 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
           "Meta": {
             "Pos": {
               "Filename": "simple.proto",
-              "Offset": 572,
-              "Line": 20,
+              "Offset": 645,
+              "Line": 22,
               "Column": 5
+            },
+            "LastPos": {
+              "Filename": "",
+              "Offset": 0,
+              "Line": 0,
+              "Column": 0
             }
           }
         }
@@ -322,8 +442,92 @@ The Parsed result is a Go typed struct. The below output is encoded to JSON for 
       "Meta": {
         "Pos": {
           "Filename": "simple.proto",
-          "Offset": 383,
-          "Line": 13,
+          "Offset": 456,
+          "Line": 15,
+          "Column": 1
+        },
+        "LastPos": {
+          "Filename": "simple.proto",
+          "Offset": 676,
+          "Line": 23,
+          "Column": 1
+        }
+      }
+    },
+    {
+      "ServiceName": "HelloService",
+      "ServiceBody": [
+        {
+          "RPCName": "SayHello",
+          "RPCRequest": {
+            "IsStream": false,
+            "MessageType": "HelloRequest",
+            "Meta": {
+              "Pos": {
+                "Filename": "simple.proto",
+                "Offset": 716,
+                "Line": 25,
+                "Column": 16
+              },
+              "LastPos": {
+                "Filename": "",
+                "Offset": 0,
+                "Line": 0,
+                "Column": 0
+              }
+            }
+          },
+          "RPCResponse": {
+            "IsStream": false,
+            "MessageType": "HelloResponse",
+            "Meta": {
+              "Pos": {
+                "Filename": "simple.proto",
+                "Offset": 739,
+                "Line": 25,
+                "Column": 39
+              },
+              "LastPos": {
+                "Filename": "",
+                "Offset": 0,
+                "Line": 0,
+                "Column": 0
+              }
+            }
+          },
+          "Options": null,
+          "Comments": null,
+          "InlineComment": null,
+          "Meta": {
+            "Pos": {
+              "Filename": "simple.proto",
+              "Offset": 703,
+              "Line": 25,
+              "Column": 3
+            },
+            "LastPos": {
+              "Filename": "simple.proto",
+              "Offset": 757,
+              "Line": 25,
+              "Column": 57
+            }
+          }
+        }
+      ],
+      "Comments": null,
+      "InlineComment": null,
+      "InlineCommentBehindLeftCurly": null,
+      "Meta": {
+        "Pos": {
+          "Filename": "simple.proto",
+          "Offset": 678,
+          "Line": 24,
+          "Column": 1
+        },
+        "LastPos": {
+          "Filename": "simple.proto",
+          "Offset": 759,
+          "Line": 26,
           "Column": 1
         }
       }
