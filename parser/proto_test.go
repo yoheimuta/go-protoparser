@@ -49,7 +49,8 @@ message outer {
 			filename: "official.proto",
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
-					ProtobufVersion: "proto3",
+					ProtobufVersion:      "proto3",
+					ProtobufVersionQuote: `"proto3"`,
 					Meta: meta.Meta{
 						Pos: meta.Position{
 							Filename: "official.proto",
@@ -278,7 +279,8 @@ service SearchService {
 			filename: "service.proto",
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
-					ProtobufVersion: "proto3",
+					ProtobufVersion:      "proto3",
+					ProtobufVersionQuote: `"proto3"`,
 					Meta: meta.Meta{
 						Pos: meta.Position{
 							Filename: "service.proto",
@@ -382,7 +384,8 @@ service SearchService {
 			filename: "comments.proto",
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
-					ProtobufVersion: "proto3",
+					ProtobufVersion:      "proto3",
+					ProtobufVersionQuote: `"proto3"`,
 					Comments: []*parser.Comment{
 						{
 							Raw: `// syntax`,
@@ -663,7 +666,8 @@ service SearchService {
 			filename: "inlineComments.proto",
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
-					ProtobufVersion: "proto3",
+					ProtobufVersion:      "proto3",
+					ProtobufVersionQuote: `"proto3"`,
 					InlineComment: &parser.Comment{
 						Raw: `// syntax`,
 						Meta: meta.Meta{
@@ -910,7 +914,8 @@ service SearchService {
 			filename: "service.proto",
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
-					ProtobufVersion: "proto3",
+					ProtobufVersion:      "proto3",
+					ProtobufVersionQuote: `"proto3"`,
 					Meta: meta.Meta{
 						Pos: meta.Position{
 							Filename: "service.proto",
@@ -999,7 +1004,8 @@ service SearchService {
 			filename:                   "service.proto",
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
-					ProtobufVersion: "proto3",
+					ProtobufVersion:      "proto3",
+					ProtobufVersionQuote: `"proto3"`,
 					Meta: meta.Meta{
 						Pos: meta.Position{
 							Filename: "service.proto",
@@ -1106,7 +1112,8 @@ extend Foo {
 `,
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
-					ProtobufVersion: "proto3",
+					ProtobufVersion:      "proto3",
+					ProtobufVersionQuote: `"proto3"`,
 					Meta: meta.Meta{
 						Pos: meta.Position{
 							Offset: 1,
@@ -1179,7 +1186,8 @@ message foo {
 			filename: "official.proto",
 			wantProto: &parser.Proto{
 				Syntax: &parser.Syntax{
-					ProtobufVersion: "proto2",
+					ProtobufVersion:      "proto2",
+					ProtobufVersionQuote: `"proto2"`,
 					Meta: meta.Meta{
 						Pos: meta.Position{
 							Filename: "official.proto",

@@ -25,7 +25,23 @@ func TestParser_ParseSyntax(t *testing.T) {
 			name:  "parsing an excerpt from the official reference",
 			input: `syntax = "proto3";`,
 			wantSyntax: &parser.Syntax{
-				ProtobufVersion: "proto3",
+				ProtobufVersion:      "proto3",
+				ProtobufVersionQuote: `"proto3"`,
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+				},
+			},
+		},
+		{
+			name:  "parsing a single-quote string",
+			input: `syntax = 'proto3';`,
+			wantSyntax: &parser.Syntax{
+				ProtobufVersion:      "proto3",
+				ProtobufVersionQuote: `'proto3'`,
 				Meta: meta.Meta{
 					Pos: meta.Position{
 						Offset: 0,
@@ -39,7 +55,8 @@ func TestParser_ParseSyntax(t *testing.T) {
 			name:  "parsing an excerpt from the official reference(proto2)",
 			input: `syntax = "proto2";`,
 			wantSyntax: &parser.Syntax{
-				ProtobufVersion: "proto2",
+				ProtobufVersion:      "proto2",
+				ProtobufVersionQuote: `"proto2"`,
 				Meta: meta.Meta{
 					Pos: meta.Position{
 						Offset: 0,
