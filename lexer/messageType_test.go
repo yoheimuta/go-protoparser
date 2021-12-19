@@ -4,10 +4,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yoheimuta/go-protoparser/v4/internal/lexer"
+	"github.com/yoheimuta/go-protoparser/v4/lexer"
 )
 
-func TestLexer2_ReadFullIdent(t *testing.T) {
+func TestLexer2_ReadMessageType(t *testing.T) {
 	tests := []struct {
 		name      string
 		input     string
@@ -17,49 +17,34 @@ func TestLexer2_ReadFullIdent(t *testing.T) {
 	}{
 		{
 			name:      "ident",
-			input:     "foo",
-			wantText:  "foo",
+			input:     "SearchRequest",
+			wantText:  "SearchRequest",
 			wantIsEOF: true,
 		},
 		{
-			name:     "ident;",
-			input:    "foo;",
-			wantText: "foo",
+			name:      ".ident",
+			input:     ".SearchRequest",
+			wantText:  ".SearchRequest",
+			wantIsEOF: true,
+		},
+		{
+			name:      ".ident.ident",
+			input:     ".search.SearchRequest",
+			wantText:  ".search.SearchRequest",
+			wantIsEOF: true,
 		},
 		{
 			name:      "ident.ident",
-			input:     "foo.true",
-			wantText:  "foo.true",
+			input:     "aggregatespb.UserItemAggregate",
+			wantText:  "aggregatespb.UserItemAggregate",
 			wantIsEOF: true,
-		},
-		{
-			name:      "ident.ident.ident.ident",
-			input:     "foo.bar.rpc.fuga",
-			wantText:  "foo.bar.rpc.fuga",
-			wantIsEOF: true,
-		},
-		{
-			name:     "read invalid {.",
-			input:    "{int_gt: 0}",
-			wantText: "{int_gt:0}",
-			wantErr:  true,
-		},
-		{
-			name:    "empty string",
-			input:   "",
-			wantErr: true,
-		},
-		{
-			name:    "ident.",
-			input:   "foo.",
-			wantErr: true,
 		},
 	}
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			lex := lexer.NewLexer(strings.NewReader(test.input))
-			got, pos, err := lex.ReadFullIdent()
+			got, pos, err := lex.ReadMessageType()
 
 			switch {
 			case test.wantErr:
@@ -88,7 +73,7 @@ func TestLexer2_ReadFullIdent(t *testing.T) {
 
 			lex.Next()
 			if lex.IsEOF() != test.wantIsEOF {
-				t.Errorf("got %v, but want %v", lex.IsEOF(), test.wantIsEOF)
+				t.Errorf("got %v(%v)(%v), but want %v", lex.IsEOF(), lex.Token, lex.Text, test.wantIsEOF)
 			}
 		})
 	}
