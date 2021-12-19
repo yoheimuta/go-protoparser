@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yoheimuta/go-protoparser/v4/internal/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/internal/util_test"
+	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 )

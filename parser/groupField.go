@@ -3,7 +3,7 @@ package parser
 import (
 	"unicode/utf8"
 
-	"github.com/yoheimuta/go-protoparser/v4/internal/lexer/scanner"
+	"github.com/yoheimuta/go-protoparser/v4/lexer/scanner"
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
 )
 

@@ -1,6 +1,6 @@
 package lexer
 
-import "github.com/yoheimuta/go-protoparser/v4/internal/lexer/scanner"
+import "github.com/yoheimuta/go-protoparser/v4/lexer/scanner"
 
 // ReadFullIdent reads a fullIdent.
 // fullIdent = ident { "." ident }
