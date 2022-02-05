@@ -242,6 +242,22 @@ body:"*"}]}`,
 				},
 			},
 		},
+		{
+			name:       `parsing "(." fullIdent ")". Fix #63`,
+			input:      `option (.foo.bar.name) = "name";`,
+			permissive: true,
+			wantOption: &parser.Option{
+				OptionName: "(.foo.bar.name)",
+				Constant:   `"name"`,
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
