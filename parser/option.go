@@ -156,6 +156,17 @@ func (p *Parser) parseOptionName() (string, error) {
 		optionName = p.lex.Text
 	case scanner.TLEFTPAREN:
 		optionName = p.lex.Text
+
+		// protoc accepts "(." fullIndent ")". See #63
+		if p.permissive {
+			p.lex.Next()
+			if p.lex.Token == scanner.TDOT {
+				optionName += "."
+			} else {
+				p.lex.UnNext()
+			}
+		}
+
 		fullIdent, _, err := p.lex.ReadFullIdent()
 		if err != nil {
 			return "", err
