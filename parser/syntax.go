@@ -94,6 +94,9 @@ func (p *Parser) ParseSyntax() (*Syntax, error) {
 	return &Syntax{
 		ProtobufVersion:      version,
 		ProtobufVersionQuote: lq + version + tq,
-		Meta:                 meta.Meta{Pos: startPos.Position},
+		Meta: meta.Meta{
+			Pos:     startPos.Position,
+			LastPos: p.lex.Pos.Position,
+		},
 	}, nil
 }

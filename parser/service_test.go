@@ -290,6 +290,11 @@ service ItemService {
 										Line:   4,
 										Column: 5,
 									},
+									LastPos: meta.Position{
+										Offset: 125,
+										Line:   4,
+										Column: 58,
+									},
 								},
 							},
 						},
@@ -336,6 +341,11 @@ service ItemService {
 										Offset: 222,
 										Line:   7,
 										Column: 5,
+									},
+									LastPos: meta.Position{
+										Offset: 275,
+										Line:   7,
+										Column: 58,
 									},
 								},
 							},
@@ -408,6 +418,11 @@ service SearchService { // TODO: Search is not implemented yet.
 									Line:   3,
 									Column: 56,
 								},
+								LastPos: meta.Position{
+									Offset: 142,
+									Line:   3,
+									Column: 78,
+								},
 							},
 						},
 						Meta: meta.Meta{
@@ -431,6 +446,11 @@ service SearchService { // TODO: Search is not implemented yet.
 							Offset: 25,
 							Line:   2,
 							Column: 25,
+						},
+						LastPos: meta.Position{
+							Offset: 63,
+							Line:   2,
+							Column: 63,
 						},
 					},
 				},
@@ -565,6 +585,11 @@ service SearchService {
 								Line:   4,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 102,
+								Line:   4,
+								Column: 23,
+							},
 						},
 					},
 					&parser.Comment{
@@ -574,6 +599,11 @@ service SearchService {
 								Offset: 106,
 								Line:   5,
 								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 130,
+								Line:   5,
+								Column: 27,
 							},
 						},
 					},
