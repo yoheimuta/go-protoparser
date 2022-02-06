@@ -46,6 +46,16 @@ func (pos *Position) Advance(r rune) {
 	}
 }
 
+// AdvancedBulk returns a new position that advances the position value in a row.
+func (pos Position) AdvancedBulk(s string) Position {
+	for _, r := range s {
+		pos.Advance(r)
+	}
+	last, _ := utf8.DecodeLastRuneInString(s)
+	pos.Revert(last)
+	return pos
+}
+
 // Revert reverts the position value.
 func (pos *Position) Revert(r rune) {
 	length := utf8.RuneLen(r)

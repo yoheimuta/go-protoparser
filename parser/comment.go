@@ -64,8 +64,11 @@ func (p *Parser) parseComment() (*Comment, error) {
 	p.lex.NextComment()
 	if p.lex.Token == scanner.TCOMMENT {
 		return &Comment{
-			Raw:  p.lex.Text,
-			Meta: meta.Meta{Pos: p.lex.Pos.Position},
+			Raw: p.lex.Text,
+			Meta: meta.Meta{
+				Pos:     p.lex.Pos.Position,
+				LastPos: p.lex.Pos.AdvancedBulk(p.lex.Text).Position,
+			},
 		}, nil
 	}
 	defer p.lex.UnNext()

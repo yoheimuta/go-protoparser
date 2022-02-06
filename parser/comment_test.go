@@ -118,6 +118,11 @@ func TestParser_ParseComments(t *testing.T) {
 							Line:   1,
 							Column: 1,
 						},
+						LastPos: meta.Position{
+							Offset: 9,
+							Line:   1,
+							Column: 10,
+						},
 					},
 				},
 			},
@@ -136,6 +141,11 @@ func TestParser_ParseComments(t *testing.T) {
 							Line:   1,
 							Column: 1,
 						},
+						LastPos: meta.Position{
+							Offset: 9,
+							Line:   1,
+							Column: 10,
+						},
 					},
 				},
 				{
@@ -145,6 +155,11 @@ func TestParser_ParseComments(t *testing.T) {
 							Offset: 11,
 							Line:   2,
 							Column: 1,
+						},
+						LastPos: meta.Position{
+							Offset: 21,
+							Line:   2,
+							Column: 11,
 						},
 					},
 				},
@@ -165,6 +180,11 @@ comment
 							Offset: 0,
 							Line:   1,
 							Column: 1,
+						},
+						LastPos: meta.Position{
+							Offset: 12,
+							Line:   3,
+							Column: 2,
 						},
 					},
 				},
@@ -189,6 +209,11 @@ comment
 							Line:   1,
 							Column: 1,
 						},
+						LastPos: meta.Position{
+							Offset: 12,
+							Line:   3,
+							Column: 2,
+						},
 					},
 				},
 				{
@@ -200,6 +225,11 @@ comment2
 							Offset: 14,
 							Line:   4,
 							Column: 1,
+						},
+						LastPos: meta.Position{
+							Offset: 27,
+							Line:   6,
+							Column: 2,
 						},
 					},
 				},
@@ -224,6 +254,11 @@ comment
 							Line:   1,
 							Column: 1,
 						},
+						LastPos: meta.Position{
+							Offset: 12,
+							Line:   3,
+							Column: 2,
+						},
 					},
 				},
 				{
@@ -233,6 +268,11 @@ comment
 							Offset: 15,
 							Line:   5,
 							Column: 1,
+						},
+						LastPos: meta.Position{
+							Offset: 25,
+							Line:   5,
+							Column: 11,
 						},
 					},
 				},

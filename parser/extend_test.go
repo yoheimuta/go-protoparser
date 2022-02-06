@@ -85,6 +85,11 @@ extend google.protobuf.MethodOptions {
 										Line:   3,
 										Column: 3,
 									},
+									LastPos: meta.Position{
+										Offset: 57,
+										Line:   3,
+										Column: 18,
+									},
 								},
 							},
 						},

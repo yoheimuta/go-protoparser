@@ -163,6 +163,11 @@ func TestParser_ParseOneof(t *testing.T) {
 										Line:   2,
 										Column: 5,
 									},
+									LastPos: meta.Position{
+										Offset: 22,
+										Line:   2,
+										Column: 11,
+									},
 								},
 							},
 						},
@@ -186,6 +191,11 @@ func TestParser_ParseOneof(t *testing.T) {
 										Offset: 49,
 										Line:   4,
 										Column: 5,
+									},
+									LastPos: meta.Position{
+										Offset: 62,
+										Line:   4,
+										Column: 18,
 									},
 								},
 							},
@@ -235,6 +245,11 @@ func TestParser_ParseOneof(t *testing.T) {
 									Line:   2,
 									Column: 22,
 								},
+								LastPos: meta.Position{
+									Offset: 63,
+									Line:   2,
+									Column: 28,
+								},
 							},
 						},
 						Meta: meta.Meta{
@@ -257,6 +272,11 @@ func TestParser_ParseOneof(t *testing.T) {
 									Line:   3,
 									Column: 33,
 								},
+								LastPos: meta.Position{
+									Offset: 110,
+									Line:   3,
+									Column: 46,
+								},
 							},
 						},
 						Meta: meta.Meta{
@@ -276,6 +296,11 @@ func TestParser_ParseOneof(t *testing.T) {
 							Offset: 12,
 							Line:   1,
 							Column: 13,
+						},
+						LastPos: meta.Position{
+							Offset: 34,
+							Line:   1,
+							Column: 35,
 						},
 					},
 				},

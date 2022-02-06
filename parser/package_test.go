@@ -32,6 +32,11 @@ func TestParser_ParsePackage(t *testing.T) {
 						Line:   1,
 						Column: 1,
 					},
+					LastPos: meta.Position{
+						Offset: 15,
+						Line:   1,
+						Column: 16,
+					},
 				},
 			},
 		},
