@@ -469,6 +469,11 @@ func TestParser_ParseOneof(t *testing.T) {
 								Line:   2,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 63,
+								Line:   2,
+								Column: 46,
+							},
 						},
 					},
 				},
@@ -503,6 +508,11 @@ func TestParser_ParseOneof(t *testing.T) {
 								Offset: 20,
 								Line:   2,
 								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 47,
+								Line:   2,
+								Column: 30,
 							},
 						},
 					},

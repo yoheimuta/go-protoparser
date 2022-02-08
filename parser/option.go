@@ -73,7 +73,10 @@ func (p *Parser) ParseOption() (*Option, error) {
 	return &Option{
 		OptionName: optionName,
 		Constant:   constant,
-		Meta:       meta.Meta{Pos: startPos.Position},
+		Meta: meta.Meta{
+			Pos:     startPos.Position,
+			LastPos: p.lex.Pos.Position,
+		},
 	}, nil
 }
 
