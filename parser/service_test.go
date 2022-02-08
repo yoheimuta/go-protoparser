@@ -126,6 +126,11 @@ service SearchService {
 										Line:   3,
 										Column: 57,
 									},
+									LastPos: meta.Position{
+										Offset: 108,
+										Line:   3,
+										Column: 84,
+									},
 								},
 							},
 						},
@@ -202,6 +207,11 @@ service SearchService {
 										Line:   4,
 										Column: 2,
 									},
+									LastPos: meta.Position{
+										Offset: 110,
+										Line:   4,
+										Column: 29,
+									},
 								},
 							},
 							{
@@ -212,6 +222,11 @@ service SearchService {
 										Offset: 114,
 										Line:   5,
 										Column: 2,
+									},
+									LastPos: meta.Position{
+										Offset: 142,
+										Line:   5,
+										Column: 30,
 									},
 								},
 							},

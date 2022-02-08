@@ -47,6 +47,11 @@ message Outer {
 								Line:   3,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 46,
+								Line:   3,
+								Column: 30,
+							},
 						},
 					},
 					&parser.Message{
@@ -130,6 +135,11 @@ message outer {
 								Offset: 19,
 								Line:   3,
 								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 46,
+								Line:   3,
+								Column: 30,
 							},
 						},
 					},
@@ -294,6 +304,11 @@ message outer {
 								Line:   4,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 58,
+								Line:   4,
+								Column: 30,
+							},
 						},
 					},
 					&parser.Message{
@@ -398,6 +413,11 @@ message outer {
 										Offset: 216,
 										Line:   13,
 										Column: 5,
+									},
+									LastPos: meta.Position{
+										Offset: 241,
+										Line:   13,
+										Column: 30,
 									},
 								},
 							},
@@ -669,6 +689,11 @@ message SearchRequest {
 										Line:   7,
 										Column: 5,
 									},
+									LastPos: meta.Position{
+										Offset: 231,
+										Line:   7,
+										Column: 30,
+									},
 								},
 							},
 						},
@@ -901,6 +926,11 @@ message Outer {
 								Offset: 19,
 								Line:   3,
 								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 46,
+								Line:   3,
+								Column: 30,
 							},
 						},
 					},

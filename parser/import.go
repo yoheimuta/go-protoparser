@@ -84,6 +84,9 @@ func (p *Parser) ParseImport() (*Import, error) {
 	return &Import{
 		Modifier: modifier,
 		Location: location,
-		Meta:     meta.Meta{Pos: startPos.Position},
+		Meta: meta.Meta{
+			Pos:     startPos.Position,
+			LastPos: p.lex.Pos.Position,
+		},
 	}, nil
 }
