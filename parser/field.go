@@ -60,6 +60,8 @@ func (p *Parser) ParseField() (*Field, error) {
 	var isRequired bool
 	var isOptional bool
 	p.lex.NextKeyword()
+	startPos := p.lex.Pos
+
 	if p.lex.Token == scanner.TREPEATED {
 		isRepeated = true
 	} else if p.lex.Token == scanner.TREQUIRED {
@@ -69,7 +71,6 @@ func (p *Parser) ParseField() (*Field, error) {
 	} else {
 		p.lex.UnNext()
 	}
-	startPos := p.lex.Pos
 
 	typeValue, _, err := p.parseType()
 	if err != nil {
