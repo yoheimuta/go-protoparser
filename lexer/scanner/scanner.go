@@ -81,7 +81,7 @@ func (s *Scanner) peek() rune {
 }
 
 // UnScan put the last scanned text back to the read buffer.
-func (s *Scanner) UnScan() {
+func (s *Scanner) UnScan() Position {
 	var reversedRunes []rune
 	for _, ch := range s.lastScanRaw {
 		reversedRunes = append([]rune{ch}, reversedRunes...)
@@ -89,6 +89,7 @@ func (s *Scanner) UnScan() {
 	for _, ch := range reversedRunes {
 		s.unread(ch)
 	}
+	return *s.pos
 }
 
 // Scan returns the next token and text value.

@@ -680,18 +680,35 @@ fugafuga
 
 func TestScanner_UnScan(t *testing.T) {
 	tests := []struct {
-		name  string
-		mode  scanner.Mode
-		input string
+		name         string
+		mode         scanner.Mode
+		input        string
+		wantPosition scanner.Position
 	}{
 		{
 			name:  "unscan ident",
 			input: "service",
+			wantPosition: scanner.Position{
+				Position: meta.Position{
+					Filename: "",
+					Offset:   0,
+					Line:     1,
+					Column:   1,
+				},
+			},
 		},
 		{
 			name:  "unscan boolLit",
 			mode:  scanner.ScanBoolLit,
 			input: "true",
+			wantPosition: scanner.Position{
+				Position: meta.Position{
+					Filename: "",
+					Offset:   0,
+					Line:     1,
+					Column:   1,
+				},
+			},
 		},
 	}
 
@@ -706,7 +723,17 @@ func TestScanner_UnScan(t *testing.T) {
 				return
 			}
 
-			s.UnScan()
+			got := s.UnScan()
+			if got.Offset != test.wantPosition.Offset {
+				t.Errorf("got %d, but want %d", got.Offset, test.wantPosition.Offset)
+			}
+			if got.Line != test.wantPosition.Line {
+				t.Errorf("got %d, but want %d", got.Line, test.wantPosition.Line)
+			}
+			if got.Column != test.wantPosition.Column {
+				t.Errorf("got %d, but want %d", got.Column, test.wantPosition.Column)
+			}
+
 			token2, text2, pos2, err := s.Scan()
 			if err != nil {
 				t.Errorf("got err %v, but want nil", err)

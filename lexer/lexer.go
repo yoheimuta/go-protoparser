@@ -173,15 +173,14 @@ func (lex *Lexer) PeekN(n int) scanner.Token {
 
 // UnNext put the latest text back to the read buffer.
 func (lex *Lexer) UnNext() {
-	lex.scanner.UnScan()
+	lex.Pos = lex.scanner.UnScan()
 	lex.Token = scanner.TILLEGAL
 }
 
 // UnNextTo put the given latest text back to the read buffer.
 func (lex *Lexer) UnNextTo(lastScan []rune) {
 	lex.scanner.SetLastScanRaw(lastScan)
-	lex.scanner.UnScan()
-	lex.Token = scanner.TILLEGAL
+	lex.UnNext()
 }
 
 // ConsumeToken consumes a given token if it exists. Otherwise, it consumes no token.
