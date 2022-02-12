@@ -17,6 +17,7 @@ func TestParser_ParseProto(t *testing.T) {
 		input                      string
 		filename                   string
 		inputBodyIncludingComments bool
+		inputPermissive            bool
 		wantProto                  *parser.Proto
 		wantErr                    bool
 	}{
@@ -1089,6 +1090,334 @@ service SearchService {
 			},
 		},
 		{
+			name: "parsing inline comments with permissive mode",
+			input: `
+syntax = "proto3"; // syntax
+import public "other.proto"; // import
+package foo.bar; /* package */
+option java_package = "com.example.foo"; // option
+message outer {
+} // message
+enum EnumAllowingAlias {
+  option allow_alias = true;
+} // enum
+service SearchService {
+  rpc Search (SearchRequest) returns (SearchResponse);
+} // service
+`,
+			inputPermissive: true,
+			filename:        "inlineComments.proto",
+			wantProto: &parser.Proto{
+				Syntax: &parser.Syntax{
+					ProtobufVersion:      "proto3",
+					ProtobufVersionQuote: `"proto3"`,
+					InlineComment: &parser.Comment{
+						Raw: `// syntax`,
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "inlineComments.proto",
+								Offset:   20,
+								Line:     2,
+								Column:   20,
+							},
+							LastPos: meta.Position{
+								Filename: "inlineComments.proto",
+								Offset:   28,
+								Line:     2,
+								Column:   28,
+							},
+						},
+					},
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Filename: "inlineComments.proto",
+							Offset:   1,
+							Line:     2,
+							Column:   1,
+						},
+						LastPos: meta.Position{
+							Filename: "inlineComments.proto",
+							Offset:   18,
+							Line:     2,
+							Column:   18,
+						},
+					},
+				},
+				ProtoBody: []parser.Visitee{
+					&parser.Import{
+						Modifier: parser.ImportModifierPublic,
+						Location: `"other.proto"`,
+						InlineComment: &parser.Comment{
+							Raw: `// import`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Filename: "inlineComments.proto",
+									Offset:   59,
+									Line:     3,
+									Column:   30,
+								},
+								LastPos: meta.Position{
+									Filename: "inlineComments.proto",
+									Offset:   67,
+									Line:     3,
+									Column:   38,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "inlineComments.proto",
+								Offset:   30,
+								Line:     3,
+								Column:   1,
+							},
+							LastPos: meta.Position{
+								Filename: "inlineComments.proto",
+								Offset:   57,
+								Line:     3,
+								Column:   28,
+							},
+						},
+					},
+					&parser.Package{
+						Name: `foo.bar`,
+						InlineComment: &parser.Comment{
+							Raw: `/* package */`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Filename: "inlineComments.proto",
+									Offset:   86,
+									Line:     4,
+									Column:   18,
+								},
+								LastPos: meta.Position{
+									Filename: "inlineComments.proto",
+									Offset:   98,
+									Line:     4,
+									Column:   30,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "inlineComments.proto",
+								Offset:   69,
+								Line:     4,
+								Column:   1,
+							},
+							LastPos: meta.Position{
+								Filename: "inlineComments.proto",
+								Offset:   84,
+								Line:     4,
+								Column:   16,
+							},
+						},
+					},
+					&parser.Option{
+						OptionName: "java_package",
+						Constant:   `"com.example.foo"`,
+						InlineComment: &parser.Comment{
+							Raw: `// option`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Filename: "inlineComments.proto",
+									Offset:   141,
+									Line:     5,
+									Column:   42,
+								},
+								LastPos: meta.Position{
+									Filename: "inlineComments.proto",
+									Offset:   149,
+									Line:     5,
+									Column:   50,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "inlineComments.proto",
+								Offset:   100,
+								Line:     5,
+								Column:   1,
+							},
+							LastPos: meta.Position{
+								Filename: "inlineComments.proto",
+								Offset:   139,
+								Line:     5,
+								Column:   40,
+							},
+						},
+					},
+					&parser.Message{
+						MessageName: "outer",
+						InlineComment: &parser.Comment{
+							Raw: `// message`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Filename: "inlineComments.proto",
+									Offset:   169,
+									Line:     7,
+									Column:   3,
+								},
+								LastPos: meta.Position{
+									Filename: "inlineComments.proto",
+									Offset:   178,
+									Line:     7,
+									Column:   12,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "inlineComments.proto",
+								Offset:   151,
+								Line:     6,
+								Column:   1,
+							},
+							LastPos: meta.Position{
+								Filename: "inlineComments.proto",
+								Offset:   167,
+								Line:     7,
+								Column:   1,
+							},
+						},
+					},
+					&parser.Enum{
+						EnumName: "EnumAllowingAlias",
+						EnumBody: []parser.Visitee{
+							&parser.Option{
+								OptionName: "allow_alias",
+								Constant:   "true",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "inlineComments.proto",
+										Offset:   207,
+										Line:     9,
+										Column:   3,
+									},
+									LastPos: meta.Position{
+										Filename: "inlineComments.proto",
+										Offset:   232,
+										Line:     9,
+										Column:   28,
+									},
+								},
+							},
+						},
+						InlineComment: &parser.Comment{
+							Raw: `// enum`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Filename: "inlineComments.proto",
+									Offset:   236,
+									Line:     10,
+									Column:   3,
+								},
+								LastPos: meta.Position{
+									Filename: "inlineComments.proto",
+									Offset:   242,
+									Line:     10,
+									Column:   9,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "inlineComments.proto",
+								Offset:   180,
+								Line:     8,
+								Column:   1,
+							},
+							LastPos: meta.Position{
+								Filename: "inlineComments.proto",
+								Offset:   234,
+								Line:     10,
+								Column:   1,
+							},
+						},
+					},
+					&parser.Service{
+						ServiceName: "SearchService",
+						ServiceBody: []parser.Visitee{
+							&parser.RPC{
+								RPCName: "Search",
+								RPCRequest: &parser.RPCRequest{
+									MessageType: "SearchRequest",
+									Meta: meta.Meta{
+										Pos: meta.Position{
+											Filename: "inlineComments.proto",
+											Offset:   281,
+											Line:     12,
+											Column:   14,
+										},
+									},
+								},
+								RPCResponse: &parser.RPCResponse{
+									MessageType: "SearchResponse",
+									Meta: meta.Meta{
+										Pos: meta.Position{
+											Filename: "inlineComments.proto",
+											Offset:   305,
+											Line:     12,
+											Column:   38,
+										},
+									},
+								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "inlineComments.proto",
+										Offset:   270,
+										Line:     12,
+										Column:   3,
+									},
+									LastPos: meta.Position{
+										Filename: "inlineComments.proto",
+										Offset:   321,
+										Line:     12,
+										Column:   54,
+									},
+								},
+							},
+						},
+						InlineComment: &parser.Comment{
+							Raw: `// service`,
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Filename: "inlineComments.proto",
+									Offset:   325,
+									Line:     13,
+									Column:   3,
+								},
+								LastPos: meta.Position{
+									Filename: "inlineComments.proto",
+									Offset:   334,
+									Line:     13,
+									Column:   12,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Filename: "inlineComments.proto",
+								Offset:   244,
+								Line:     11,
+								Column:   1,
+							},
+							LastPos: meta.Position{
+								Filename: "inlineComments.proto",
+								Offset:   323,
+								Line:     13,
+								Column:   1,
+							},
+						},
+					},
+				},
+				Meta: &parser.ProtoMeta{
+					Filename: "inlineComments.proto",
+				},
+			},
+		},
+		{
 			name: "skipping a last comment",
 			input: `
 syntax = "proto3";
@@ -1750,6 +2079,7 @@ message foo {
 					lexer.WithFilename(test.filename),
 				),
 				parser.WithBodyIncludingComments(test.inputBodyIncludingComments),
+				parser.WithPermissive(test.inputPermissive),
 			)
 			got, err := p.ParseProto()
 			switch {

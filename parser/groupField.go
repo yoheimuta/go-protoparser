@@ -64,6 +64,8 @@ func (p *Parser) ParseGroupField() (*GroupField, error) {
 	var isRequired bool
 	var isOptional bool
 	p.lex.NextKeyword()
+	startPos := p.lex.Pos
+
 	if p.lex.Token == scanner.TREPEATED {
 		isRepeated = true
 	} else if p.lex.Token == scanner.TREQUIRED {
@@ -73,7 +75,6 @@ func (p *Parser) ParseGroupField() (*GroupField, error) {
 	} else {
 		p.lex.UnNext()
 	}
-	startPos := p.lex.Pos
 
 	p.lex.NextKeyword()
 	if p.lex.Token != scanner.TGROUP {
