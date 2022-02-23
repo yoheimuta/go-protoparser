@@ -317,7 +317,7 @@ func (p *Parser) parseEnumValueOption() (*EnumValueOption, error) {
 		return nil, p.unexpected("=")
 	}
 
-	constant, _, err := p.lex.ReadConstant(p.permissive)
+	constant, err := p.parseOptionConstant()
 	if err != nil {
 		return nil, err
 	}
