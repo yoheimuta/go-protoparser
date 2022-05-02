@@ -101,7 +101,7 @@ func interpretMessageBody(src []parser.Visitee) (
 		case *parser.EmptyStatement:
 			emptyStatements = append(emptyStatements, t)
 		default:
-			return nil, fmt.Errorf("invalid MessageBody type %v of %v", t, s)
+			return nil, fmt.Errorf("invalid MessageBody type %T of %v", t, t)
 		}
 	}
 	return &MessageBody{

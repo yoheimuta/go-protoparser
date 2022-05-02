@@ -61,7 +61,7 @@ func interpretServiceBody(src []parser.Visitee) (
 		case *parser.RPC:
 			rpcs = append(rpcs, t)
 		default:
-			return nil, fmt.Errorf("invalid ServiceBody type %v of %v", t, s)
+			return nil, fmt.Errorf("invalid ServiceBody type %T of %v", t, t)
 		}
 	}
 	return &ServiceBody{
