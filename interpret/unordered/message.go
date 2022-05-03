@@ -9,15 +9,16 @@ import (
 
 // MessageBody is unordered in nature, but each slice field preserves the original order.
 type MessageBody struct {
-	Fields   []*parser.Field
-	Enums    []*Enum
-	Messages []*Message
-	Options  []*parser.Option
-	Oneofs   []*parser.Oneof
-	Maps     []*parser.MapField
-	Groups   []*parser.GroupField
-	Reserves []*parser.Reserved
-	Extends  []*parser.Extend
+	Fields          []*parser.Field
+	Enums           []*Enum
+	Messages        []*Message
+	Options         []*parser.Option
+	Oneofs          []*parser.Oneof
+	Maps            []*parser.MapField
+	Groups          []*parser.GroupField
+	Reserves        []*parser.Reserved
+	Extends         []*parser.Extend
+	EmptyStatements []*parser.EmptyStatement
 }
 
 // Message consists of a message name and a message body.
@@ -68,6 +69,7 @@ func interpretMessageBody(src []parser.Visitee) (
 	var groups []*parser.GroupField
 	var reserves []*parser.Reserved
 	var extends []*parser.Extend
+	var emptyStatements []*parser.EmptyStatement
 	for _, s := range src {
 		switch t := s.(type) {
 		case *parser.Field:
@@ -96,19 +98,22 @@ func interpretMessageBody(src []parser.Visitee) (
 			reserves = append(reserves, t)
 		case *parser.Extend:
 			extends = append(extends, t)
+		case *parser.EmptyStatement:
+			emptyStatements = append(emptyStatements, t)
 		default:
-			return nil, fmt.Errorf("invalid MessageBody type %v of %v", t, s)
+			return nil, fmt.Errorf("invalid MessageBody type %T of %v", t, t)
 		}
 	}
 	return &MessageBody{
-		Fields:   fields,
-		Enums:    enums,
-		Messages: messages,
-		Options:  options,
-		Oneofs:   oneofs,
-		Maps:     maps,
-		Groups:   groups,
-		Reserves: reserves,
-		Extends:  extends,
+		Fields:          fields,
+		Enums:           enums,
+		Messages:        messages,
+		Options:         options,
+		Oneofs:          oneofs,
+		Maps:            maps,
+		Groups:          groups,
+		Reserves:        reserves,
+		Extends:         extends,
+		EmptyStatements: emptyStatements,
 	}, nil
 }

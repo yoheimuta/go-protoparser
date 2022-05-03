@@ -61,7 +61,7 @@ func interpretExtendBody(src []parser.Visitee) (
 		case *parser.EmptyStatement:
 			emptyStatements = append(emptyStatements, t)
 		default:
-			return nil, fmt.Errorf("invalid ExtendBody type %v of %v", t, s)
+			return nil, fmt.Errorf("invalid ExtendBody type %T of %v", t, t)
 		}
 	}
 	return &ExtendBody{

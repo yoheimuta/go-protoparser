@@ -69,7 +69,7 @@ func interpretEnumBody(src []parser.Visitee) (
 		case *parser.EmptyStatement:
 			emptyStatements = append(emptyStatements, t)
 		default:
-			return nil, fmt.Errorf("invalid EnumBody type %v of %v", t, s)
+			return nil, fmt.Errorf("invalid EnumBody type %T of %v", t, t)
 		}
 	}
 	return &EnumBody{
