@@ -3,7 +3,6 @@ jobs:
   lint:
     docker:
       - image: cimg/go:1.18.1
-    working_directory: /go/src/github.com/yoheimuta/go-protoparser
     steps:
       - checkout
       - run: make dev/install/dep
@@ -11,7 +10,6 @@ jobs:
   test:
     docker:
       - image: cimg/go:1.18.1
-    working_directory: /go/src/github.com/yoheimuta/go-protoparser
     steps:
       - checkout
       - run: make test
