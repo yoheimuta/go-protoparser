@@ -27,7 +27,8 @@ test/lint:
 	# checks no used assigned value.
 	ineffassign .
 	# checks dispensable type conversions.
-	unconvert -v ./...
+	## Comment out because of the error: internal error: package "fmt" without types was imported from
+	#unconvert -v ./...
 
 ## dev/install/dep installs depenencies required for development.
 dev/install/dep:

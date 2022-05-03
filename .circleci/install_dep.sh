@@ -8,4 +8,5 @@ go install github.com/kisielk/errcheck@latest
 go install github.com/gordonklaus/ineffassign@latest
 go install github.com/opennota/check/cmd/varcheck@latest
 go install github.com/opennota/check/cmd/aligncheck@latest
-go install github.com/mdempsky/unconvert@latest
+# Comment out because of the error: internal error: package "fmt" without types was imported from
+# go install github.com/mdempsky/unconvert@latest
