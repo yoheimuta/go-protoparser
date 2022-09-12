@@ -26,7 +26,11 @@ func run() int {
 		fmt.Fprintf(os.Stderr, "failed to open %s, err %v\n", *proto, err)
 		return 1
 	}
-	defer reader.Close()
+	defer func() {
+		if err := reader.Close(); err != nil {
+			fmt.Printf("Error closing file: %s\n", err)
+		}
+	}()
 
 	got, err := protoparser.Parse(
 		reader,
