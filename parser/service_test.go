@@ -759,6 +759,101 @@ service SearchService {
 				},
 			},
 		},
+		{
+			name: "parsing the rpc with a trailing comment followd by the left curly",
+			input: `
+service SearchService {
+  rpc GetAll(GetRequest) returns(GetReply) { // get the global address table
+    option(requestreply.Nats).Subject = "get.addrs";
+  }
+}
+`,
+			wantService: &parser.Service{
+				ServiceName: "SearchService",
+				ServiceBody: []parser.Visitee{
+					&parser.RPC{
+						RPCName: "GetAll",
+						RPCRequest: &parser.RPCRequest{
+							MessageType: "GetRequest",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 37,
+									Line:   3,
+									Column: 13,
+								},
+							},
+						},
+						RPCResponse: &parser.RPCResponse{
+							MessageType: "GetReply",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 57,
+									Line:   3,
+									Column: 33,
+								},
+							},
+						},
+						Options: []*parser.Option{
+							{
+								OptionName: "(requestreply.Nats).Subject",
+								Constant:   `"get.addrs"`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 106,
+										Line:   4,
+										Column: 5,
+									},
+									LastPos: meta.Position{
+										Offset: 153,
+										Line:   4,
+										Column: 52,
+									},
+								},
+							},
+						},
+						InlineCommentBehindLeftCurly: &parser.Comment{
+							Raw: "// get the global address table",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 70,
+									Line:   3,
+									Column: 46,
+								},
+								LastPos: meta.Position{
+									Offset: 100,
+									Line:   3,
+									Column: 76,
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 27,
+								Line:   3,
+								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 157,
+								Line:   5,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 159,
+						Line:   6,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
