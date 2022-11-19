@@ -34,6 +34,8 @@ type RPC struct {
 	Comments []*Comment
 	// InlineComment is the optional one placed at the ending.
 	InlineComment *Comment
+	// InlineCommentBehindLeftCurly is the optional one placed behind a left curly.
+	InlineCommentBehindLeftCurly *Comment
 	// Meta is the meta information.
 	Meta meta.Meta
 }
@@ -99,7 +101,8 @@ func (s *Service) Accept(v Visitor) {
 }
 
 // ParseService parses the service.
-//  service = "service" serviceName "{" { option | rpc | emptyStatement } "}"
+//
+//	service = "service" serviceName "{" { option | rpc | emptyStatement } "}"
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#service_definition
 func (p *Parser) ParseService() (*Service, error) {
@@ -235,12 +238,13 @@ func (p *Parser) parseRPC() (*RPC, error) {
 	}
 
 	var opts []*Option
+	var inlineLeftCurly *Comment
 	p.lex.Next()
 	lastPos := p.lex.Pos
 	switch p.lex.Token {
 	case scanner.TLEFTCURLY:
 		p.lex.UnNext()
-		opts, err = p.parseRPCOptions()
+		opts, inlineLeftCurly, err = p.parseRPCOptions()
 		if err != nil {
 			return nil, err
 		}
@@ -259,10 +263,11 @@ func (p *Parser) parseRPC() (*RPC, error) {
 	}
 
 	return &RPC{
-		RPCName:     rpcName,
-		RPCRequest:  rpcRequest,
-		RPCResponse: rpcResponse,
-		Options:     opts,
+		RPCName:                      rpcName,
+		RPCRequest:                   rpcRequest,
+		RPCResponse:                  rpcResponse,
+		Options:                      opts,
+		InlineCommentBehindLeftCurly: inlineLeftCurly,
 		Meta: meta.Meta{
 			Pos:     startPos.Position,
 			LastPos: lastPos.Position,
@@ -338,11 +343,13 @@ func (p *Parser) parseRPCResponse() (*RPCResponse, error) {
 
 // rpcOptions = ( "{" {option | emptyStatement } "}" )
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#service_definition
-func (p *Parser) parseRPCOptions() ([]*Option, error) {
+func (p *Parser) parseRPCOptions() ([]*Option, *Comment, error) {
 	p.lex.Next()
 	if p.lex.Token != scanner.TLEFTCURLY {
-		return nil, p.unexpected("{")
+		return nil, nil, p.unexpected("{")
 	}
+
+	inlineLeftCurly := p.parseInlineComment()
 
 	var options []*Option
 	for {
@@ -354,7 +361,7 @@ func (p *Parser) parseRPCOptions() ([]*Option, error) {
 		case scanner.TOPTION:
 			option, err := p.ParseOption()
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			options = append(options, option)
 		case scanner.TRIGHTCURLY:
@@ -363,13 +370,13 @@ func (p *Parser) parseRPCOptions() ([]*Option, error) {
 		default:
 			err := p.lex.ReadEmptyStatement()
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 		}
 
 		p.lex.Next()
 		if p.lex.Token == scanner.TRIGHTCURLY {
-			return options, nil
+			return options, inlineLeftCurly, nil
 		}
 		p.lex.UnNext()
 	}
