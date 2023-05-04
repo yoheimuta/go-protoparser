@@ -102,7 +102,8 @@ func (e *Enum) Accept(v Visitor) {
 }
 
 // ParseEnum parses the enum.
-//  enum = "enum" enumName enumBody
+//
+//	enum = "enum" enumName enumBody
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#enum_definition
 func (p *Parser) ParseEnum() (*Enum, error) {
@@ -263,7 +264,7 @@ func (p *Parser) parseEnumField() (*EnumField, error) {
 		Ident:            ident,
 		Number:           intLit,
 		EnumValueOptions: enumValueOptions,
-		Meta:             meta.Meta{Pos: startPos.Position},
+		Meta:             meta.Meta{Pos: startPos.Position, LastPos: p.lex.Pos.Position},
 	}, nil
 }
 

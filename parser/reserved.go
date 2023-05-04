@@ -56,7 +56,8 @@ func (r *Reserved) Accept(v Visitor) {
 }
 
 // ParseReserved parses the reserved.
-//  reserved = "reserved" ( ranges | fieldNames ) ";"
+//
+//	reserved = "reserved" ( ranges | fieldNames ) ";"
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#reserved
 func (p *Parser) ParseReserved() (*Reserved, error) {
@@ -96,7 +97,7 @@ func (p *Parser) ParseReserved() (*Reserved, error) {
 	return &Reserved{
 		Ranges:     ranges,
 		FieldNames: fieldNames,
-		Meta:       meta.Meta{Pos: startPos.Position},
+		Meta:       meta.Meta{Pos: startPos.Position, LastPos: p.lex.Pos.Position},
 	}, nil
 }
 

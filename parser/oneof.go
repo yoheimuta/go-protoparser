@@ -82,7 +82,8 @@ func (o *Oneof) Accept(v Visitor) {
 }
 
 // ParseOneof parses the oneof.
-//  oneof = "oneof" oneofName "{" { option | oneofField | emptyStatement } "}"
+//
+//	oneof = "oneof" oneofName "{" { option | oneofField | emptyStatement } "}"
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#oneof_and_oneof_field
 func (p *Parser) ParseOneof() (*Oneof, error) {
@@ -205,6 +206,6 @@ func (p *Parser) parseOneofField() (*OneofField, error) {
 		FieldName:    fieldName,
 		FieldNumber:  fieldNumber,
 		FieldOptions: fieldOptions,
-		Meta:         meta.Meta{Pos: startPos.Position},
+		Meta:         meta.Meta{Pos: startPos.Position, LastPos: p.lex.Pos.Position},
 	}, nil
 }

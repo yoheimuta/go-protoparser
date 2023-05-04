@@ -304,7 +304,7 @@ func (p *Parser) parseRPCRequest() (*RPCRequest, error) {
 	return &RPCRequest{
 		IsStream:    isStream,
 		MessageType: messageType,
-		Meta:        meta.Meta{Pos: startPos.Position},
+		Meta:        meta.Meta{Pos: startPos.Position, LastPos: p.lex.Pos.Position},
 	}, nil
 }
 
@@ -337,7 +337,7 @@ func (p *Parser) parseRPCResponse() (*RPCResponse, error) {
 	return &RPCResponse{
 		IsStream:    isStream,
 		MessageType: messageType,
-		Meta:        meta.Meta{Pos: startPos.Position},
+		Meta:        meta.Meta{Pos: startPos.Position, LastPos: p.lex.Pos.Position},
 	}, nil
 }
 

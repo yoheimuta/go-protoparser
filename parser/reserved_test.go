@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/yoheimuta/go-protoparser/v4/internal/util_test"
 	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
@@ -53,6 +54,11 @@ func TestParser_ParseReserved(t *testing.T) {
 						Line:   1,
 						Column: 1,
 					},
+					LastPos: meta.Position{
+						Offset: 23,
+						Line:   1,
+						Column: 24,
+					},
 				},
 			},
 		},
@@ -69,6 +75,11 @@ func TestParser_ParseReserved(t *testing.T) {
 						Offset: 0,
 						Line:   1,
 						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 21,
+						Line:   1,
+						Column: 22,
 					},
 				},
 			},
@@ -88,6 +99,11 @@ func TestParser_ParseReserved(t *testing.T) {
 						Offset: 0,
 						Line:   1,
 						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 17,
+						Line:   1,
+						Column: 18,
 					},
 				},
 			},
@@ -111,7 +127,8 @@ func TestParser_ParseReserved(t *testing.T) {
 			}
 
 			if !reflect.DeepEqual(got, test.wantReserved) {
-				t.Errorf("got %v, but want %v", got, test.wantReserved)
+				t.Errorf("got %v, but want %v", util_test.PrettyFormat(got), util_test.PrettyFormat(test.wantReserved))
+
 			}
 
 			if !p.IsEOF() {

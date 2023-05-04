@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/yoheimuta/go-protoparser/v4/internal/util_test"
 	"github.com/yoheimuta/go-protoparser/v4/lexer"
 	"github.com/yoheimuta/go-protoparser/v4/parser"
 	"github.com/yoheimuta/go-protoparser/v4/parser/meta"
@@ -45,6 +46,11 @@ func TestParser_ParseMapField(t *testing.T) {
 						Line:   1,
 						Column: 1,
 					},
+					LastPos: meta.Position{
+						Offset: 33,
+						Line:   1,
+						Column: 34,
+					},
 				},
 			},
 		},
@@ -67,7 +73,7 @@ func TestParser_ParseMapField(t *testing.T) {
 			}
 
 			if !reflect.DeepEqual(got, test.wantMapField) {
-				t.Errorf("got %v, but want %v", got, test.wantMapField)
+				t.Errorf("got %v, but want %v", util_test.PrettyFormat(got), util_test.PrettyFormat(test.wantMapField))
 			}
 
 			if !p.IsEOF() {

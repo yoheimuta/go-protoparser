@@ -60,6 +60,11 @@ repeated group Result = 1 {
 								Line:   3,
 								Column: 5,
 							},
+							LastPos: meta.Position{
+								Offset: 56,
+								Line:   3,
+								Column: 28,
+							},
 						},
 					},
 					&parser.Field{
@@ -73,6 +78,11 @@ repeated group Result = 1 {
 								Line:   4,
 								Column: 5,
 							},
+							LastPos: meta.Position{
+								Offset: 87,
+								Line:   4,
+								Column: 30,
+							},
 						},
 					},
 					&parser.Field{
@@ -85,6 +95,11 @@ repeated group Result = 1 {
 								Offset: 93,
 								Line:   5,
 								Column: 5,
+							},
+							LastPos: meta.Position{
+								Offset: 121,
+								Line:   5,
+								Column: 33,
 							},
 						},
 					},
@@ -171,6 +186,7 @@ group Result = 1 {
 
 			if !reflect.DeepEqual(got, test.wantGroupField) {
 				t.Errorf("got %v, but want %v", util_test.PrettyFormat(got), util_test.PrettyFormat(test.wantGroupField))
+
 			}
 
 			if !p.IsEOF() {
