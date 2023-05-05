@@ -37,7 +37,8 @@ func (e *Extensions) Accept(v Visitor) {
 }
 
 // ParseExtensions parses the extensions.
-//  extensions = "extensions" ranges ";"
+//
+//	extensions = "extensions" ranges ";"
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto2-spec#extensions
 func (p *Parser) ParseExtensions() (*Extensions, error) {
@@ -59,6 +60,6 @@ func (p *Parser) ParseExtensions() (*Extensions, error) {
 
 	return &Extensions{
 		Ranges: ranges,
-		Meta:   meta.Meta{Pos: startPos.Position},
+		Meta:   meta.Meta{Pos: startPos.Position, LastPos: p.lex.Pos.Position},
 	}, nil
 }

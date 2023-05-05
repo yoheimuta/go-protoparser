@@ -41,7 +41,8 @@ func (m *MapField) Accept(v Visitor) {
 }
 
 // ParseMapField parses the mapField.
-//  mapField = "map" "<" keyType "," type ">" mapName "=" fieldNumber [ "[" fieldOptions "]" ] ";"
+//
+//	mapField = "map" "<" keyType "," type ">" mapName "=" fieldNumber [ "[" fieldOptions "]" ] ";"
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#map_field
 func (p *Parser) ParseMapField() (*MapField, error) {
@@ -108,7 +109,7 @@ func (p *Parser) ParseMapField() (*MapField, error) {
 		MapName:      mapName,
 		FieldNumber:  fieldNumber,
 		FieldOptions: fieldOptions,
-		Meta:         meta.Meta{Pos: startPos.Position},
+		Meta:         meta.Meta{Pos: startPos.Position, LastPos: p.lex.Pos.Position},
 	}, nil
 }
 
@@ -128,7 +129,9 @@ var keyTypeConstants = map[string]struct{}{
 }
 
 // keyType = "int32" | "int64" | "uint32" | "uint64" | "sint32" | "sint64" |
-//          "fixed32" | "fixed64" | "sfixed32" | "sfixed64" | "bool" | "string"
+//
+//	"fixed32" | "fixed64" | "sfixed32" | "sfixed64" | "bool" | "string"
+//
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#map_field
 func (p *Parser) parseKeyType() (string, error) {
 	p.lex.Next()

@@ -72,6 +72,11 @@ func TestParser_ParseEnum(t *testing.T) {
 								Line:   3,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 67,
+								Line:   3,
+								Column: 14,
+							},
 						},
 					},
 					&parser.EnumField{
@@ -82,6 +87,11 @@ func TestParser_ParseEnum(t *testing.T) {
 								Offset: 71,
 								Line:   4,
 								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 82,
+								Line:   4,
+								Column: 14,
 							},
 						},
 					},
@@ -99,6 +109,11 @@ func TestParser_ParseEnum(t *testing.T) {
 								Offset: 86,
 								Line:   5,
 								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 131,
+								Line:   5,
+								Column: 48,
 							},
 						},
 					},
@@ -144,6 +159,11 @@ func TestParser_ParseEnum(t *testing.T) {
 								Offset: 27,
 								Line:   2,
 								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 107,
+								Line:   2,
+								Column: 83,
 							},
 						},
 					},
@@ -233,6 +253,11 @@ func TestParser_ParseEnum(t *testing.T) {
 								Line:   5,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 92,
+								Line:   5,
+								Column: 14,
+							},
 						},
 					},
 				},
@@ -314,6 +339,11 @@ func TestParser_ParseEnum(t *testing.T) {
 								Offset: 90,
 								Line:   3,
 								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 101,
+								Line:   3,
+								Column: 14,
 							},
 						},
 					},
@@ -494,6 +524,11 @@ func TestParser_ParseEnum(t *testing.T) {
 								Line:   2,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 47,
+								Line:   2,
+								Column: 37,
+							},
 						},
 					},
 					&parser.Reserved{
@@ -506,6 +541,11 @@ func TestParser_ParseEnum(t *testing.T) {
 								Offset: 51,
 								Line:   3,
 								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 72,
+								Line:   3,
+								Column: 24,
 							},
 						},
 					},
@@ -595,6 +635,11 @@ func TestParser_ParseEnum(t *testing.T) {
 								Line:   2,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 141,
+								Line:   4,
+								Column: 16,
+							},
 						},
 					},
 				},
@@ -632,6 +677,11 @@ func TestParser_ParseEnum(t *testing.T) {
 								Line:   2,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 49,
+								Line:   2,
+								Column: 25,
+							},
 						},
 					},
 					&parser.EnumField{
@@ -643,6 +693,11 @@ func TestParser_ParseEnum(t *testing.T) {
 								Line:   3,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 70,
+								Line:   3,
+								Column: 20,
+							},
 						},
 					},
 					&parser.EnumField{
@@ -653,6 +708,11 @@ func TestParser_ParseEnum(t *testing.T) {
 								Offset: 74,
 								Line:   4,
 								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 95,
+								Line:   4,
+								Column: 24,
 							},
 						},
 					},

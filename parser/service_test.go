@@ -44,6 +44,11 @@ service SearchService {
 									Line:   3,
 									Column: 14,
 								},
+								LastPos: meta.Position{
+									Offset: 52,
+									Line:   3,
+									Column: 28,
+								},
 							},
 						},
 						RPCResponse: &parser.RPCResponse{
@@ -53,6 +58,11 @@ service SearchService {
 									Offset: 62,
 									Line:   3,
 									Column: 38,
+								},
+								LastPos: meta.Position{
+									Offset: 77,
+									Line:   3,
+									Column: 53,
 								},
 							},
 						},
@@ -104,6 +114,11 @@ service SearchService {
 									Line:   3,
 									Column: 14,
 								},
+								LastPos: meta.Position{
+									Offset: 52,
+									Line:   3,
+									Column: 28,
+								},
 							},
 						},
 						RPCResponse: &parser.RPCResponse{
@@ -113,6 +128,11 @@ service SearchService {
 									Offset: 62,
 									Line:   3,
 									Column: 38,
+								},
+								LastPos: meta.Position{
+									Offset: 77,
+									Line:   3,
+									Column: 53,
 								},
 							},
 						},
@@ -185,6 +205,11 @@ service SearchService {
 									Line:   3,
 									Column: 14,
 								},
+								LastPos: meta.Position{
+									Offset: 52,
+									Line:   3,
+									Column: 28,
+								},
 							},
 						},
 						RPCResponse: &parser.RPCResponse{
@@ -194,6 +219,11 @@ service SearchService {
 									Offset: 62,
 									Line:   3,
 									Column: 38,
+								},
+								LastPos: meta.Position{
+									Offset: 77,
+									Line:   3,
+									Column: 53,
 								},
 							},
 						},
@@ -284,6 +314,11 @@ service ItemService {
 									Line:   5,
 									Column: 23,
 								},
+								LastPos: meta.Position{
+									Offset: 171,
+									Line:   5,
+									Column: 45,
+								},
 							},
 						},
 						RPCResponse: &parser.RPCResponse{
@@ -293,6 +328,11 @@ service ItemService {
 									Offset: 181,
 									Line:   5,
 									Column: 55,
+								},
+								LastPos: meta.Position{
+									Offset: 212,
+									Line:   5,
+									Column: 86,
 								},
 							},
 						},
@@ -336,6 +376,11 @@ service ItemService {
 									Line:   8,
 									Column: 23,
 								},
+								LastPos: meta.Position{
+									Offset: 321,
+									Line:   8,
+									Column: 45,
+								},
 							},
 						},
 						RPCResponse: &parser.RPCResponse{
@@ -345,6 +390,11 @@ service ItemService {
 									Offset: 331,
 									Line:   8,
 									Column: 55,
+								},
+								LastPos: meta.Position{
+									Offset: 351,
+									Line:   8,
+									Column: 75,
 								},
 							},
 						},
@@ -413,6 +463,11 @@ service SearchService { // TODO: Search is not implemented yet.
 									Line:   3,
 									Column: 14,
 								},
+								LastPos: meta.Position{
+									Offset: 92,
+									Line:   3,
+									Column: 28,
+								},
 							},
 						},
 						RPCResponse: &parser.RPCResponse{
@@ -422,6 +477,11 @@ service SearchService { // TODO: Search is not implemented yet.
 									Offset: 102,
 									Line:   3,
 									Column: 38,
+								},
+								LastPos: meta.Position{
+									Offset: 117,
+									Line:   3,
+									Column: 53,
 								},
 							},
 						},
@@ -504,6 +564,11 @@ service SearchService {
 									Line:   3,
 									Column: 14,
 								},
+								LastPos: meta.Position{
+									Offset: 52,
+									Line:   3,
+									Column: 28,
+								},
 							},
 						},
 						RPCResponse: &parser.RPCResponse{
@@ -513,6 +578,11 @@ service SearchService {
 									Offset: 62,
 									Line:   3,
 									Column: 38,
+								},
+								LastPos: meta.Position{
+									Offset: 77,
+									Line:   3,
+									Column: 53,
 								},
 							},
 						},
@@ -567,6 +637,11 @@ service SearchService {
 									Line:   3,
 									Column: 14,
 								},
+								LastPos: meta.Position{
+									Offset: 52,
+									Line:   3,
+									Column: 28,
+								},
 							},
 						},
 						RPCResponse: &parser.RPCResponse{
@@ -576,6 +651,11 @@ service SearchService {
 									Offset: 62,
 									Line:   3,
 									Column: 38,
+								},
+								LastPos: meta.Position{
+									Offset: 77,
+									Line:   3,
+									Column: 53,
 								},
 							},
 						},
@@ -658,6 +738,11 @@ service SearchService {
 									Line:   3,
 									Column: 14,
 								},
+								LastPos: meta.Position{
+									Offset: 52,
+									Line:   3,
+									Column: 28,
+								},
 							},
 						},
 						RPCResponse: &parser.RPCResponse{
@@ -667,6 +752,11 @@ service SearchService {
 									Offset: 62,
 									Line:   3,
 									Column: 38,
+								},
+								LastPos: meta.Position{
+									Offset: 77,
+									Line:   3,
+									Column: 53,
 								},
 							},
 						},
@@ -719,6 +809,11 @@ service SearchService {
 									Line:   3,
 									Column: 14,
 								},
+								LastPos: meta.Position{
+									Offset: 52,
+									Line:   3,
+									Column: 28,
+								},
 							},
 						},
 						RPCResponse: &parser.RPCResponse{
@@ -728,6 +823,11 @@ service SearchService {
 									Offset: 62,
 									Line:   3,
 									Column: 38,
+								},
+								LastPos: meta.Position{
+									Offset: 77,
+									Line:   3,
+									Column: 53,
 								},
 							},
 						},
@@ -781,6 +881,11 @@ service SearchService {
 									Line:   3,
 									Column: 13,
 								},
+								LastPos: meta.Position{
+									Offset: 48,
+									Line:   3,
+									Column: 24,
+								},
 							},
 						},
 						RPCResponse: &parser.RPCResponse{
@@ -790,6 +895,11 @@ service SearchService {
 									Offset: 57,
 									Line:   3,
 									Column: 33,
+								},
+								LastPos: meta.Position{
+									Offset: 66,
+									Line:   3,
+									Column: 42,
 								},
 							},
 						},
@@ -878,6 +988,7 @@ service SearchService {
 
 			if !reflect.DeepEqual(got, test.wantService) {
 				t.Errorf("got %v, but want %v", util_test.PrettyFormat(got), util_test.PrettyFormat(test.wantService))
+
 			}
 
 			if !p.IsEOF() {

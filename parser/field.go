@@ -49,12 +49,14 @@ func (f *Field) Accept(v Visitor) {
 }
 
 // ParseField parses the field.
-//  field = [ "repeated" ] type fieldName "=" fieldNumber [ "[" fieldOptions "]" ] ";"
-//  field = [ "required" | "optional" | "repeated" ] type fieldName "=" fieldNumber [ "[" fieldOptions "]" ] ";"
+//
+//	field = [ "repeated" ] type fieldName "=" fieldNumber [ "[" fieldOptions "]" ] ";"
+//	field = [ "required" | "optional" | "repeated" ] type fieldName "=" fieldNumber [ "[" fieldOptions "]" ] ";"
 //
 // See
-//  https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#normal_field
-//  https://developers.google.com/protocol-buffers/docs/reference/proto2-spec#normal_field
+//
+//	https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#normal_field
+//	https://developers.google.com/protocol-buffers/docs/reference/proto2-spec#normal_field
 func (p *Parser) ParseField() (*Field, error) {
 	var isRepeated bool
 	var isRequired bool
@@ -111,7 +113,7 @@ func (p *Parser) ParseField() (*Field, error) {
 		FieldName:    fieldName,
 		FieldNumber:  fieldNumber,
 		FieldOptions: fieldOptions,
-		Meta:         meta.Meta{Pos: startPos.Position},
+		Meta:         meta.Meta{Pos: startPos.Position, LastPos: p.lex.Pos.Position},
 	}, nil
 }
 
@@ -204,8 +206,10 @@ var typeConstants = map[string]struct{}{
 }
 
 // type = "double" | "float" | "int32" | "int64" | "uint32" | "uint64"
-//      | "sint32" | "sint64" | "fixed32" | "fixed64" | "sfixed32" | "sfixed64"
-//      | "bool" | "string" | "bytes" | messageType | enumType
+//
+//	| "sint32" | "sint64" | "fixed32" | "fixed64" | "sfixed32" | "sfixed64"
+//	| "bool" | "string" | "bytes" | messageType | enumType
+//
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#fields
 func (p *Parser) parseType() (string, scanner.Position, error) {
 	p.lex.Next()

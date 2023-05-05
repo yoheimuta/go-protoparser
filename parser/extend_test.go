@@ -45,6 +45,11 @@ extend Foo {
 								Line:   3,
 								Column: 3,
 							},
+							LastPos: meta.Position{
+								Offset: 31,
+								Line:   3,
+								Column: 18,
+							},
 						},
 					},
 				},
@@ -98,6 +103,11 @@ extend google.protobuf.MethodOptions {
 								Offset: 61,
 								Line:   4,
 								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 85,
+								Line:   4,
+								Column: 27,
 							},
 						},
 					},
