@@ -19,6 +19,7 @@ type MessageBody struct {
 	Reserves        []*parser.Reserved
 	Extends         []*parser.Extend
 	EmptyStatements []*parser.EmptyStatement
+	Extensions      []*parser.Extensions
 }
 
 // Message consists of a message name and a message body.
@@ -70,6 +71,7 @@ func interpretMessageBody(src []parser.Visitee) (
 	var reserves []*parser.Reserved
 	var extends []*parser.Extend
 	var emptyStatements []*parser.EmptyStatement
+	var extensions []*parser.Extensions
 	for _, s := range src {
 		switch t := s.(type) {
 		case *parser.Field:
@@ -100,6 +102,8 @@ func interpretMessageBody(src []parser.Visitee) (
 			extends = append(extends, t)
 		case *parser.EmptyStatement:
 			emptyStatements = append(emptyStatements, t)
+		case *parser.Extensions:
+			extensions = append(extensions, t)
 		default:
 			return nil, fmt.Errorf("invalid MessageBody type %T of %v", t, t)
 		}
@@ -115,5 +119,6 @@ func interpretMessageBody(src []parser.Visitee) (
 		Reserves:        reserves,
 		Extends:         extends,
 		EmptyStatements: emptyStatements,
+		Extensions:      extensions,
 	}, nil
 }
