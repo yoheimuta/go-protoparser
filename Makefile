@@ -32,7 +32,7 @@ test/lint:
 
 ## dev/install/dep installs depenencies required for development.
 dev/install/dep:
-	./.circleci/install_dep.sh
+	./.github/workflows/install_dep.sh
 
 ## RUN_EXAMPLE_DEBUG is a debug flag argument for run/example.
 RUN_EXAMPLE_DEBUG=false
