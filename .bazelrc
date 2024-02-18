@@ -1,0 +1,2 @@
+# Show test failure logs.
+test --test_output=errors

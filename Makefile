@@ -3,11 +3,14 @@ test/all: test/lint test
 
 ## test runs `go test`
 test:
-	go test -v -p 2 -count 1 -timeout 240s -race ./...
+	bazel test //...
+
+test/ci:
+	bazel --bazelrc=.github/workflows/ci.bazelrc --bazelrc=.bazelrc test //...
 
 ## test runs `go test -run $(RUN)`
 test/run:
-	go test -v -p 2 -count 1 -timeout 240s -race ./... -run $(RUN)
+	bazel test --test_filter="$(RUN)" //...
 
 ## test/lint runs linter
 test/lint:
@@ -45,4 +48,4 @@ RUN_EXAMPLE_UNORDERED=false
 
 ## run/dump/example runs `go run _example/dump/main.go`
 run/dump/example:
-	go run _example/dump/main.go -debug=$(RUN_EXAMPLE_DEBUG) -permissive=$(RUN_EXAMPLE_PERMISSIVE) -unordered=${RUN_EXAMPLE_UNORDERED}
+	bazel run //_example/dump -- -debug=$(RUN_EXAMPLE_DEBUG) -permissive=$(RUN_EXAMPLE_PERMISSIVE) -unordered=${RUN_EXAMPLE_UNORDERED}

@@ -1,0 +1,23 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+# gazelle:prefix github.com/yoheimuta/go-protoparser/v4
+gazelle(name = "gazelle")
+
+go_library(
+    name = "go-protoparser",
+    srcs = ["protoparser.go"],
+    importpath = "github.com/yoheimuta/go-protoparser/v4",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//interpret/unordered",
+        "//lexer",
+        "//parser",
+    ],
+)
+
+# This is currently unused.
+alias(
+    name = "gofmt",
+    actual = "@go_sdk//:bin/gofmt",
+)

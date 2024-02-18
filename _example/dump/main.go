@@ -8,11 +8,12 @@ import (
 
 	"path/filepath"
 
+	bazeltools "github.com/bazelbuild/rules_go/go/tools/bazel"
 	protoparser "github.com/yoheimuta/go-protoparser/v4"
 )
 
 var (
-	proto      = flag.String("proto", "_testdata/simple.proto", "path to the Protocol Buffer file")
+	proto      = flag.String("proto", "UNSET", "path to the Protocol Buffer file")
 	debug      = flag.Bool("debug", false, "debug flag to output more parsing process detail")
 	permissive = flag.Bool("permissive", true, "permissive flag to allow the permissive parsing rather than the just documented spec")
 	unordered  = flag.Bool("unordered", false, "unordered flag to output another one without interface{}")
@@ -20,6 +21,16 @@ var (
 
 func run() int {
 	flag.Parse()
+
+	if *proto == "UNSET" {
+		runfiles, err := bazeltools.RunfilesPath()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "failed to open runfiles path, err %v\n", err)
+			return 1
+		}
+		defaultProto := fmt.Sprintf("%s/_testdata/simple.proto", runfiles)
+		proto = &defaultProto
+	}
 
 	reader, err := os.Open(*proto)
 	if err != nil {

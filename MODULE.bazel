@@ -1,0 +1,3 @@
+# Left deliberately empty;
+# Ideally we'd bring in rules_go and gazelle here,
+# but the go rules don't yet support specifying the go version in bzlmod, and we need 1.18.1.
