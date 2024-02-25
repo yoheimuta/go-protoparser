@@ -20,3 +20,9 @@ atlassian-ide-plugin.xml
 
 .config/
 tags/
+
+# Bazel
+bazel-bin
+bazel-go-protoparser
+bazel-out
+bazel-testlogs
