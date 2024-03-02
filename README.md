@@ -545,33 +545,49 @@ See also `_example/dump`.
 
 ```go
 func run() int {
-	flag.Parse()
+    flag.Parse()
 
-	reader, err := os.Open(*proto)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to open %s, err %v\n", *proto, err)
-		return 1
-	}
-	defer reader.Close()
+    reader, err := os.Open(*proto)
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "failed to open %s, err %v\n", *proto, err)
+        return 1
+    }
+    defer reader.Close()
 
-	got, err := protoparser.Parse(reader)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to parse, err %v\n", err)
-		return 1
-	}
+    got, err := protoparser.Parse(reader)
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "failed to parse, err %v\n", err)
+        return 1
+    }
 
-	gotJSON, err := json.MarshalIndent(got, "", "  ")
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to marshal, err %v\n", err)
-	}
-	fmt.Print(string(gotJSON))
-	return 0
+    gotJSON, err := json.MarshalIndent(got, "", "  ")
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "failed to marshal, err %v\n", err)
+    }
+    fmt.Print(string(gotJSON))
+    return 0
 }
 
 func main() {
-	os.Exit(run())
+    os.Exit(run())
 }
 ```
+
+### build and test using bazel-gazelle
+
+There is provision to use bazel-gazelle build system to build test and run this
+package.
+
+- build
+    `bazel build //..`
+- test
+    `bazel test //...`
+  **Note** although this contains bazel-gazelle build system, this support is 
+  for building and contributing to lib for users who are integrated in to the 
+  build system.
+  This library is pure go version so as per modern go standard build approach,
+  this pkg uses `go.mod` and `go.sum`
+  to build you can directly use`go build` and to update dependencies `go mod tidy`
 
 ### Users
 
