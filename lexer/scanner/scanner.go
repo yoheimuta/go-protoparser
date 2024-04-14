@@ -8,6 +8,12 @@ import (
 
 var eof = rune(0)
 
+// Text is a literal with a position.
+type Text struct {
+	Literal string
+	Pos     Position
+}
+
 // Scanner represents a lexical scanner.
 type Scanner struct {
 	r              *bufio.Reader
@@ -19,6 +25,10 @@ type Scanner struct {
 
 	// The Mode field controls which tokens are recognized.
 	Mode Mode
+
+	// comments are all the scanned comments.
+	// These can be duplicated.
+	comments []Text
 }
 
 // Option is an option for scanner.NewScanner.
@@ -110,6 +120,26 @@ func (s *Scanner) SetLastScanRaw(raw []rune) {
 	s.lastScanRaw = raw
 }
 
+// GetScannedComments returns all the uniquely scanned comments.
+func (s *Scanner) GetScannedComments() []Text {
+	var uniqueComments []Text
+	find := func(c Text) bool {
+		for _, uc := range uniqueComments {
+			if c.Pos.Offset == uc.Pos.Offset && c.Literal == uc.Literal {
+				return true
+			}
+		}
+		return false
+	}
+
+	for _, c := range s.comments {
+		if !find(c) {
+			uniqueComments = append(uniqueComments, c)
+		}
+	}
+	return uniqueComments
+}
+
 func (s *Scanner) scan() (Token, string, Position, error) {
 	ch := s.peek()
 
@@ -138,6 +168,7 @@ func (s *Scanner) scan() (Token, string, Position, error) {
 		if err != nil {
 			return TILLEGAL, "", startPos, err
 		}
+		s.comments = append(s.comments, Text{Literal: lit, Pos: startPos})
 		if s.Mode&ScanComment != 0 {
 			return TCOMMENT, lit, startPos, nil
 		}

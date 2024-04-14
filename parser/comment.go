@@ -44,7 +44,8 @@ func (c *Comment) Accept(v Visitor) {
 }
 
 // ParseComments parsers a sequence of comments.
-//  comments = { comment }
+//
+//	comments = { comment }
 //
 // See https://developers.google.com/protocol-buffers/docs/proto3#adding-comments
 func (p *Parser) ParseComments() []*Comment {
@@ -73,4 +74,18 @@ func (p *Parser) parseComment() (*Comment, error) {
 	}
 	defer p.lex.UnNext()
 	return nil, p.unexpected("comment")
+}
+
+func (p *Parser) findEmbeddedComments(from scanner.Position, to scanner.Position) []*Comment {
+	var comments []*Comment
+	for _, c := range p.lex.FindMidComments(from, to) {
+		comments = append(comments, &Comment{
+			Raw: c.Literal,
+			Meta: meta.Meta{
+				Pos:     c.Pos.Position,
+				LastPos: c.Pos.AdvancedBulk(c.Literal).Position,
+			},
+		})
+	}
+	return comments
 }
