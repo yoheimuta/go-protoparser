@@ -191,3 +191,15 @@ func (lex *Lexer) ConsumeToken(t scanner.Token) {
 	}
 	lex.UnNext()
 }
+
+// FindMidComments finds comments between from and to.
+func (lex *Lexer) FindMidComments(from scanner.Position, to scanner.Position) []scanner.Text {
+	comments := lex.scanner.GetScannedComments()
+	var mid []scanner.Text
+	for _, c := range comments {
+		if from.Offset < c.Pos.Offset && c.Pos.Offset < to.Offset {
+			mid = append(mid, c)
+		}
+	}
+	return mid
+}

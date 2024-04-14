@@ -36,6 +36,8 @@ type RPC struct {
 	InlineComment *Comment
 	// InlineCommentBehindLeftCurly is the optional one placed behind a left curly.
 	InlineCommentBehindLeftCurly *Comment
+	// EmbeddedComments are the optional ones placed between the start position and the position before left curly.
+	EmbeddedComments []*Comment
 	// Meta is the meta information.
 	Meta meta.Meta
 }
@@ -241,6 +243,7 @@ func (p *Parser) parseRPC() (*RPC, error) {
 	var inlineLeftCurly *Comment
 	p.lex.Next()
 	lastPos := p.lex.Pos
+	embeddedComments := p.findEmbeddedComments(startPos, lastPos)
 	switch p.lex.Token {
 	case scanner.TLEFTCURLY:
 		p.lex.UnNext()
@@ -268,6 +271,7 @@ func (p *Parser) parseRPC() (*RPC, error) {
 		RPCResponse:                  rpcResponse,
 		Options:                      opts,
 		InlineCommentBehindLeftCurly: inlineLeftCurly,
+		EmbeddedComments:             embeddedComments,
 		Meta: meta.Meta{
 			Pos:     startPos.Position,
 			LastPos: lastPos.Position,

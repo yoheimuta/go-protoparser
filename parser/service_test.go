@@ -964,6 +964,151 @@ service SearchService {
 				},
 			},
 		},
+		{
+			name: "parsing the rpc with comments interleaved in the middle",
+			input: `
+service SearchService {
+  rpc GetAll (GetRequest) // protolint:disable:this RPC_NAMES_UPPER_CAMEL_CASE
+  returns /* some interleved comment */ (GetReply) /* some interleved comment2 */ {
+	// option has a comment
+    option(requestreply.Nats).Subject = "get.addrs";
+  }
+}
+`,
+			wantService: &parser.Service{
+				ServiceName: "SearchService",
+				ServiceBody: []parser.Visitee{
+					&parser.RPC{
+						RPCName: "GetAll",
+						RPCRequest: &parser.RPCRequest{
+							MessageType: "GetRequest",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 38,
+									Line:   3,
+									Column: 14,
+								},
+								LastPos: meta.Position{
+									Offset: 49,
+									Line:   3,
+									Column: 25,
+								},
+							},
+						},
+						RPCResponse: &parser.RPCResponse{
+							MessageType: "GetReply",
+							Meta: meta.Meta{
+								Pos: meta.Position{
+									Offset: 144,
+									Line:   4,
+									Column: 41,
+								},
+								LastPos: meta.Position{
+									Offset: 153,
+									Line:   4,
+									Column: 50,
+								},
+							},
+						},
+						Options: []*parser.Option{
+							{
+								OptionName: "(requestreply.Nats).Subject",
+								Constant:   `"get.addrs"`,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 217,
+										Line:   6,
+										Column: 5,
+									},
+									LastPos: meta.Position{
+										Offset: 264,
+										Line:   6,
+										Column: 52,
+									},
+								},
+							},
+						},
+						EmbeddedComments: []*parser.Comment{
+							{
+								Raw: "// protolint:disable:this RPC_NAMES_UPPER_CAMEL_CASE",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "",
+										Offset:   51,
+										Line:     3,
+										Column:   27,
+									},
+									LastPos: meta.Position{
+										Filename: "",
+										Offset:   102,
+										Line:     3,
+										Column:   78,
+									},
+								},
+							},
+							{
+								Raw: "/* some interleved comment */",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "",
+										Offset:   114,
+										Line:     4,
+										Column:   11,
+									},
+									LastPos: meta.Position{
+										Filename: "",
+										Offset:   142,
+										Line:     4,
+										Column:   39,
+									},
+								},
+							},
+							{
+								Raw: "/* some interleved comment2 */",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Filename: "",
+										Offset:   155,
+										Line:     4,
+										Column:   52,
+									},
+									LastPos: meta.Position{
+										Filename: "",
+										Offset:   184,
+										Line:     4,
+										Column:   81,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 27,
+								Line:   3,
+								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 268,
+								Line:   7,
+								Column: 3,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 270,
+						Line:   8,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
