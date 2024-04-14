@@ -63,7 +63,8 @@ func (m *Extend) Accept(v Visitor) {
 
 // ParseExtend parses the extend.
 // Note that group is not supported.
-//  extend = "extend" messageType "{" {field | group | emptyStatement} "}"
+//
+//	extend = "extend" messageType "{" {field | group | emptyStatement} "}"
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto2-spec#extend
 func (p *Parser) ParseExtend() (*Extend, error) {

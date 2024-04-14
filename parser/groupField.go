@@ -56,7 +56,8 @@ func (f *GroupField) Accept(v Visitor) {
 }
 
 // ParseGroupField parses the group.
-//  group = label "group" groupName "=" fieldNumber messageBody
+//
+//	group = label "group" groupName "=" fieldNumber messageBody
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto2-spec#group_field
 func (p *Parser) ParseGroupField() (*GroupField, error) {
