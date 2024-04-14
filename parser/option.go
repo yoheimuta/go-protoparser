@@ -40,7 +40,8 @@ func (o *Option) Accept(v Visitor) {
 }
 
 // ParseOption parses the option.
-//  option = "option" optionName  "=" constant ";"
+//
+//	option = "option" optionName  "=" constant ";"
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#option
 func (p *Parser) ParseOption() (*Option, error) {

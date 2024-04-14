@@ -37,7 +37,8 @@ func (p *Package) Accept(v Visitor) {
 }
 
 // ParsePackage parses the package.
-//  package = "package" fullIdent ";"
+//
+//	package = "package" fullIdent ";"
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#package
 func (p *Parser) ParsePackage() (*Package, error) {

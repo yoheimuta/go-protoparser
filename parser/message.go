@@ -63,7 +63,8 @@ func (m *Message) Accept(v Visitor) {
 }
 
 // ParseMessage parses the message.
-//  message = "message" messageName messageBody
+//
+//	message = "message" messageName messageBody
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#message_definition
 func (p *Parser) ParseMessage() (*Message, error) {
