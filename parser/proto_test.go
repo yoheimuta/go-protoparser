@@ -2242,6 +2242,33 @@ message foo {
 				},
 			},
 		},
+		{
+			name: "parsing a UTF-8-BOM file",
+			input: string([]byte{
+				0xEF, 0xBB, 0xBF,
+			}) + `
+syntax = "proto3";
+`,
+			wantProto: &parser.Proto{
+				Syntax: &parser.Syntax{
+					ProtobufVersion:      "proto3",
+					ProtobufVersionQuote: `"proto3"`,
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 4,
+							Line:   2,
+							Column: 1,
+						},
+						LastPos: meta.Position{
+							Offset: 21,
+							Line:   2,
+							Column: 18,
+						},
+					},
+				},
+				Meta: &parser.ProtoMeta{},
+			},
+		},
 	}
 
 	for _, test := range tests {

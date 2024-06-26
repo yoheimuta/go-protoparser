@@ -37,6 +37,7 @@ const (
 	TCOMMA       // ,
 	TDOT         // .
 	TMINUS       // -
+	TBOM         // Byte Order Mark
 
 	// Keywords
 	TSYNTAX
@@ -64,22 +65,23 @@ const (
 
 func asMiscToken(ch rune) Token {
 	m := map[rune]Token{
-		';':  TSEMICOLON,
-		':':  TCOLON,
-		'=':  TEQUALS,
-		'"':  TQUOTE,
-		'\'': TQUOTE,
-		'(':  TLEFTPAREN,
-		')':  TRIGHTPAREN,
-		'{':  TLEFTCURLY,
-		'}':  TRIGHTCURLY,
-		'[':  TLEFTSQUARE,
-		']':  TRIGHTSQUARE,
-		'<':  TLESS,
-		'>':  TGREATER,
-		',':  TCOMMA,
-		'.':  TDOT,
-		'-':  TMINUS,
+		';':      TSEMICOLON,
+		':':      TCOLON,
+		'=':      TEQUALS,
+		'"':      TQUOTE,
+		'\'':     TQUOTE,
+		'(':      TLEFTPAREN,
+		')':      TRIGHTPAREN,
+		'{':      TLEFTCURLY,
+		'}':      TRIGHTCURLY,
+		'[':      TLEFTSQUARE,
+		']':      TRIGHTSQUARE,
+		'<':      TLESS,
+		'>':      TGREATER,
+		',':      TCOMMA,
+		'.':      TDOT,
+		'-':      TMINUS,
+		'\uFEFF': TBOM,
 	}
 	if t, ok := m[ch]; ok {
 		return t
