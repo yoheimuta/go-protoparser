@@ -33,6 +33,8 @@ func (p *Proto) Accept(v Visitor) {
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file
 func (p *Parser) ParseProto() (*Proto, error) {
+	p.parseBOM()
+
 	syntaxComments := p.ParseComments()
 	syntax, err := p.ParseSyntax()
 	if err != nil {
@@ -53,6 +55,15 @@ func (p *Parser) ParseProto() (*Proto, error) {
 			Filename: p.lex.Pos.Filename,
 		},
 	}, nil
+}
+
+// See https://protobuf.com/docs/language-spec#source-code-representation
+func (p *Parser) parseBOM() {
+	p.lex.Next()
+	if p.lex.Token == scanner.TBOM {
+		return
+	}
+	defer p.lex.UnNext()
 }
 
 // protoBody = { import | package | option | topLevelDef | emptyStatement }
