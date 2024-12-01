@@ -58,8 +58,10 @@ func (r *Reserved) Accept(v Visitor) {
 // ParseReserved parses the reserved.
 //
 //	reserved = "reserved" ( ranges | fieldNames ) ";"
+//	reserved = "reserved" ( ranges | reservedIdent ) ";"
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#reserved
+// See https://protobuf.dev/reference/protobuf/edition-2023-spec/#reserved
 func (p *Parser) ParseReserved() (*Reserved, error) {
 	p.lex.NextKeyword()
 	if p.lex.Token != scanner.TRESERVED {
@@ -164,7 +166,7 @@ func (p *Parser) parseRange() (*Range, error) {
 func (p *Parser) parseFieldNames() ([]string, error) {
 	var fieldNames []string
 
-	fieldName, err := p.parseQuotedFieldName()
+	fieldName, err := p.parseFieldName()
 	if err != nil {
 		return nil, err
 	}
@@ -177,13 +179,29 @@ func (p *Parser) parseFieldNames() ([]string, error) {
 			break
 		}
 
-		fieldName, err = p.parseQuotedFieldName()
+		fieldName, err = p.parseFieldName()
 		if err != nil {
 			return nil, err
 		}
 		fieldNames = append(fieldNames, fieldName)
 	}
 	return fieldNames, nil
+}
+
+// fieldName = quote + fieldName + quote
+func (p *Parser) parseFieldName() (string, error) {
+	quoted, err := p.parseQuotedFieldName()
+	if err == nil {
+		return quoted, nil
+	}
+
+	// If it is not a quotedFieldName, it should be a fieldName in Editions.
+	p.lex.Next()
+	if p.lex.Token != scanner.TIDENT {
+		p.lex.UnNext()
+		return "", p.unexpected("fieldName or quotedFieldName")
+	}
+	return p.lex.Text, nil
 }
 
 // quotedFieldName = quote + fieldName + quote

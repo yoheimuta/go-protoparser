@@ -1,6 +1,6 @@
 # go-protoparser [![GoDoc](https://godoc.org/github.com/yoheimuta/go-protoparser/v4?status.svg)](https://pkg.go.dev/github.com/yoheimuta/go-protoparser/v4)[![CircleCI](https://circleci.com/gh/yoheimuta/go-protoparser/tree/master.svg?style=svg)](https://circleci.com/gh/yoheimuta/go-protoparser/tree/master)[![Go Report Card](https://goreportcard.com/badge/github.com/yoheimuta/go-protoparser/v4)](https://goreportcard.com/report/github.com/yoheimuta/go-protoparser/v4)[![Release](http://img.shields.io/github/release/yoheimuta/go-protoparser.svg?style=flat)](https://github.com/yoheimuta/go-protoparser/releases/latest)[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/yoheimuta/go-protoparser/blob/master/LICENSE.md)
 
-go-protoparser is a yet another Go package which parses a Protocol Buffer file (proto2+proto3).
+go-protoparser is a yet another Go package which parses a Protocol Buffer file (editions+proto2+proto3).
 
 - Conforms to the exactly [official spec](https://developers.google.com/protocol-buffers/docs/reference/proto3-spec).
 - Undergone rigorous testing. The parser can parses all examples of the official spec well.

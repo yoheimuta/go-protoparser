@@ -18,8 +18,7 @@ func TestParser_ParseSyntax(t *testing.T) {
 		wantErr    bool
 	}{
 		{
-			name:    "parsing an empty",
-			wantErr: true,
+			name: "parsing an empty",
 		},
 		{
 			name:  "parsing an excerpt from the official reference",

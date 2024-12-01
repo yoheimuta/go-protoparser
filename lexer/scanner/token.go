@@ -41,6 +41,7 @@ const (
 
 	// Keywords
 	TSYNTAX
+	TEDITION
 	TSERVICE
 	TRPC
 	TRETURNS
@@ -92,6 +93,7 @@ func asMiscToken(ch rune) Token {
 func asKeywordToken(st string) Token {
 	m := map[string]Token{
 		"syntax":     TSYNTAX,
+		"edition":    TEDITION,
 		"service":    TSERVICE,
 		"rpc":        TRPC,
 		"returns":    TRETURNS,

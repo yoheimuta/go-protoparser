@@ -22,8 +22,12 @@ func TestParser_ParseProto(t *testing.T) {
 		wantErr                    bool
 	}{
 		{
-			name:    "parsing an empty",
-			wantErr: true,
+			name: "parsing an empty",
+			wantProto: &parser.Proto{
+				Meta: &parser.ProtoMeta{
+					Filename: "",
+				},
+			},
 		},
 		{
 			name: "parsing an excerpt from the official reference",
@@ -2263,6 +2267,444 @@ syntax = "proto3";
 							Offset: 21,
 							Line:   2,
 							Column: 18,
+						},
+					},
+				},
+				Meta: &parser.ProtoMeta{},
+			},
+		},
+		{
+			name: "parsing an editions version from the official reference",
+			input: `
+edition = "2023";
+import public "other.proto";
+option java_package = "com.example.foo";
+enum EnumAllowingAlias {
+  option allow_alias = true;
+  EAA_UNSPECIFIED = 0;
+  EAA_STARTED = 1;
+  EAA_RUNNING = 1;
+  EAA_FINISHED = 2 [(custom_option) = "hello world"];
+}
+message Outer {
+  option (my_option).a = true;
+  message Inner {   // Level 2
+    int64 ival = 1 [features.field_presence = LEGACY_REQUIRED];
+  }
+  repeated Inner inner_message = 2;
+  EnumAllowingAlias enum_field = 3;
+  map<int32, string> my_map = 4;
+  extensions 20 to 30;
+  reserved reserved_field;
+}
+message Foo {
+  message GroupMessage {
+    bool a = 1;
+  }
+  GroupMessage groupmessage = 2 [features.message_encoding = DELIMITED];
+}`,
+			wantProto: &parser.Proto{
+				Edition: &parser.Edition{
+					Edition:      "2023",
+					EditionQuote: "\"2023\"",
+					Meta: meta.Meta{
+						Pos: meta.Position{
+							Offset: 1,
+							Line:   2,
+							Column: 1,
+						},
+						LastPos: meta.Position{
+							Offset: 17,
+							Line:   2,
+							Column: 17,
+						},
+					},
+				},
+				ProtoBody: []parser.Visitee{
+					&parser.Import{
+						Modifier: parser.ImportModifierPublic,
+						Location: "\"other.proto\"",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 19,
+								Line:   3,
+								Column: 1,
+							},
+							LastPos: meta.Position{
+								Offset: 46,
+								Line:   3,
+								Column: 28,
+							},
+						},
+					},
+					&parser.Option{
+						OptionName: "java_package",
+						Constant:   "\"com.example.foo\"",
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 48,
+								Line:   4,
+								Column: 1,
+							},
+							LastPos: meta.Position{
+								Offset: 87,
+								Line:   4,
+								Column: 40,
+							},
+						},
+					},
+					&parser.Enum{
+						EnumName: "EnumAllowingAlias",
+						EnumBody: []parser.Visitee{
+							&parser.Option{
+								OptionName: "allow_alias",
+								Constant:   "true",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 116,
+										Line:   6,
+										Column: 3,
+									},
+									LastPos: meta.Position{
+										Offset: 141,
+										Line:   6,
+										Column: 28,
+									},
+								},
+							},
+							&parser.EnumField{
+								Ident:  "EAA_UNSPECIFIED",
+								Number: "0",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 145,
+										Line:   7,
+										Column: 3,
+									},
+									LastPos: meta.Position{
+										Offset: 164,
+										Line:   7,
+										Column: 22,
+									},
+								},
+							},
+							&parser.EnumField{
+								Ident:  "EAA_STARTED",
+								Number: "1",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 168,
+										Line:   8,
+										Column: 3,
+									},
+									LastPos: meta.Position{
+										Offset: 183,
+										Line:   8,
+										Column: 18,
+									},
+								},
+							},
+							&parser.EnumField{
+								Ident:  "EAA_RUNNING",
+								Number: "1",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 187,
+										Line:   9,
+										Column: 3,
+									},
+									LastPos: meta.Position{
+										Offset: 202,
+										Line:   9,
+										Column: 18,
+									},
+								},
+							},
+							&parser.EnumField{
+								Ident:  "EAA_FINISHED",
+								Number: "2",
+								EnumValueOptions: []*parser.EnumValueOption{
+									{
+										OptionName: "(custom_option)",
+										Constant:   "\"hello world\"",
+									},
+								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 206,
+										Line:   10,
+										Column: 3,
+									},
+									LastPos: meta.Position{
+										Offset: 256,
+										Line:   10,
+										Column: 53,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 89,
+								Line:   5,
+								Column: 1,
+							},
+							LastPos: meta.Position{
+								Offset: 258,
+								Line:   11,
+								Column: 1,
+							},
+						},
+					},
+					&parser.Message{
+						MessageName: "Outer",
+						MessageBody: []parser.Visitee{
+							&parser.Option{
+								OptionName: "(my_option).a",
+								Constant:   "true",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 278,
+										Line:   13,
+										Column: 3,
+									},
+									LastPos: meta.Position{
+										Offset: 305,
+										Line:   13,
+										Column: 30,
+									},
+								},
+							},
+							&parser.Message{
+								MessageName: "Inner",
+								MessageBody: []parser.Visitee{
+									&parser.Field{
+										Type:        "int64",
+										FieldName:   "ival",
+										FieldNumber: "1",
+										FieldOptions: []*parser.FieldOption{
+
+											{
+												OptionName: "features.field_presence",
+												Constant:   "LEGACY_REQUIRED",
+											},
+										},
+										Meta: meta.Meta{
+											Pos: meta.Position{
+												Offset: 342,
+												Line:   15,
+												Column: 5,
+											},
+											LastPos: meta.Position{
+												Offset: 400,
+												Line:   15,
+												Column: 63,
+											},
+										},
+									},
+								},
+								InlineCommentBehindLeftCurly: &parser.Comment{
+									Raw: "// Level 2",
+									Meta: meta.Meta{
+										Pos: meta.Position{
+											Offset: 327,
+											Line:   14,
+											Column: 21,
+										},
+										LastPos: meta.Position{
+											Offset: 336,
+											Line:   14,
+											Column: 30,
+										},
+									},
+								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 309,
+										Line:   14,
+										Column: 3,
+									},
+									LastPos: meta.Position{
+										Offset: 404,
+										Line:   16,
+										Column: 3,
+									},
+								},
+							},
+							&parser.Field{
+								Type:        "Inner",
+								FieldName:   "inner_message",
+								FieldNumber: "2",
+								IsRepeated:  true,
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 408,
+										Line:   17,
+										Column: 3,
+									},
+									LastPos: meta.Position{
+										Offset: 440,
+										Line:   17,
+										Column: 35,
+									},
+								},
+							},
+							&parser.Field{
+								Type:        "EnumAllowingAlias",
+								FieldName:   "enum_field",
+								FieldNumber: "3",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 444,
+										Line:   18,
+										Column: 3,
+									},
+									LastPos: meta.Position{
+										Offset: 476,
+										Line:   18,
+										Column: 35,
+									},
+								},
+							},
+							&parser.MapField{
+								KeyType:     "int32",
+								Type:        "string",
+								MapName:     "my_map",
+								FieldNumber: "4",
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 480,
+										Line:   19,
+										Column: 3,
+									},
+									LastPos: meta.Position{
+										Offset: 509,
+										Line:   19,
+										Column: 32,
+									},
+								},
+							},
+							&parser.Extensions{
+								Ranges: []*parser.Range{
+									{
+										Begin: "20",
+										End:   "30",
+									},
+								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 513,
+										Line:   20,
+										Column: 3,
+									},
+									LastPos: meta.Position{
+										Offset: 532,
+										Line:   20,
+										Column: 22,
+									},
+								},
+							},
+							&parser.Reserved{
+								FieldNames: []string{"reserved_field"},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 536,
+										Line:   21,
+										Column: 3,
+									},
+									LastPos: meta.Position{
+										Offset: 559,
+										Line:   21,
+										Column: 26,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 260,
+								Line:   12,
+								Column: 1,
+							},
+							LastPos: meta.Position{
+								Offset: 561,
+								Line:   22,
+								Column: 1,
+							},
+						},
+					},
+					&parser.Message{
+						MessageName: "Foo",
+						MessageBody: []parser.Visitee{
+							&parser.Message{
+								MessageName: "GroupMessage",
+								MessageBody: []parser.Visitee{
+									&parser.Field{
+										Type:        "bool",
+										FieldName:   "a",
+										FieldNumber: "1",
+										Meta: meta.Meta{
+											Pos: meta.Position{
+												Offset: 606,
+												Line:   25,
+												Column: 5,
+											},
+											LastPos: meta.Position{
+												Offset: 616,
+												Line:   25,
+												Column: 15,
+											},
+										},
+									},
+								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 579,
+										Line:   24,
+										Column: 3,
+									},
+									LastPos: meta.Position{
+										Offset: 620,
+										Line:   26,
+										Column: 3,
+									},
+								},
+							},
+							&parser.Field{
+								Type:        "GroupMessage",
+								FieldName:   "groupmessage",
+								FieldNumber: "2",
+								FieldOptions: []*parser.FieldOption{
+									{
+										OptionName: "features.message_encoding",
+										Constant:   "DELIMITED",
+									},
+								},
+								Meta: meta.Meta{
+									Pos: meta.Position{
+										Offset: 624,
+										Line:   27,
+										Column: 3,
+									},
+									LastPos: meta.Position{
+										Offset: 693,
+										Line:   27,
+										Column: 72,
+									},
+								},
+							},
+						},
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 563,
+								Line:   23,
+								Column: 1,
+							},
+							LastPos: meta.Position{
+								Offset: 695,
+								Line:   28,
+								Column: 1,
+							},
 						},
 					},
 				},
