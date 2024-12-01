@@ -3,6 +3,7 @@ package parser
 // Visitor is for dispatching Protocol Buffer elements.
 type Visitor interface {
 	VisitComment(*Comment)
+	VisitEdition(*Edition) (next bool)
 	VisitEmptyStatement(*EmptyStatement) (next bool)
 	VisitEnum(*Enum) (next bool)
 	VisitEnumField(*EnumField) (next bool)

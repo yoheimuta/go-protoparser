@@ -108,6 +108,28 @@ func TestParser_ParseReserved(t *testing.T) {
 				},
 			},
 		},
+		{
+			name:  "parsing reservedIdent from editions",
+			input: `reserved foo, bar;`,
+			wantReserved: &parser.Reserved{
+				FieldNames: []string{
+					`foo`,
+					`bar`,
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 17,
+						Line:   1,
+						Column: 18,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

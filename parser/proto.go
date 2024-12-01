@@ -10,7 +10,8 @@ type ProtoMeta struct {
 
 // Proto represents a protocol buffer definition.
 type Proto struct {
-	Syntax *Syntax
+	Syntax  *Syntax
+	Edition *Edition
 	// ProtoBody is a slice of sum type consisted of *Import, *Package, *Option, *Message, *Enum, *Service, *Extend and *EmptyStatement.
 	ProtoBody []Visitee
 	Meta      *ProtoMeta
@@ -21,6 +22,9 @@ func (p *Proto) Accept(v Visitor) {
 	if p.Syntax != nil {
 		p.Syntax.Accept(v)
 	}
+	if p.Edition != nil {
+		p.Edition.Accept(v)
+	}
 
 	for _, body := range p.ProtoBody {
 		body.Accept(v)
@@ -29,19 +33,31 @@ func (p *Proto) Accept(v Visitor) {
 
 // ParseProto parses the proto.
 //
-//	proto = syntax { import | package | option | topLevelDef | emptyStatement }
+//	proto = [syntax] [edition] { import | package | option | topLevelDef | emptyStatement }
 //
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#proto_file
+// See https://protobuf.dev/reference/protobuf/edition-2023-spec/#proto_file
 func (p *Parser) ParseProto() (*Proto, error) {
 	p.parseBOM()
 
-	syntaxComments := p.ParseComments()
+	comments := p.ParseComments()
 	syntax, err := p.ParseSyntax()
 	if err != nil {
 		return nil, err
 	}
-	syntax.Comments = syntaxComments
-	p.MaybeScanInlineComment(syntax)
+	if syntax != nil {
+		syntax.Comments = comments
+		p.MaybeScanInlineComment(syntax)
+	}
+
+	edition, err := p.ParseEdition()
+	if err != nil {
+		return nil, err
+	}
+	if edition != nil {
+		edition.Comments = comments
+		p.MaybeScanInlineComment(edition)
+	}
 
 	protoBody, err := p.parseProtoBody()
 	if err != nil {
@@ -50,6 +66,7 @@ func (p *Parser) ParseProto() (*Proto, error) {
 
 	return &Proto{
 		Syntax:    syntax,
+		Edition:   edition,
 		ProtoBody: protoBody,
 		Meta: &ProtoMeta{
 			Filename: p.lex.Pos.Filename,

@@ -20,6 +20,11 @@ func (p *protoTestVisitor) VisitComment(c *parser.Comment) {
 	p.buffers = append(p.buffers, "Comment: "+c.Raw)
 }
 
+func (p *protoTestVisitor) VisitEdition(*parser.Edition) bool {
+	p.buffers = append(p.buffers, "Edition")
+	return true
+}
+
 func (p *protoTestVisitor) VisitEmptyStatement(*parser.EmptyStatement) bool {
 	p.buffers = append(p.buffers, "EmptyStatement")
 	return true
