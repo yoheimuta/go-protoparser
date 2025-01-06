@@ -150,7 +150,7 @@ func (p *Parser) parseCloudEndpointsOptionConstant() (string, error) {
 	}
 }
 
-// optionName = ( ident | "(" fullIdent ")" ) { "." ident }
+// optionName = ( ident | "(" fullIdent ")" ) { "." ( ident | "(" fullIdent ")" ) }
 func (p *Parser) parseOptionName() (string, error) {
 	var optionName string
 
@@ -195,10 +195,36 @@ func (p *Parser) parseOptionName() (string, error) {
 		optionName += p.lex.Text
 
 		p.lex.Next()
-		if p.lex.Token != scanner.TIDENT {
-			return "", p.unexpected("ident")
+		switch p.lex.Token {
+		case scanner.TIDENT:
+			optionName += p.lex.Text
+		case scanner.TLEFTPAREN:
+			optionName += p.lex.Text
+
+			// protoc accepts "(." fullIndent ")". See #63
+			if p.permissive {
+				p.lex.Next()
+				if p.lex.Token == scanner.TDOT {
+					optionName += "."
+				} else {
+					p.lex.UnNext()
+				}
+			}
+
+			fullIdent, _, err := p.lex.ReadFullIdent()
+			if err != nil {
+				return "", err
+			}
+			optionName += fullIdent
+
+			p.lex.Next()
+			if p.lex.Token != scanner.TRIGHTPAREN {
+				return "", p.unexpected(")")
+			}
+			optionName += p.lex.Text
+		default:
+			return "", p.unexpected("ident or bracedFullIdent")
 		}
-		optionName += p.lex.Text
 	}
 	return optionName, nil
 }
