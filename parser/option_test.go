@@ -313,6 +313,27 @@ body:"*"}]}`,
 				},
 			},
 		},
+		{
+			name:       `parsing bracedFullIdent as part of optionName`,
+			input:      `option foo.(bar.baz).name = "value";`,
+			permissive: true,
+			wantOption: &parser.Option{
+				OptionName: "foo.(bar.baz).name",
+				Constant:   `"value"`,
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 35,
+						Line:   1,
+						Column: 36,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
