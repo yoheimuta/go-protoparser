@@ -83,6 +83,76 @@ func TestParser_ParseExtensions(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "parsing an excerpt with extension declarations from the official reference",
+			input: `extensions 4 to 1000 [
+    declaration = {
+      number: 4,
+      full_name: ".my.package.event_annotations",
+      type: ".logs.proto.ValidationAnnotations",
+      repeated: true },
+    declaration = {
+      number: 999,
+      full_name: ".foo.package.bar",
+      type: "int32"}];`,
+			wantExtensions: &parser.Extensions{
+				Ranges: []*parser.Range{
+					{
+						Begin: "4",
+						End:   "1000",
+					},
+				},
+				Declarations: []*parser.Declaration{
+					{
+						Number:   "4",
+						FullName: `".my.package.event_annotations"`,
+						Type:     `".logs.proto.ValidationAnnotations"`,
+						Repeated: true,
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 27,
+								Line:   2,
+								Column: 5,
+							},
+							LastPos: meta.Position{
+								Offset: 180,
+								Line:   6,
+								Column: 22,
+							},
+						},
+					},
+					{
+						Number:   "999",
+						FullName: `".foo.package.bar"`,
+						Type:     `"int32"`,
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 187,
+								Line:   7,
+								Column: 5,
+							},
+							LastPos: meta.Position{
+								Offset: 278,
+								Line:   10,
+								Column: 20,
+							},
+						},
+					},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 280,
+						Line:   10,
+						Column: 22,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {

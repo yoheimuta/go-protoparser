@@ -59,6 +59,10 @@ const (
 	TMAP
 	TRESERVED
 	TEXTENSIONS
+	TDECLARATION
+	TNUMBER
+	TFULLNAME
+	TTYPE
 	TENUM
 	TSTREAM
 	TGROUP
@@ -92,28 +96,32 @@ func asMiscToken(ch rune) Token {
 
 func asKeywordToken(st string) Token {
 	m := map[string]Token{
-		"syntax":     TSYNTAX,
-		"edition":    TEDITION,
-		"service":    TSERVICE,
-		"rpc":        TRPC,
-		"returns":    TRETURNS,
-		"message":    TMESSAGE,
-		"extend":     TEXTEND,
-		"import":     TIMPORT,
-		"package":    TPACKAGE,
-		"option":     TOPTION,
-		"repeated":   TREPEATED,
-		"required":   TREQUIRED,
-		"optional":   TOPTIONAL,
-		"weak":       TWEAK,
-		"public":     TPUBLIC,
-		"oneof":      TONEOF,
-		"map":        TMAP,
-		"reserved":   TRESERVED,
-		"extensions": TEXTENSIONS,
-		"enum":       TENUM,
-		"stream":     TSTREAM,
-		"group":      TGROUP,
+		"syntax":      TSYNTAX,
+		"edition":     TEDITION,
+		"service":     TSERVICE,
+		"rpc":         TRPC,
+		"returns":     TRETURNS,
+		"message":     TMESSAGE,
+		"extend":      TEXTEND,
+		"import":      TIMPORT,
+		"package":     TPACKAGE,
+		"option":      TOPTION,
+		"repeated":    TREPEATED,
+		"required":    TREQUIRED,
+		"optional":    TOPTIONAL,
+		"weak":        TWEAK,
+		"public":      TPUBLIC,
+		"oneof":       TONEOF,
+		"map":         TMAP,
+		"reserved":    TRESERVED,
+		"extensions":  TEXTENSIONS,
+		"number":      TNUMBER,
+		"full_name":   TFULLNAME,
+		"type":        TTYPE,
+		"declaration": TDECLARATION,
+		"enum":        TENUM,
+		"stream":      TSTREAM,
+		"group":       TGROUP,
 	}
 
 	if t, ok := m[st]; ok {
