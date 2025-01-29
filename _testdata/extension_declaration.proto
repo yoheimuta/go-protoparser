@@ -1,0 +1,24 @@
+syntax = "proto2";
+
+message Foo {
+  extensions 4 to 1000 [
+    declaration = {
+      number: 4,
+      full_name: ".my.package.event_annotations",
+      type: ".logs.proto.ValidationAnnotations",
+      repeated: true },
+    declaration = {
+      number: 999,
+      full_name: ".foo.package.bar",
+      type: "int32"}];
+}
+
+message Bar {
+  extensions 1000 to 2000 [
+      declaration = {
+        number: 1000,
+        full_name: ".foo.package",
+        type: ".foo.type"
+      }
+  ];
+}
