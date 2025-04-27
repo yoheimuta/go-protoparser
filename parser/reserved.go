@@ -163,6 +163,9 @@ func (p *Parser) parseRange() (*Range, error) {
 
 // fieldNames = fieldName { "," fieldName }
 // See https://developers.google.com/protocol-buffers/docs/reference/proto3-spec#reserved
+// Note: While the spec requires commas between field names, this parser also supports
+// field names separated by whitespace without commas, which is not mentioned in the spec
+// but is supported by protoc and other parsers.
 func (p *Parser) parseFieldNames() ([]string, error) {
 	var fieldNames []string
 
@@ -173,17 +176,29 @@ func (p *Parser) parseFieldNames() ([]string, error) {
 	fieldNames = append(fieldNames, fieldName)
 
 	for {
+		// Check if next token is a comma
 		p.lex.Next()
-		if p.lex.Token != scanner.TCOMMA {
+		if p.lex.Token == scanner.TCOMMA {
+			// If it's a comma, parse the next field name
+			fieldName, err = p.parseFieldName()
+			if err != nil {
+				return nil, err
+			}
+			fieldNames = append(fieldNames, fieldName)
+		} else {
+			// If it's not a comma, put it back and try to parse another field name
 			p.lex.UnNext()
-			break
-		}
 
-		fieldName, err = p.parseFieldName()
-		if err != nil {
-			return nil, err
+			// Try to parse another field name
+			nextFieldName, err := p.parseFieldName()
+			if err != nil {
+				// If parsing fails, we're done with field names
+				break
+			}
+
+			// Successfully parsed another field name
+			fieldNames = append(fieldNames, nextFieldName)
 		}
-		fieldNames = append(fieldNames, fieldName)
 	}
 	return fieldNames, nil
 }
