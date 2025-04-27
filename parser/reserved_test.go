@@ -130,6 +130,57 @@ func TestParser_ParseReserved(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "parsing field names on separate lines without commas. See #96",
+			input: `reserved
+	"skipped"
+	"ignore_empty"
+;`,
+			wantReserved: &parser.Reserved{
+				FieldNames: []string{
+					`"skipped"`,
+					`"ignore_empty"`,
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 36,
+						Line:   4,
+						Column: 1,
+					},
+				},
+			},
+		},
+		{
+			name: "parsing a mix of comma-separated and whitespace-separated field names",
+			input: `reserved "field1", 
+	"field2"
+	"field3", "field4";`,
+			wantReserved: &parser.Reserved{
+				FieldNames: []string{
+					`"field1"`,
+					`"field2"`,
+					`"field3"`,
+					`"field4"`,
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 0,
+						Line:   1,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 49,
+						Line:   3,
+						Column: 20,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
