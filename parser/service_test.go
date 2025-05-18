@@ -1109,6 +1109,49 @@ service SearchService {
 				},
 			},
 		},
+		{
+			name: "parsing a service with double semicolon in option",
+			input: `
+service MyService {
+  option(service_description) = "description";;
+}
+`,
+			wantErr: false,
+			wantService: &parser.Service{
+				ServiceName: "MyService",
+				ServiceBody: []parser.Visitee{
+					&parser.Option{
+						OptionName: "(service_description)",
+						Constant:   `"description"`,
+						Meta: meta.Meta{
+							Pos: meta.Position{
+								Offset: 23,
+								Line:   3,
+								Column: 3,
+							},
+							LastPos: meta.Position{
+								Offset: 66,
+								Line:   3,
+								Column: 46,
+							},
+						},
+					},
+					&parser.EmptyStatement{},
+				},
+				Meta: meta.Meta{
+					Pos: meta.Position{
+						Offset: 1,
+						Line:   2,
+						Column: 1,
+					},
+					LastPos: meta.Position{
+						Offset: 69,
+						Line:   4,
+						Column: 1,
+					},
+				},
+			},
+		},
 	}
 
 	for _, test := range tests {
