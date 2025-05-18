@@ -201,6 +201,7 @@ func (p *Parser) parseServiceBody() (
 			if err != nil {
 				return nil, nil, scanner.Position{}, err
 			}
+			stmt = &EmptyStatement{}
 		}
 
 		p.MaybeScanInlineComment(stmt)
