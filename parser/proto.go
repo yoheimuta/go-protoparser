@@ -165,7 +165,7 @@ func (p *Parser) parseProtoBody() ([]Visitee, error) {
 			if err != nil {
 				return nil, err
 			}
-			protoBody = append(protoBody, &EmptyStatement{})
+			stmt = &EmptyStatement{}
 		}
 
 		p.MaybeScanInlineComment(stmt)

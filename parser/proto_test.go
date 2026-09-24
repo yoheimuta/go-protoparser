@@ -2746,3 +2746,40 @@ message Foo {
 		})
 	}
 }
+
+// TestParser_ParseProto_topLevelEmptyStatement covers a stray `;` at the top
+// level of a file, e.g. `import "a.proto";;`. The parser used to append the
+// EmptyStatement and then also the unset statement, a nil Visitee, so
+// visiting the result panicked with a nil pointer dereference.
+func TestParser_ParseProto_topLevelEmptyStatement(t *testing.T) {
+	input := `syntax = "proto3";
+import "a.proto";;
+option java_package = "com.example";; // after the stray semicolon
+import "b.proto";
+`
+	p := parser.NewParser(lexer.NewLexer(strings.NewReader(input)))
+	got, err := p.ParseProto()
+	if err != nil {
+		t.Fatalf("got err %v, but want nil", err)
+	}
+
+	for i, v := range got.ProtoBody {
+		if v == nil {
+			t.Fatalf("ProtoBody[%d] is nil", i)
+		}
+	}
+
+	visitor := &protoTestVisitor{}
+	got.Accept(visitor)
+
+	want := `Syntax: proto3
+Import: "a.proto"
+EmptyStatement
+Option: java_package
+EmptyStatement
+Comment: // after the stray semicolon
+Import: "b.proto"`
+	if visitor.String() != want {
+		t.Errorf("got %s, but want %s", visitor.String(), want)
+	}
+}
